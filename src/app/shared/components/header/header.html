@@ -1,0 +1,31 @@
+<header class="app-header">
+  <a class="header-logo" href="/">
+  <img src="assets/images/logo.png" alt="AndubaMotos Logo" class="logo-img">
+  <span class="logo-text">Anduba<span>Motos</span></span>
+</a>
+
+  <button class="hamburger" (click)="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <nav [class.open]="menuOpen">
+    <ul class="header-nav">
+      <li><a href="/">Inicio</a></li>
+      <li><a href="/catalogo">Catálogo</a></li>
+      <li><a href="/servicios">Servicios</a></li>
+      <li><a href="/nosotros">Nosotros</a></li>
+      <li><a href="/contacto">Contacto</a></li>
+    </ul>
+    <div class="nav-actions-mobile">
+      <button class="btn-outline">Iniciar sesión</button>
+      <button class="btn-primary">Registrarse</button>
+    </div>
+  </nav>
+
+  <div class="header-actions">
+    <button class="btn-outline">Iniciar sesión</button>
+    <button class="btn-primary">Registrarse</button>
+  </div>
+</header>
