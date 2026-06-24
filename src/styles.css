@@ -4,3 +4,24 @@
   box-sizing: border-box;
   font-family: 'Segoe UI', system-ui, sans-serif;
 }
+
+.active{
+  border-bottom: 5px white solid;
+  
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+router-outlet + * {
+  flex: 1;
+}

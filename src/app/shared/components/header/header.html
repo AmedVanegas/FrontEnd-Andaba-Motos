@@ -1,5 +1,5 @@
 <header class="app-header">
-  <a class="header-logo" href="/">
+  <a class="header-logo" routerLink="/">
   <img src="assets/images/logo.png" alt="AndubaMotos Logo" class="logo-img">
   <span class="logo-text">Anduba<span>Motos</span></span>
 </a>
@@ -12,11 +12,11 @@
 
   <nav [class.open]="menuOpen">
     <ul class="header-nav">
-      <li><a href="/">Inicio</a></li>
-      <li><a href="/catalogo">Catálogo</a></li>
+      <li><a routerLink="/">Home</a></li>
+      <li><a routerLink="/brochure" routerLinkActive="active">Brochure</a></li>
       <li><a href="/servicios">Servicios</a></li>
-      <li><a href="/nosotros">Nosotros</a></li>
-      <li><a href="/contacto">Contacto</a></li>
+      <li><a routerLink="/about-us" routerLinkActive="active">About Us</a></li>
+      <li><a routerLink="/contact">Contact</a></li>
     </ul>
     <div class="nav-actions-mobile">
       <button class="btn-outline">Iniciar sesión</button>
