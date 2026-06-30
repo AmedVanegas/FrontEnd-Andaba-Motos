@@ -1,0 +1,5 @@
+<p>Total: {{ products.length }}</p>
+
+@for (product of products; track product._id) {
+  <p>{{ product.name }}</p>
+}
