@@ -37,6 +37,12 @@ export const routes: Routes = [
     path: 'services',
     loadComponent: () => import('./features/services/services'),
   },
+  {
+    path:'new-user-form',
+    loadComponent: () => import('./features/users/new-user-form/new-user-form'),
+
+
+  },
   //Redirecciones
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', redirectTo: '404', pathMatch: 'full' },

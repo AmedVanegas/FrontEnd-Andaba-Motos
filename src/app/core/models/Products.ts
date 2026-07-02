@@ -3,14 +3,14 @@ export interface Product {
   avgStars: number;
   _id?: string;
   name: string;
-  nr: string;
+  nr?: string;
   category: string; 
   description: string;
   price: number;
   stock: number;
   status: string
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface ResponseProducts {
