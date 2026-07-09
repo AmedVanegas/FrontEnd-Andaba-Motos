@@ -1,0 +1,327 @@
+/* ===== Hero de la página ===== */
+.services-page {
+  min-height: calc(100vh - var(--header-height, 88px));
+  background: var(--color-bg);
+  padding-bottom: 80px;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.services-hero {
+  padding: 64px 24px 40px;
+  border-bottom: 2px solid var(--color-red);
+  margin-bottom: 48px;
+}
+
+.services-hero__eyebrow {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--color-red);
+  margin-bottom: 14px;
+}
+
+.services-hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 5vw, 52px);
+  text-transform: uppercase;
+  color: var(--color-white);
+  margin: 0 0 14px;
+  line-height: 1;
+}
+
+.services-hero__title-accent {
+  color: var(--color-red);
+}
+
+.services-hero__subtitle {
+  font-size: 16px;
+  color: var(--color-text-muted);
+  margin: 0;
+  max-width: 520px;
+}
+
+/* ===== Grid de tarjetas de servicio ===== */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.service-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+  padding: 8px;
+}
+
+.service-card:hover {
+  border-color: var(--color-red);
+  transform: translateY(-4px);
+}
+
+/* ===== Imagen de la tarjeta ===== */
+.service-card__image-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background: linear-gradient(135deg, #1c1c1c 0%, #0e0e0e 100%);
+  overflow: hidden;
+}
+
+.service-card__image {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.service-card:hover .service-card__image {
+  transform: scale(1.05);
+}
+
+.service-card__image-fallback {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  opacity: 0.35;
+}
+
+.service-card__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 24px;
+}
+
+.service-card__name {
+  font-family: var(--font-display);
+  font-size: 20px;
+  text-transform: uppercase;
+  color: var(--color-white);
+  margin: 0 0 12px;
+}
+
+.service-card__description {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin: 0 0 24px;
+  flex: 1;
+}
+
+.service-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border);
+}
+
+.service-card__price {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--color-red);
+}
+
+.service-card__cta {
+  padding: 10px 18px;
+  background: var(--color-red);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--radius-sm, 4px);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  white-space: nowrap;
+}
+
+.service-card__cta:hover {
+  background: var(--color-red-hover);
+}
+
+/* ===== Overlay + panel de agendamiento ===== */
+.booking-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+}
+
+.booking-panel {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-top: 3px solid var(--color-red);
+  border-radius: 10px;
+  padding: 36px 32px 32px;
+}
+
+.booking-panel__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.booking-panel__close:hover {
+  color: var(--color-white);
+}
+
+.booking-panel__eyebrow {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-red);
+  margin-bottom: 8px;
+}
+
+.booking-panel__title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  text-transform: uppercase;
+  color: var(--color-white);
+  margin: 0 0 4px;
+}
+
+.booking-panel__price {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  margin: 0 0 24px;
+}
+
+/* ===== Formulario ===== */
+.appointment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.form-input {
+  padding: 11px 14px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm, 4px);
+  color: var(--color-white);
+  font-size: 14px;
+  font-family: var(--font-body);
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--color-red);
+}
+
+.form-error {
+  font-size: 12px;
+  color: var(--color-red-hover);
+}
+
+.form-submit {
+  margin-top: 8px;
+  padding: 14px 20px;
+  background: var(--color-red);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--radius-sm, 4px);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.form-submit:hover {
+  background: var(--color-red-hover);
+}
+
+.booking-success {
+  text-align: center;
+  color: var(--color-white);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.booking-success p {
+  margin: 0 0 20px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 600px) {
+  .services-hero {
+    padding: 48px 20px 32px;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .service-card__footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .service-card__cta {
+    width: 100%;
+  }
+
+  .booking-panel {
+    padding: 28px 22px 24px;
+  }
+}

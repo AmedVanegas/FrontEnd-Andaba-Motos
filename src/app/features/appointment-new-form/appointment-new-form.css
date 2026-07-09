@@ -1,0 +1,109 @@
+.appointment-page {
+  display: flex;
+  justify-content: center;
+  padding: 56px 20px;
+  background: var(--color-bg);
+  min-height: calc(100vh - var(--header-height, 88px));
+}
+
+.appointment-card {
+  width: 100%;
+  max-width: 480px;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-top: 3px solid var(--color-red);
+  border-radius: 10px;
+  padding: 36px 32px;
+}
+
+.appointment-title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  text-transform: uppercase;
+  color: var(--color-white);
+  margin: 0 0 28px;
+}
+
+.appointment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.form-input {
+  padding: 11px 14px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm, 4px);
+  color: var(--color-white);
+  font-size: 14px;
+  font-family: var(--font-body);
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--color-red);
+}
+
+.form-error {
+  font-size: 12px;
+  color: var(--color-red-hover);
+}
+
+.form-error--general {
+  background: rgba(198, 40, 40, 0.12);
+  padding: 10px 12px;
+  border-radius: var(--radius-sm, 4px);
+}
+
+.form-submit {
+  margin-top: 8px;
+  padding: 14px 20px;
+  background: var(--color-red);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--radius-sm, 4px);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.form-submit:hover {
+  background: var(--color-red-hover);
+}
+
+.form-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.appointment-success {
+  text-align: center;
+  color: var(--color-white);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.appointment-success p {
+  margin: 0 0 20px;
+}

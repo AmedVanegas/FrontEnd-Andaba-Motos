@@ -1,1 +1,54 @@
-<p>header works!</p>
+<header class="header">
+  <div class="header__inner container">
+
+    <!-- Logo -->
+    <a routerLink="/home" class="header__logo" (click)="closeMobileMenu()">
+      <span class="header__logo-text">
+        ANDUBA<span class="header__logo-accent">MOTOS</span>
+      </span>
+    </a>
+
+    <!-- Navegación -->
+    <nav class="header__nav" [class.header__nav--open]="isMobileMenuOpen()">
+      <ul class="header__nav-list">
+        <li *ngFor="let link of navLinks">
+          <a
+            routerLink="{{ link.path }}"
+            routerLinkActive="is-active"
+            (click)="closeMobileMenu()"
+          >{{ link.label }}</a>
+        </li>
+      </ul>
+
+      <!-- Placeholders: confirma qué deben hacer estos dos -->
+      <ul class="header__nav-secondary">
+        <li><span>U A L</span></li>
+        <li><span>P A L</span></li>
+      </ul>
+
+      <div class="header__auth header__auth--mobile">
+        <a routerLink="/login" class="btn btn--outline">Iniciar sesión</a>
+        <a routerLink="/register" class="btn btn--primary">Registrarse</a>
+      </div>
+    </nav>
+
+    <!-- Auth (desktop) -->
+    <div class="header__auth header__auth--desktop">
+      <a routerLink="/login" class="btn btn--outline">Iniciar sesión</a>
+      <a routerLink="/register" class="btn btn--primary">Registrarse</a>
+    </div>
+
+    <!-- Botón hamburguesa (móvil) -->
+    <button
+      class="header__burger"
+      type="button"
+      (click)="toggleMobileMenu()"
+      [attr.aria-expanded]="isMobileMenuOpen()"
+      aria-label="Abrir menú de navegación"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</header>

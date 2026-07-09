@@ -1,0 +1,117 @@
+<section class="services-page">
+  <div class="services-hero container">
+    <span class="services-hero__eyebrow">Servicios disponibles</span>
+    <h1 class="services-hero__title">
+      Agenda tu <span class="services-hero__title-accent">cita</span>
+    </h1>
+    <p class="services-hero__subtitle">
+      Elige el servicio que necesita tu moto y reserva un horario en segundos.
+    </p>
+  </div>
+
+  <!-- Grid de servicios -->
+  <div class="services-grid container">
+    <article class="service-card" *ngFor="let service of services()">
+      <h2 class="service-card__name">{{ service.name }}</h2>
+      <p class="service-card__description">{{ service.description }}</p>
+      <div class="service-card__footer">
+        <span class="service-card__price">
+          {{ service.price | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}
+        </span>
+        <button class="service-card__cta" (click)="openBooking(service)">Agendar cita</button>
+      </div>
+    </article>
+  </div>
+
+  <!-- Panel de agendamiento (overlay) -->
+  <div class="booking-overlay" *ngIf="selectedService()" (click)="closeBooking()">
+    <div class="booking-panel" (click)="$event.stopPropagation()">
+      <button
+        class="booking-panel__close"
+        type="button"
+        (click)="closeBooking()"
+        aria-label="Cerrar"
+      >
+        &times;
+      </button>
+
+      <span class="booking-panel__eyebrow">Nueva cita</span>
+      <h2 class="booking-panel__title">{{ selectedService()?.name }}</h2>
+      <p class="booking-panel__price">
+        {{ selectedService()?.price | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}
+      </p>
+
+      <!-- Formulario -->
+      <form
+        class="appointment-form"
+        [formGroup]="appointmentForm"
+        (ngSubmit)="onSubmit()"
+        *ngIf="!submitSuccess()"
+      >
+        <div class="form-group">
+          <label class="form-label">
+            Nombre del cliente
+            <input
+              class="form-input"
+              type="text"
+              formControlName="client"
+              placeholder="Johan Patiño"
+            />
+          </label>
+          <span
+            class="form-error"
+            *ngIf="appointmentForm.get('client')?.invalid && appointmentForm.get('client')?.touched"
+          >
+            El nombre del cliente es obligatorio
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            Motocicleta
+            <input
+              class="form-input"
+              type="text"
+              formControlName="motorcycle"
+              placeholder="Gixxer SF 150"
+            />
+          </label>
+          <span
+            class="form-error"
+            *ngIf="
+              appointmentForm.get('motorcycle')?.invalid &&
+              appointmentForm.get('motorcycle')?.touched
+            "
+          >
+            La motocicleta es obligatoria
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            Fecha y hora
+            <input class="form-input" type="datetime-local" formControlName="schedule" />
+          </label>
+          <span
+            class="form-error"
+            *ngIf="
+              appointmentForm.get('schedule')?.invalid && appointmentForm.get('schedule')?.touched
+            "
+          >
+            La fecha de la cita es obligatoria
+          </span>
+        </div>
+
+        <button class="form-submit" type="submit">Confirmar cita</button>
+      </form>
+
+      <!-- Confirmación -->
+      <div class="booking-success" *ngIf="submitSuccess()">
+        <p>
+          ¡Tu cita para <strong>{{ selectedService()?.name }}</strong> quedó registrada!
+        </p>
+        <button class="form-submit" type="button" (click)="closeBooking()">Listo</button>
+      </div>
+    </div>
+  </div>
+</section>
