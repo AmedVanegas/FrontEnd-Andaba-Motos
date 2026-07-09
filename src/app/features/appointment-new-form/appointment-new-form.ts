@@ -65,7 +65,7 @@ export default class AppointmentNewForm implements OnInit {
       next: (data: any) => this.motorcycles.set(data as MotorcycleItem[]),
       error: () => this.motorcycles.set([]),
     });
-  }
+  };
 
   onSend(): void {
     if (this.formData.invalid) {
