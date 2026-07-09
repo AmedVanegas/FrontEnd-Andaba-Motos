@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -84,3 +85,14 @@ export class Services {
     this.appointmentForm.reset();
   }
 }
+=======
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-services',
+  imports: [],
+  templateUrl: './services.html',
+  styleUrl: './services.css',
+})
+export default class Services {}
+>>>>>>> 1534da5b0e706c65a98f3f9960cbcf7fc3e4e2dd

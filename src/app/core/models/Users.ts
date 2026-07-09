@@ -7,5 +7,5 @@ export interface UserItem {
 
 export interface ResponseUsers {
   msg: string;
-  data: [UserItem];
+  data: UserItem[];
 }

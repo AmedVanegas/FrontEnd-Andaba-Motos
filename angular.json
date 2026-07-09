@@ -18,11 +18,15 @@
           "options": {
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1534da5b0e706c65a98f3f9960cbcf7fc3e4e2dd
             "assets": [
               {
                 "glob": "**/*",
                 "input": "public"
+<<<<<<< HEAD
               },
               "polyfills":[
                 "zone.js"
@@ -30,6 +34,12 @@
             "styles": [
               "src/styles.css"
             ]
+=======
+              }
+            ],
+            "polyfills": ["zone.js"],
+            "styles": ["src/styles.css"]
+>>>>>>> 1534da5b0e706c65a98f3f9960cbcf7fc3e4e2dd
           },
           "configurations": {
             "production": {

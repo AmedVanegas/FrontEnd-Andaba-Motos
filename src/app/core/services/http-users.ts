@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map } from 'rxjs';
-import { ResponseUsers } from '../models/Users';
+import { ResponseUsers, UserItem } from '../models/Users';
 
 @Injectable({ providedIn: 'root' })
 export class HttpUsers {
@@ -12,5 +12,9 @@ export class HttpUsers {
     return this.http
       .get<ResponseUsers>(this.baseUrl)
       .pipe(map((res) => res.data));
+  }
+
+  createUser(newUser: Partial<UserItem>) {
+    return this.http.post<{ msg: string; data: UserItem }>(this.baseUrl, newUser);
   }
 }

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
@@ -10,10 +11,19 @@ interface NavLink {
 @Component({
   selector: 'app-header',
   imports: [CommonModule, RouterLink, RouterLinkActive],
+=======
+import { Component } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+
+@Component({
+  selector: 'app-header',
+  imports: [RouterLink, RouterLinkActive],
+>>>>>>> 1534da5b0e706c65a98f3f9960cbcf7fc3e4e2dd
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
 export class Header {
+<<<<<<< HEAD
   navLinks: NavLink[] = [
     { label: 'Home', path: '/home' },
     { label: 'Brochure', path: '/brochure' },
@@ -34,3 +44,13 @@ export class Header {
     this.isMobileMenuOpen.set(false);
   }
 }
+=======
+  menuOpen = false;
+
+toggleMenu() {
+  this.menuOpen = !this.menuOpen;
+}
+}
+
+
+>>>>>>> 1534da5b0e706c65a98f3f9960cbcf7fc3e4e2dd

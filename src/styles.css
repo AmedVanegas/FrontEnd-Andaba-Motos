@@ -8,24 +8,40 @@
   --color-white: #ffffff;
   --color-text-muted: #a3a3a3;
   --color-border: rgba(255, 255, 255, 0.12);
-
   --font-display: 'Anton', 'Arial Narrow', sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
-
   --header-height: 88px;
   --container-max: 1440px;
   --radius-sm: 4px;
 }
 
-* { box-sizing: border-box; }
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
 
 html, body {
-  margin: 0;
-  padding: 0;
   background: var(--color-bg);
   color: var(--color-white);
   font-family: var(--font-body);
   scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+router-outlet + * {
+  flex: 1;
 }
 
 a { color: inherit; text-decoration: none; }

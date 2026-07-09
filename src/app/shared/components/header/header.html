@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <header class="header">
   <div class="header__inner container">
 
@@ -50,5 +51,38 @@
       <span></span>
       <span></span>
     </button>
+=======
+<header class="app-header">
+  <a class="header-logo" routerLink="/">
+  <img src="assets/images/logo.png" alt="AndubaMotos Logo" class="logo-img">
+  <span class="logo-text">Anduba<span>Motos</span></span>
+</a>
+
+  <button class="hamburger" (click)="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <nav [class.open]="menuOpen">
+    <ul class="header-nav">
+      <li><a routerLink="/">Home</a></li>
+      <li><a routerLink="/brochure" routerLinkActive="active">Brochure</a></li>
+      <li><a routerLink="/services" routerLinkActive="active">Services</a></li>
+      <li><a routerLink="/about-us" routerLinkActive="active">About Us</a></li>
+      <li><a routerLink="/contact" routerLinkActive="active">Contact</a></li>
+      <li><a routerLink="/users" routerLinkActive="active">U A L</a></li>
+      <li><a routerLink="/products" routerLinkActive="active">P A L</a></li>
+    </ul>
+    <div class="nav-actions-mobile">
+      <button class="btn-outline">Iniciar sesión</button>
+      <button class="btn-primary">Registrarse</button>
+    </div>
+  </nav>
+
+  <div class="header-actions">
+    <button class="btn-outline">Iniciar sesión</button>
+    <button class="btn-primary">Registrarse</button>
+>>>>>>> 1534da5b0e706c65a98f3f9960cbcf7fc3e4e2dd
   </div>
 </header>
