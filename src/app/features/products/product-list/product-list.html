@@ -1,5 +1,101 @@
-<p>Total: {{ products.length }}</p>
+<div class="users-container">
+  <div class="users-wrapper">
+    <div class="header">
+      <h1>PRODUCTOS</h1>
+      <p>Gestionar y administrar productos registrados</p>
+    </div>
 
-@for (product of products; track product._id) {
-  <p>{{ product.name }}</p>
-}
+    <div class="toolbar">
+      <div class="search-box">
+        <input type="text" placeholder="Buscar por nombre, email...">
+      </div>
+      <select>
+        <option value="">Filtrar por estado</option>
+        <option value="disponible">Disponible</option>
+        <option value="no disponible">No disponible</option>
+        <option value="pendiente">Pendiente</option>
+      </select>
+      <button class="btn-new-product" routerLink="/new-user-form" routerLinkActive="active">+ NUEVO PRODUCTO</button>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <p class="stat-label">Total Productos</p>
+        <p class="stat-value">{{getAllProducts()}}</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">Disponibles</p>
+        <p class="stat-value active">{{getAvailableProducts()}}</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">No disponibles</p>
+        <p class="stat-value suspended">{{getUnavailableProducts()}}</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">Pendientes</p>
+        <p class="stat-value">{{getPendingProducts()}}</p>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th>NOMBRE</th>
+            <th>PRECIO</th>
+            <th>STOCK</th>
+            <th>ESTADO</th>
+            <th>REGISTRO</th>
+            <th>ACCIONES</th>
+          </tr>
+        </thead>
+        <tbody>
+            @for (product of products$ | async; track $index) {
+                
+                <tr>
+                  <td>
+                    <div class="user-cell">
+                      <div class="avatar avatar-JC"><img [src]="product.productImage" alt=""></div>
+                      <span>{{product.name}}</span>
+                    </div>
+                  </td>
+                  <td class="email">{{product.price | currency:'COP ':'symbol':'1.0'}}</td>
+                  <td><span class="role-badge">{{product.stock}}</span></td>
+
+                  @if (product.status == 'disponible'){
+                    <td><span class="status status-Activo">{{product.status | titlecase}}</span></td>
+
+                  }
+                  @else if (product.status == 'pendiente') {
+                    <td><span class="status status-Inactivo">{{product.status | titlecase}}</span></td>
+                  }
+                  @else{
+                    <td><span class="status status-Banned">{{product.status | titlecase}}</span></td>
+                  }
+
+
+
+                  <td class="date">{{product.nr }}</td>
+
+                  <td class="actions">
+                    <a class="btn-edit" >Editar</a>
+                    <button class="btn-edit" (click)="ngOnDelete(product._id)" >Elimnar</button>
+                  </td>
+                </tr>
+            }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination">
+      <span>Mostrando 1-5 de 12 usuarios</span>
+      <div class="pagination-controls">
+        <button class="btn-pagination" disabled>← ANTERIOR</button>
+        <button class="btn-pagination active">1</button>
+        <button class="btn-pagination">2</button>
+        <button class="btn-pagination">3</button>
+        <button class="btn-pagination">SIGUIENTE →</button>
+      </div>
+    </div>
+  </div>
+</div>

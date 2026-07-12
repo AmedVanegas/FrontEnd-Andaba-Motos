@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
-import { map } from 'rxjs';
+import { catchError, map, of, tap } from 'rxjs';
 
 @Service()
 export class HttpUsers {
@@ -10,9 +10,15 @@ export class HttpUsers {
 
   getUsers() {
     return this.http.get<any>('http://localhost:3000/api/users').pipe(
+      tap( (res) => {
+        console.log( res )
+      }),
       map((res) => {
         return res.data;
       }),
+      catchError((error)=>{
+        return of([])
+      })
     );
   }
 
@@ -20,6 +26,24 @@ export class HttpUsers {
 
     return this.http.post<any>('http://localhost:3000/api/users', newUser)
 
+
+  }
+
+  deleteUserbyId (userId:string){
+
+    return this.http.delete(`http://localhost:3000/api/users/${userId}`)
+
+  }
+
+  editUserbyId (userId:string, editData:any){
+
+    return this.http.patch(`http://localhost:3000/api/users/${userId}`, editData)
+
+  }
+
+  getUserById (userId: String){
+
+    return this.http.get(`http://localhost:3000/api/users/${userId}`)
 
   }
 }

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
-import { map } from 'rxjs';
+import { catchError, map, of, tap } from 'rxjs';
 import { ResponseProducts } from '../models/Products';
 
 @Service()
@@ -8,8 +8,21 @@ export class HttpProducts {
   private http = inject(HttpClient);
 
   getProducts() {
-    return this.http.get<ResponseProducts>('http://localhost:3000/api/products').pipe(
-        map((res)=> res.data)
+    return this.http.get<any>('http://localhost:3000/api/products').pipe(
+        tap( (res) => {
+                console.log('yes' )
+              }),
+              map((res) => {
+                return res.data;
+              }),
+              catchError((error)=>{
+                return of([])
+              })
+        
     );
+  }
+  deleteProduct(id:string){
+    return this.http.delete(`http://localhost:3000/api/products/${id}`)
+
   }
 }

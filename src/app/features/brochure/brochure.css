@@ -1,3 +1,9 @@
+pre{
+  color: white;
+  font-size: 1rem;
+}
+
+
 .brochure-page {
   background: #0d0d0d;
   min-height: 100vh;
@@ -185,6 +191,7 @@
   font-weight: 800;
   color: #ffffff;
   letter-spacing: -0.02em;
+  text-align: left;
 }
 
 .btn-agregar {

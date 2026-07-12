@@ -1,21 +1,24 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { HttpRoles } from '../../../core/services/http-roles';
 import { BehaviorSubject } from 'rxjs';
-import { AsyncPipe, JsonPipe} from '@angular/common';
+import { HttpRoles } from '../../../core/services/http-roles';
 import { HttpUsers } from '../../../core/services/http-users';
+import { AsyncPipe } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-new-user-form',
-  imports: [ReactiveFormsModule, AsyncPipe],
-  templateUrl: './new-user-form.html',
-  styleUrl: './new-user-form.css',
+  selector: 'app-edit-user-form',
+  imports: [ReactiveFormsModule,AsyncPipe],
+  templateUrl: './edit-user-form.html',
+  styleUrl: './edit-user-form.css',
 })
-export default class NewUserForm {
+export default class EditUserForm {
   private httpRoles = inject(HttpRoles);
   rolesList$ = new BehaviorSubject<any[]>([]);
   userFormData: FormGroup;
   private httpUsers = inject(HttpUsers);
+  private activateRoute = inject(ActivatedRoute)
+  userId! : string | null 
 
   constructor() {
     this.userFormData = new FormGroup({
@@ -53,7 +56,7 @@ export default class NewUserForm {
     console.groupEnd;
     if (this.userFormData.valid) {
       console.log(this.userFormData.value);
-      this.httpUsers.createUser(this.userFormData.value).subscribe({
+      this.httpUsers.editUserbyId(this.userFormData.value, this.userId ).subscribe({
         next: (data) => {
           console.log(data);
           this.userFormData.reset();
@@ -62,7 +65,7 @@ export default class NewUserForm {
           console.log(error);
         },
         complete: () => {
-          console.log('FUNCIONO EL CODIGO DE REGISTRO');
+          console.log('Usuario editado');
         },
       });
     } else {
@@ -73,6 +76,10 @@ export default class NewUserForm {
 
   ngOnInit() {
     //OBSERVABLES
+
+  
+
+    this.userId = this.activateRoute.snapshot.paramMap.get('id')
 
     this.httpRoles.getRoles().subscribe({
       next: (roles) => {

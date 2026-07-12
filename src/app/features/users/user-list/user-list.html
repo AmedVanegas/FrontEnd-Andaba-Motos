@@ -1,1 +1,101 @@
-<pre>{{users | json }}</pre>
+<div class="users-container">
+  <div class="users-wrapper">
+    <div class="header">
+      <h1>USUARIOS</h1>
+      <p>Gestionar y administrar usuarios del sistema</p>
+    </div>
+
+    <div class="toolbar">
+      <div class="search-box">
+        <input type="text" placeholder="Buscar por nombre, email...">
+      </div>
+      <select>
+        <option value="">Filtrar por estado</option>
+        <option value="Activo">Activo</option>
+        <option value="Inactivo">Inactivo</option>
+        <option value="Suspendido">Suspendido</option>
+      </select>
+      <button class="btn-new-user" routerLink="/new-user-form" routerLinkActive="active">+ NUEVO USUARIO</button>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <p class="stat-label">Total Usuarios</p>
+        <p class="stat-value">{{getAllUsers()}}</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">Activos</p>
+        <p class="stat-value active">{{getActiveUsers()}}</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">Inactivos</p>
+        <p class="stat-value">{{getInactiveUsers()}}</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">Baneados</p>
+        <p class="stat-value suspended">{{getBannedUsers()}}</p>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th>NOMBRE</th>
+            <th>EMAIL</th>
+            <th>ROL</th>
+            <th>ESTADO</th>
+            <th>REGISTRO</th>
+            <th>ACCIONES</th>
+          </tr>
+        </thead>
+        <tbody>
+            @for (user of users$ | async; track $index) {
+                
+                <tr>
+                  <td>
+                    <div class="user-cell">
+                      <div class="avatar avatar-JC">{{user.username.slice(0,2)}}</div>
+                      <span>{{user.username}}</span>
+                    </div>
+                  </td>
+                  <td class="email">{{user.email}}</td>
+                  <td><span class="role-badge">{{user.rol}}</span></td>
+
+                  @if (user.status == 'active'){
+                    <td><span class="status status-Activo">{{user.status | titlecase}}</span></td>
+
+                  }
+                  @else if (user.status == 'inactive') {
+                    <td><span class="status status-Inactivo">{{user.status | titlecase}}</span></td>
+                  }
+                  @else{
+                    <td><span class="status status-Banned">{{user.status | titlecase}}</span></td>
+                  }
+
+
+
+                  <td class="date">{{user.createdAt }}</td>
+
+                  <td class="actions">
+                    <a class="btn-edit" [routerLink]="['/edit-user-form', user._id]">Editar</a>
+                    <button class="btn-edit" (click)="onDelete(user._id)" >Elimnar</button>
+                  </td>
+                </tr>
+            }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination">
+      <span>Mostrando 1-5 de 12 usuarios</span>
+      <div class="pagination-controls">
+        <button class="btn-pagination" disabled>← ANTERIOR</button>
+        <button class="btn-pagination active">1</button>
+        <button class="btn-pagination">2</button>
+        <button class="btn-pagination">3</button>
+        <button class="btn-pagination">SIGUIENTE →</button>
+      </div>
+    </div>
+  </div>
+</div>

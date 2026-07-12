@@ -43,6 +43,10 @@ export const routes: Routes = [
 
 
   },
+  {
+    path:'edit-user-form/:id',
+    loadComponent: ()=> import('./features/users/edit-user-form/edit-user-form')
+  },
   //Redirecciones
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', redirectTo: '404', pathMatch: 'full' },

@@ -1,0 +1,283 @@
+pre {
+  color: white;
+}
+
+.users-container {
+  background: #0a0a0a;
+  color: #e0e0e0;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.users-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+}
+
+/* Header */
+.header {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #2a2a2a;
+}
+.header h1 {
+  margin: 0 0 0.5rem;
+  font-size: 28px;
+  font-weight: 600;
+  color: #ffffff;
+}
+.header p {
+  margin: 0;
+  color: #888;
+  font-size: 14px;
+}
+
+/* Toolbar */
+.toolbar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.search-box {
+  flex: 1;
+  min-width: 200px;
+}
+.search-box input {
+  width: 100%;
+  padding: 10px 12px;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 4px;
+  color: #e0e0e0;
+  outline: none;
+}
+.toolbar select {
+  padding: 10px 12px;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 4px;
+  color: #e0e0e0;
+  cursor: pointer;
+}
+.btn-new-user {
+  padding: 10px 24px;
+  background: transparent;
+  border: 2px solid #e53935;
+  border-radius: 4px;
+  color: #e53935;
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+.btn-new-user:hover {
+  background: #e53935;
+  color: #fff;
+}
+
+/* Stats */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 2rem;
+}
+.stat-card {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  padding: 1rem;
+  border-radius: 4px;
+}
+.stat-label {
+  margin: 0 0 8px;
+  color: #888;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+.stat-value {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #fff;
+  border: none;
+  padding: 0;
+  text-decoration: none;
+}
+.stat-value.active {
+  color: #4ade80;
+  border: none;
+}
+.stat-value.suspended {
+  color: #e53935;
+}
+
+/* Table */
+.table-wrapper {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.users-table th {
+  padding: 12px 16px;
+  text-align: left;
+  color: #888;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  border-bottom: 1px solid #333;
+}
+.users-table td {
+  padding: 12px 16px;
+  color: #e0e0e0;
+  border-bottom: 1px solid #2a2a2a;
+
+}
+
+/* Avatars & Badges */
+.user-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+.avatar-JC {
+  background: #e53935;
+  color: #fff;
+  text-transform: uppercase;
+}
+.role-badge {
+  background: #2a2a2a;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 2px;
+  font-size: 11px;
+  text-transform: capitalize;
+}
+.status-Activo {
+  color: #4ade80;
+}
+.status-Inactivo {
+  color: aqua;
+}
+.status-Banned {
+  color: #e53935;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  color: #888;
+}
+.btn-pagination {
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid #333;
+  color: #888;
+  cursor: pointer;
+}
+.btn-pagination.active {
+  background: #e53935;
+  border: none;
+  color: #fff;
+}
+.btn-edit {
+  text-decoration: none;
+  background: none;
+  border: #e53935 solid 1px;
+  border-radius: 5px;
+  margin: 0px 5px;
+  color: #e53935;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 4px 8px;
+  font-weight: 500;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+.btn-edit:hover {
+  color: #fff;
+  border: white solid 1px;
+}
+.actions {
+  text-align: center;
+  gap: 10px;
+  white-space: nowrap;  /* IMPORTANTE */
+  flex-wrap: nowrap;
+  
+  
+}
+
+@media (max-width: 768px) {
+  .users-container {
+    padding: 1rem;
+  }
+
+  .header h1 {
+    font-size: 24px;
+  }
+
+  .toolbar {
+    flex-direction: column;
+  }
+
+  .search-box {
+    width: 100%;
+  }
+
+  .btn-new-user {
+    width: 100%;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .users-table {
+    font-size: 12px;
+  }
+
+  .users-table th,
+  .users-table td {
+    padding: 8px 12px;
+  }
+
+  .avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 10px;
+  }
+
+  .btn-edit {
+    font-size: 10px;
+    padding: 2px 4px;
+  }
+
+  .pagination {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .pagination-controls {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+}
+
