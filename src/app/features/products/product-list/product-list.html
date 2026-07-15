@@ -37,55 +37,22 @@
       </div>
     </div>
 
-    <div class="table-wrapper">
-      <table class="users-table">
-        <thead>
-          <tr>
-            <th>NOMBRE</th>
-            <th>PRECIO</th>
-            <th>STOCK</th>
-            <th>ESTADO</th>
-            <th>REGISTRO</th>
-            <th>ACCIONES</th>
-          </tr>
-        </thead>
-        <tbody>
+<div class="users-list-wrapper">
+      <!-- HEADER -->
+      <div class="users-header">
+        <div class="header-cell">NOMBRE</div>
+        <div class="header-cell">PRECIO</div>
+        <div class="header-cell">STOCK</div>
+        <div class="header-cell">ESTADO</div>
+        <div class="header-cell">REGISTRO</div>
+        <div class="header-cell">ACCIONES</div>
+      </div>
             @for (product of products$ | async; track $index) {
                 
-                <tr>
-                  <td>
-                    <div class="user-cell">
-                      <div class="avatar avatar-JC"><img [src]="product.productImage" alt=""></div>
-                      <span>{{product.name}}</span>
-                    </div>
-                  </td>
-                  <td class="email">{{product.price | currency:'COP ':'symbol':'1.0'}}</td>
-                  <td><span class="role-badge">{{product.stock}}</span></td>
-
-                  @if (product.status == 'disponible'){
-                    <td><span class="status status-Activo">{{product.status | titlecase}}</span></td>
-
-                  }
-                  @else if (product.status == 'pendiente') {
-                    <td><span class="status status-Inactivo">{{product.status | titlecase}}</span></td>
-                  }
-                  @else{
-                    <td><span class="status status-Banned">{{product.status | titlecase}}</span></td>
-                  }
-
-
-
-                  <td class="date">{{product.nr }}</td>
-
-                  <td class="actions">
-                    <a class="btn-edit" >Editar</a>
-                    <button class="btn-edit" (click)="ngOnDelete(product._id)" >Elimnar</button>
-                  </td>
-                </tr>
+              <product-list-card [product]="product" (delete)="onDelete($event)">
+              </product-list-card>
             }
-        </tbody>
-      </table>
-    </div>
+       
 
     <div class="pagination">
       <span>Mostrando 1-5 de 12 usuarios</span>

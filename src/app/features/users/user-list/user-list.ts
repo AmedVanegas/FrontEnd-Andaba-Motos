@@ -1,22 +1,26 @@
 import { Component, inject } from '@angular/core';
 import { HttpUsers } from '../../../core/services/http-users';
 import { AsyncPipe, JsonPipe, TitleCasePipe, UpperCasePipe } from '@angular/common';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription} from 'rxjs';
 import { RouterLink } from '@angular/router';
+import UserCard from '../user-list-card/user-list-card';
 
 @Component({
   selector: 'app-user-list',
-  imports: [AsyncPipe, RouterLink, TitleCasePipe],
+  imports: [AsyncPipe, RouterLink, UserCard],
   templateUrl: './user-list.html',
   styleUrl: './user-list.css',
 })
 export default class UserList {
+
+  subscriberUser! : Subscription;
+
   users$ = new BehaviorSubject<any[]>([]);
 
   private httpUsers = inject(HttpUsers);
 
   ngOnInit() {
-    this.httpUsers.getUsers().subscribe({
+    this.subscriberUser =  this.httpUsers.getUsers().subscribe({
       next: (data) => {
         console.log(data);
         this.users$.next(data);
@@ -78,4 +82,11 @@ export default class UserList {
     return number;
   }
 
+  ngOnDestroy(){
+    if (this.subscriberUser){
+
+      this.subscriberUser.unsubscribe()
+
+    }
+  }
 }

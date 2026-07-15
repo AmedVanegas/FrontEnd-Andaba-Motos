@@ -2,10 +2,11 @@ import { Component, inject, NgZone } from '@angular/core';
 import { HttpProducts } from '../../../core/services/http-products';
 import { AsyncPipe, CurrencyPipe, JsonPipe, TitleCasePipe } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
+import ProductListCard from '../product-list-card/product-list-card';
 
 @Component({
   selector: 'app-product-list',
-  imports: [ AsyncPipe, TitleCasePipe, CurrencyPipe],
+  imports: [AsyncPipe, ProductListCard],
   templateUrl: './product-list.html',
   styleUrl: './product-list.css',
 })
@@ -30,7 +31,7 @@ export default class ProductList {
     });
   }
 
-  ngOnDelete(id:string){
+  onDelete(id:string){
     console.log(id)
     this.httpProducts.deleteProduct(id).subscribe({
       next:(data)=>{

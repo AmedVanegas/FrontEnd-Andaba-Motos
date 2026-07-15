@@ -1,0 +1,35 @@
+<div class="product-card">
+        <div class="card-image">
+          <img
+            [src]="product.productImage"
+            [alt]="product.name"
+          />
+        </div>
+        <div class="card-info">
+          <h2 class="card-name">{{product.name}}</h2>
+          <div class="card-meta">
+            <div class="meta-row">
+              <span class="meta-label">Estatus</span>
+              @if (product.status == 'disponible'){
+
+              <span class="meta-value stock">{{product.status | uppercase}}</span>
+
+              }@else{
+                <span class="meta-value out">{{product.status | uppercase}}</span>
+              }
+              
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Stock</span>
+              <span class="meta-value">{{product.stock}}</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="card-price">
+              <span class="price-label">Precio base</span>
+              <span class="price-value">{{product.price | currency:'COP ':'symbol':'1.0'}}</span>
+            </div>
+            <button class="btn-agregar">Agregar +</button>
+          </div>
+        </div>
+      </div>

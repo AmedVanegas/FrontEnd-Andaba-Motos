@@ -113,62 +113,8 @@ pre {
   color: #e53935;
 }
 
-/* Table */
-.table-wrapper {
-  background: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 4px;
-  overflow-x: auto;
-}
-.users-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-}
-.users-table th {
-  padding: 12px 16px;
-  text-align: left;
-  color: #888;
-  font-weight: 600;
-  font-size: 12px;
-  text-transform: uppercase;
-  border-bottom: 1px solid #333;
-}
-.users-table td {
-  padding: 12px 16px;
-  color: #e0e0e0;
-  border-bottom: 1px solid #2a2a2a;
-
-}
-
 /* Avatars & Badges */
-.user-cell {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-}
-.avatar-JC {
-  background: #e53935;
-  color: #fff;
-  text-transform: uppercase;
-}
-.role-badge {
-  background: #2a2a2a;
-  color: #fff;
-  padding: 4px 10px;
-  border-radius: 2px;
-  font-size: 11px;
-  text-transform: capitalize;
-}
+
 .status-Activo {
   color: #4ade80;
 }
@@ -198,31 +144,31 @@ pre {
   border: none;
   color: #fff;
 }
-.btn-edit {
-  text-decoration: none;
-  background: none;
-  border: #e53935 solid 1px;
-  border-radius: 5px;
-  margin: 0px 5px;
-  color: #e53935;
-  cursor: pointer;
+
+.users-list-wrapper {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin-bottom: 2rem;
+}
+
+.users-header {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 0.5fr 0.5fr 1.2fr 1fr;
+  gap: 16px;
+  padding: 12px 16px;
+  color: #888;
+  font-weight: 600;
   font-size: 12px;
-  padding: 4px 8px;
-  font-weight: 500;
   text-transform: uppercase;
-  transition: all 0.2s;
+  border-bottom: 1px solid #333;
+  background: #0a0a0a;
 }
-.btn-edit:hover {
-  color: #fff;
-  border: white solid 1px;
-}
-.actions {
-  text-align: center;
-  gap: 10px;
-  white-space: nowrap;  /* IMPORTANTE */
-  flex-wrap: nowrap;
-  
-  
+
+.header-cell {
+  display: flex;
+  align-items: center;
 }
 
 @media (max-width: 768px) {
@@ -250,15 +196,6 @@ pre {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .users-table {
-    font-size: 12px;
-  }
-
-  .users-table th,
-  .users-table td {
-    padding: 8px 12px;
-  }
-
   .avatar {
     width: 32px;
     height: 32px;
@@ -280,4 +217,3 @@ pre {
     flex-wrap: wrap;
   }
 }
-

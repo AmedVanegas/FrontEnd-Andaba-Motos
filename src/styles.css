@@ -6,8 +6,8 @@
 }
 
 .active{
-  border-bottom: 5px white solid;
-  
+  border-bottom: 1px  #CC2222 solid;
+  transition: all 2s;
 }
 
 body {

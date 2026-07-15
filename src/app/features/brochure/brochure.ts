@@ -2,10 +2,11 @@ import { Component, inject } from '@angular/core';
 import { HttpProducts } from '../../core/services/http-products';
 import { BehaviorSubject } from 'rxjs';
 import { AsyncPipe, CurrencyPipe, UpperCasePipe} from '@angular/common';
+import { ProductBrochureCard } from '../products/product-brochure-card/product-brochure-card';
 
 @Component({
   selector: 'app-brochure',
-  imports: [ AsyncPipe, UpperCasePipe, CurrencyPipe],
+  imports: [ AsyncPipe, ProductBrochureCard],
   templateUrl: './brochure.html',
   styleUrl: './brochure.css',
 })
