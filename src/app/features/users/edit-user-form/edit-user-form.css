@@ -3,7 +3,6 @@ h1 {
     font-size: 5rem;
 }
 :host {
-  --bg: #141517;
   --panel: #202224;
   --panel-2: #26282b;
   --border-soft: #34363a;
@@ -36,6 +35,7 @@ h1 {
   color: var(--red);
 }
 
+
 #userForm {
   max-width: 600px;
   margin: 0 auto;
@@ -53,6 +53,14 @@ h1 {
   margin: 0;
 }
 
+#userForm fieldset:first-of-type > legend {
+  margin-top: 0;
+}
+
+#userForm fieldset:not(:first-of-type) > legend {
+  margin-top: 26px;  
+}
+
 #userForm legend {
   display: block;
   width: 100%;
@@ -66,8 +74,8 @@ h1 {
   border-bottom: 1px solid var(--border-soft);
 }
 
-#userForm fieldset:first-of-type legend {
-  margin-top: 0;
+.pepe{
+  margin-top: 26px !important;
 }
 
 #userForm label {
@@ -114,7 +122,7 @@ h1 {
   background-repeat: no-repeat;
 }
 
-#userForm button {
+#userForm button, a {
   margin-top: 28px;
   background: var(--red-bright);
   color: #fff;
@@ -126,6 +134,8 @@ h1 {
   letter-spacing: .03em;
   cursor: pointer;
   transition: background-color .15s ease, transform .1s ease;
+  text-decoration: none;
+  text-align: center;
 }
 
 #userForm button:hover {

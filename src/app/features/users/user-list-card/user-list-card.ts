@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, output } from '@angular/core';
 import { TitleCasePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MongoDatePipe } from '../../../core/pipes/mongo-date-pipe';
@@ -38,8 +38,8 @@ import { MongoDatePipe } from '../../../core/pipes/mongo-date-pipe';
       <div class="card-cell">{{user.createdAt | mongoDate}}</div>
 
       <div class="card-cell actions">
-        <a class="btn-edit" [routerLink]="['/edit-user-form', user._id]">Editar</a>
-        <button class="btn-edit" (click)="onClick()">Eliminar</button>
+        <a class="btn-edit"  (click)="onClickEdit()" [routerLink]="['/edit-user-form', user._id]" >Editar</a>
+        <a class="btn-edit" (click)="onClick()">Eliminar</a>
       </div>
     </div>
   `,
@@ -47,9 +47,17 @@ import { MongoDatePipe } from '../../../core/pipes/mongo-date-pipe';
 })
 export default class UserCard {
   @Input() user: any;
-  @Output() userDeleteId = new EventEmitter<string>();
+  @Output() delete = new EventEmitter<string>();
+  @Output() edit = new EventEmitter<string>()
 
   onClick() {
-    this.userDeleteId.emit(this.user._id);
+    this.delete.emit(this.user._id);
+    console.log(this.user._id)
+    
   }
+  onClickEdit(){
+    this.edit.emit(this.user._id)
+  }
+
+ 
 }

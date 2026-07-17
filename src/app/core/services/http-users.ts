@@ -35,13 +35,13 @@ export class HttpUsers {
 
   }
 
-  editUserbyId (userId:string, editData:any){
+  editUserbyId (userId:string | null, editData:any){
 
     return this.http.patch(`http://localhost:3000/api/users/${userId}`, editData)
 
   }
 
-  getUserById (userId: String){
+  getUserById (userId: any){
 
     return this.http.get(`http://localhost:3000/api/users/${userId}`)
 

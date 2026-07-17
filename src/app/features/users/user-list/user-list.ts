@@ -15,29 +15,24 @@ export default class UserList {
 
   subscriberUser! : Subscription;
 
+  subscriberDeleteUser!: Subscription
+
+  subscriberUpdateuser!: Subscription
+
   users$ = new BehaviorSubject<any[]>([]);
 
   private httpUsers = inject(HttpUsers);
 
   ngOnInit() {
-    this.subscriberUser =  this.httpUsers.getUsers().subscribe({
-      next: (data) => {
-        console.log(data);
-        this.users$.next(data);
-      },
-      error: (error) => {
-        console.error(error);
-      },
-      complete: () => {
-        console.log('codigo funciona');
-      },
-    });
+
+    this.loadUsers()
+    
   }
   onDelete(userId: string) {
-    this.httpUsers.deleteUserbyId(userId).subscribe({
+    this.subscriberDeleteUser = this.httpUsers.deleteUserbyId(userId).subscribe({
       next: (data) => {
         console.log(data);
-        this.ngOnInit();
+        this.loadUsers();
       },
       error: (error) => {
         console.error(error);
@@ -48,6 +43,12 @@ export default class UserList {
     });
   }
 
+  onEdit(userId: string){
+
+    return console.log(userId)
+
+  }
+  
   getAllUsers() {
     return this.users$.value.length;
   }
@@ -86,7 +87,27 @@ export default class UserList {
     if (this.subscriberUser){
 
       this.subscriberUser.unsubscribe()
+       return console.log('se elmino la sub')
 
     }
+    if(this.subscriberDeleteUser){
+      this.subscriberDeleteUser.unsubscribe()
+      return console.log('se elimino la sub')
+    }
+  }
+  private loadUsers(){
+    this.subscriberUser =  this.httpUsers.getUsers().subscribe({
+      next: (data) => {
+        console.log(data);
+        this.users$.next(data);
+      },
+      error: (error) => {
+        console.error(error);
+      },
+      complete: () => {
+        console.log('codigo funciona');
+      },
+    });
+
   }
 }

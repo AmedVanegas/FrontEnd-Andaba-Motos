@@ -1,8 +1,9 @@
-<form id="userForm" (ngSubmit)="onSubmit()" [formGroup]="userFormData">
+<form id="userForm" 
+ (ngSubmit)="onSubmit()" 
+[formGroup]="userFormData">
 
     <h1>Editar usuario</h1>
-
-
+    
     <legend>Datos personales</legend>
 
     <label for="username">Nombre de usuario</label>
@@ -40,16 +41,16 @@
     <input type="email" id="email" formControlName="email"  placeholder="hola@mail.com">
     <small class="error">mensaje de error</small>
 
-    <label for="password">Contraseña</label>
+    <!-- <label for="password">Contraseña</label>
     <input type="password" id="password" formControlName="password"  minlength="8" placeholder="secreto ajjakdhjkahds">
     <small class="error">mensaje de error</small>
 
     <label for="confirmPassword">Confirmar contraseña</label>
     <input type="password" id="confirmPassword" formControlName="ConfirmPassword"  minlength="8" placeholder="secreto ajjakdhjkahds">
-    <small class="error">mensaje de error</small>
+    <small class="error">mensaje de error</small> -->
 
-    <fieldset formGroupName="address">
-     <legend>Dirección</legend>
+    <fieldset formGroupName="address" class="pepe">
+     <legend >Dirección</legend>
 
      <label for="street">Calle</label>
      <input type="text" id="street" formControlName="street"  placeholder="30">
@@ -92,6 +93,6 @@
       <option value="banned">Bloqueado</option>
     </select>
 
-    <button type="submit">Crear usuario</button>
+    <button type="submit" >Editar</button>
 
   </form>

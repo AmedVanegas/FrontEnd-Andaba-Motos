@@ -142,7 +142,7 @@
     </div>
 
     <div class="users-list-wrapper">
-      
+    
       <div class="users-header">
         <div class="header-cell">NOMBRE</div>
         <div class="header-cell">EMAIL</div>
@@ -154,12 +154,12 @@
 
      
       @for (user of users$ | async; track $index) {
-        <user-list-card [user]="user" (userDeleteId)="onDelete($event)"> </user-list-card>
+        <user-list-card [user]="user" (edit)="onEdit($event)" (delete)="onDelete($event)"> </user-list-card>
       }
     </div>
 
     <div class="pagination">
-      <span>Mostrando 1-5 de 12 usuarios</span>
+      <span>{{`Mostrando ${getAllUsers()} usuarios`}}</span>
       <div class="pagination-controls">
         <button class="btn-pagination" disabled>← ANTERIOR</button>
         <button class="btn-pagination active">1</button>
