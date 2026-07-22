@@ -47,11 +47,11 @@ import { MongoDatePipe } from '../../../core/pipes/mongo-date-pipe';
 })
 export default class UserCard {
   @Input() user: any;
-  @Output() delete = new EventEmitter<string>();
+  @Output() delete = new EventEmitter<object>();
   @Output() edit = new EventEmitter<string>()
 
   onClick() {
-    this.delete.emit(this.user._id);
+    this.delete.emit(this.user);
     console.log(this.user._id)
     
   }

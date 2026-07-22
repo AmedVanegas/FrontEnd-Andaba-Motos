@@ -28,26 +28,32 @@ export default class UserList {
   ngOnInit() {
     this.loadUsers();
   }
-  onDelete(userId: string) {
+  onDelete(user: any) {
     //confimacion yupiu
 
     Swal.fire({
-      title: ' ¿ Seguro que quiere elimnar el usuario ?',
+      title: `¿ Seguro que quiere eliminar el usuario ${user.username} ?`,
       text: 'No se puede deshacer!',
+      color:'#fff',
+      background:'#000000' ,
       icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
+      iconColor:'#d33',      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#5e5e5e',
+      cancelButtonText: 'Cancelar',
       confirmButtonText: 'Eliminar',
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
           title: 'Eliminado!',
           text: 'Usuario eliminado',
+          background:'#000000' ,
           icon: 'success',
+          color:'#fff',
+          confirmButtonColor:'#5e5e5e'
         });
 
-        this.subscriberDeleteUser = this.httpUsers.deleteUserbyId(userId).subscribe({
+        this.subscriberDeleteUser = this.httpUsers.deleteUserbyId(user._id).subscribe({
           next: (data) => {
             console.log(data);
             this.loadUsers();
@@ -97,6 +103,10 @@ export default class UserList {
       }
     });
     return number;
+  }
+
+  getUsername(userId:string){
+
   }
 
   ngOnDestroy() {
