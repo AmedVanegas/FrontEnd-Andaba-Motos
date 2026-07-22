@@ -25,4 +25,13 @@ export class HttpProducts {
     return this.http.delete(`http://localhost:3000/api/products/${id}`)
 
   }
+  getProductById(id:string){
+    return this.http.get(`http://localhost:3000/api/products/${id}`)
+  }
+  editProduct(id:string, updateData:string){
+
+    return this.http.patch(`http://localhost:3000/api/products/${id}`,updateData)
+
+  }
 }
+

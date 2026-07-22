@@ -38,15 +38,16 @@ export const routes: Routes = [
     loadComponent: () => import('./features/services/services'),
   },
   {
-    path:'new-user-form',
-    loadComponent: () => import('./features/users/new-user-form/new-user-form'),
+    path:'users/new',
+    loadComponent: () => import('./features/users/user-form/user-form'),
 
 
   },
   {
-    path:'edit-user-form/:id',
-    loadComponent: ()=> import('./features/users/edit-user-form/edit-user-form')
+    path:'users/edit/:id',
+    loadComponent: ()=> import('./features/users/user-form/user-form')
   },
+ 
   //Redirecciones
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', redirectTo: '404', pathMatch: 'full' },
