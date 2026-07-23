@@ -1,0 +1,138 @@
+<form class="product-form" [formGroup]="formData" (ngSubmit)="onSubmit()">
+  <h1>{{formTitle}}</h1>
+
+  <legend>Información General</legend>
+
+  <label for="name">Nombre</label>
+  <input
+    type="text"
+    id="name"
+    formControlName="name"
+    placeholder="Nombre del producto"
+  />
+  @if (name?.invalid && (name?.dirty || name?.touched)) {
+    @if (name?.errors?.['required']) {
+      <small class="error">El nombre es obligatorio</small>
+    }
+    @if (name?.errors?.['minlength']) {
+      <small class="error">El nombre debe tener al menos 2 caracteres</small>
+    }
+    @if (name?.errors?.['maxlength']) {
+      <small class="error">El nombre no puede tener más de 50 caracteres</small>
+    }
+  }
+
+  <label for="nr">Número de Referencia</label>
+  <input
+    type="text"
+    id="nr"
+    formControlName="nr"
+    placeholder="Número de referencia"
+  />
+  @if (nr?.invalid && (nr?.dirty || nr?.touched)) {
+    @if (nr?.errors?.['required']) {
+      <small class="error">Este campo es obligatorio</small>
+    }
+    @if (nr?.errors?.['minlength']) {
+      <small class="error">Este campo debe tener mínimo 4 números</small>
+    }
+    @if (nr?.errors?.['maxlength']) {
+      <small class="error">Este campo debe tener máximo 17 números</small>
+    }
+  }
+
+  <label for="category">Categoría</label>
+  <select id="category" formControlName="category">
+    <option value="" disabled selected>Seleccione categoría</option>
+    @for (cat of categoryList$ | async; track $index) {
+      <option [value]="cat._id">{{ cat.name }}</option>
+    }
+  </select>
+  @if (category?.invalid && (category?.dirty || category?.touched)) {
+    @if (category?.errors?.['required']) {
+      <small class="error">Este campo es obligatorio</small>
+    }
+    @if (category?.errors?.['minlength']) {
+      <small class="error">Este campo debe tener mínimo 3 caracteres</small>
+    }
+    @if (category?.errors?.['maxlength']) {
+      <small class="error">Este campo debe tener máximo 50 caracteres</small>
+    }
+  } 
+
+  <label for="pImage">Link Imagen de producto</label>
+  <input
+    type="text"
+    id="pImage"
+    formControlName="productImage"
+    placeholder="image.img"
+  />
+
+  <legend>Detalles del Producto</legend>
+
+  <label for="description">Descripción</label>
+  <textarea
+    id="description"
+    formControlName="description"
+    placeholder="Descripción del producto"
+  ></textarea>
+  @if (description?.invalid && (description?.dirty || description?.touched)) {
+    @if (description?.errors?.['required']) {
+      <small class="error">Este campo es obligatorio</small>
+    }
+    @if (description?.errors?.['minlength']) {
+      <small class="error">Este campo debe tener mínimo 3 caracteres</small>
+    }
+    @if (description?.errors?.['maxlength']) {
+      <small class="error">Este campo debe tener máximo 1500 caracteres</small>
+    }
+  }
+
+  <legend>Precio e Inventario</legend>
+
+  <label for="price">Precio</label>
+  <input
+    type="number"
+    id="price"
+    formControlName="price"
+    placeholder="Precio"
+  />
+  @if (price?.invalid && (price?.dirty || price?.touched)) {
+    @if (price?.errors?.['required']) {
+      <small class="error">Este campo es obligatorio</small>
+    }
+    @if (price?.errors?.['minlength']) {
+      <small class="error">Este campo debe ser mínimo 0</small>
+    }
+    @if (price?.errors?.['maxlength']) {
+      <small class="error">Este campo debe ser máximo 8 caracteres</small>
+    }
+  }
+
+  <label for="stock">Stock</label>
+  <input
+    type="number"
+    id="stock"
+    formControlName="stock"
+    placeholder="Stock disponible"
+  />
+  @if (stock?.invalid && (stock?.dirty || stock?.touched)) {
+    @if (stock?.errors?.['required']) {
+      <small class="error">Este campo es obligatorio</small>
+    }
+    @if (stock?.errors?.['minlength']) {
+      <small class="error">Este campo debe ser mínimo 0</small>
+    }
+    @if (stock?.errors?.['maxlength']) {
+      <small class="error">Este campo debe ser máximo 3 caracteres</small>
+    }
+  }
+
+  <button
+    class="btn-save"
+    type="submit"
+    [disabled]="formData.invalid"
+  >
+    {{formButton}}
+  </button>
+</form>

@@ -1,20 +1,28 @@
 import { Component, inject } from '@angular/core';
-import { HttpUsers } from '../../../core/services/http-users';
 import { AsyncPipe, JsonPipe, TitleCasePipe, UpperCasePipe } from '@angular/common';
-import { BehaviorSubject, Subscription } from 'rxjs';
 import { RouterLink } from '@angular/router';
+import { BehaviorSubject, Subscription } from 'rxjs';
+
+import { HttpUsers } from '../../../core/services/http-users';
 import UserCard from '../user-list-card/user-list-card';
+import UserForm from '../user-form/user-form';
+
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 import Swal from 'sweetalert2';
-import UserForm from '../user-form/user-form';
 
 @Component({
   selector: 'app-user-list',
-  imports: [AsyncPipe, RouterLink, UserCard],
+  imports: [AsyncPipe, RouterLink, UserCard, FontAwesomeModule],
   templateUrl: './user-list.html',
   styleUrl: './user-list.css',
 })
 export default class UserList {
+  // Atributos de clase fontAwesome
+
+  faCoffee = faUser;
+
   subscriberUser!: Subscription;
 
   subscriberDeleteUser!: Subscription;

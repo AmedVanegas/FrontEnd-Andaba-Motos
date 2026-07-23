@@ -76,9 +76,6 @@ export default class UserForm implements OnInit {
       this.loadUserData(this.userId);
     } else {
       // si no existe el user id, esta en modo de crear user, se pone en falso, cambia el titulo y el boton
-      this.isEditMode = false;
-      this.pageTitle = 'Registro Usuario';
-      this.submitButtonText = 'Crear usuario';
 
       // Hace que los campos de contraseña sean requeridos
       this.userFormData.get('password')?.setValidators([
@@ -129,6 +126,7 @@ export default class UserForm implements OnInit {
           },
           complete: () => {
             console.log('Usuario creado');
+            this.router.navigate(['/users']);
           },
         });
       }

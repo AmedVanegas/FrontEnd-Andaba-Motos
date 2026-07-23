@@ -47,6 +47,14 @@ export const routes: Routes = [
     path:'users/edit/:id',
     loadComponent: ()=> import('./features/users/user-form/user-form')
   },
+  {
+    path:'products/new',
+    loadComponent: ()=> import('./features/products/product-form/product-form')
+  },
+  {
+    path:'products/edit/:id',
+    loadComponent: ()=> import('./features/products/product-form/product-form')
+  },
  
   //Redirecciones
   { path: '', redirectTo: 'home', pathMatch: 'full' },

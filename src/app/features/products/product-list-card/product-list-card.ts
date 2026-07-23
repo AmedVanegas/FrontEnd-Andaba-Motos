@@ -38,8 +38,8 @@ import { MongoDatePipe } from '../../../core/pipes/mongo-date-pipe';
       <div class="card-cell">{{product.nr}}</div>
 
       <div class="card-cell actions">
-        <a class="btn-edit" [routerLink]="['/edit-user-form', product._id]">Editar</a>
-        <button class="btn-edit" (click)="onDeleteClick()">Eliminar</button>
+        <a class="btn-edit"  (click)="onEditCLick()" [routerLink]="['/products/edit', product._id]">Editar</a>
+        <a class="btn-edit" (click)="onDeleteClick()">Eliminar</a>
       </div>
     </div>`,
   styleUrl: './product-list-card.css',
@@ -47,8 +47,15 @@ import { MongoDatePipe } from '../../../core/pipes/mongo-date-pipe';
 export default class ProductListCard {
   @Input() product: any;
   @Output() delete = new EventEmitter<string>()
+  @Output() edit = new EventEmitter <string>()
 
   onDeleteClick(){
     this.delete.emit(this.product._id)
+  }
+
+  onEditCLick(){
+
+    this.edit.emit(this.product._id)
+
   }
 }

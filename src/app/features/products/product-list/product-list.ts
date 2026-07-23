@@ -3,10 +3,11 @@ import { HttpProducts } from '../../../core/services/http-products';
 import { AsyncPipe, CurrencyPipe, JsonPipe, TitleCasePipe } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 import ProductListCard from '../product-list-card/product-list-card';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
-  imports: [AsyncPipe, ProductListCard],
+  imports: [AsyncPipe, ProductListCard, RouterLink],
   templateUrl: './product-list.html',
   styleUrl: './product-list.css',
 })

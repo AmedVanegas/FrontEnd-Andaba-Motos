@@ -1,15 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { catchError, map, of, tap } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Service()
 export class HttpUsers {
   // constructor(private http: HttpClient ){} version antigua
 
   private http = inject(HttpClient);
+  BASE_URL: string = environment.apiUrl
 
   getUsers() {
-    return this.http.get<any>('http://localhost:3000/api/users').pipe(
+    return this.http.get<any>(`${this.BASE_URL}/users`).pipe(
       tap( (res) => {
         console.log( res )
       }),
@@ -24,26 +26,26 @@ export class HttpUsers {
 
   createUser(newUser:any){
 
-    return this.http.post<any>('http://localhost:3000/api/users', newUser)
+    return this.http.post<any>(`${this.BASE_URL}/users`, newUser)
 
 
   }
 
   deleteUserbyId (userId:string){
 
-    return this.http.delete(`http://localhost:3000/api/users/${userId}`)
+    return this.http.delete(`${this.BASE_URL}/users/${userId}`)
 
   }
 
   editUserbyId (userId:string | null, editData:any){
 
-    return this.http.patch(`http://localhost:3000/api/users/${userId}`, editData)
+    return this.http.patch(`${this.BASE_URL}/users/${userId}`, editData)
 
   }
 
   getUserById (userId: any){
 
-    return this.http.get(`http://localhost:3000/api/users/${userId}`)
+    return this.http.get(`${this.BASE_URL}/users/${userId}`)
 
   }
 }
