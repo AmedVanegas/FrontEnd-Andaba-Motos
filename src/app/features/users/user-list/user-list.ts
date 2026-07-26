@@ -52,7 +52,10 @@ export default class UserList {
       confirmButtonText: 'Eliminar',
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
+        
+        this.subscriberDeleteUser = this.httpUsers.deleteUserbyId(user._id).subscribe({
+          next: (data) => {
+            Swal.fire({
           title: 'Eliminado!',
           text: 'Usuario eliminado',
           background:'#000000' ,
@@ -60,13 +63,18 @@ export default class UserList {
           color:'#fff',
           confirmButtonColor:'#5e5e5e'
         });
-
-        this.subscriberDeleteUser = this.httpUsers.deleteUserbyId(user._id).subscribe({
-          next: (data) => {
             console.log(data);
             this.loadUsers();
           },
           error: (error) => {
+            Swal.fire({
+          title: 'No se pudo eliminar el usuario',
+          text: error.error.msg,
+          background:'#000000' ,
+          icon: 'error',
+          color:'#fff',
+          confirmButtonColor:'#5e5e5e'
+        });
             console.error(error);
           },
           complete: () => {

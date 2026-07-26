@@ -26,3 +26,166 @@ app-root {
 router-outlet + * {
   flex: 1;
 }
+
+/* ===== Formularios compartidos (user-form, product-form, etc.) ===== */
+.form-page-bg {
+  background: #0a0a0a;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.form-page {
+  max-width: 680px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.form-header h1 {
+  margin: 0 0 6px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.form-header p {
+  margin: 0;
+  color: #888;
+  font-size: 13px;
+}
+
+.form-section {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.form-section-title {
+  padding: 10px 16px;
+  background: #0a0a0a;
+  border-bottom: 2px solid #e53935;
+  color: #e53935;
+  font-weight: 700;
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.form-section-body {
+  padding: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.form-field-full {
+  grid-column: 1 / -1;
+}
+
+.form-section-body label {
+  display: block;
+  font-size: 12px;
+  color: #9a9da2;
+  margin-bottom: 6px;
+}
+
+.form-section-body input,
+.form-section-body select,
+.form-section-body textarea {
+  width: 100%;
+  background: #242424;
+  border: 1px solid #333;
+  color: #e0e0e0;
+  padding: 10px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-section-body input::placeholder,
+.form-section-body textarea::placeholder {
+  color: #5f6266;
+}
+
+.form-section-body input:focus,
+.form-section-body select:focus,
+.form-section-body textarea:focus {
+  border-color: #e53935;
+  box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.25);
+}
+
+.form-section-body select {
+  appearance: none;
+  cursor: pointer;
+  background-image: linear-gradient(45deg, transparent 50%, #55585c 50%),
+    linear-gradient(135deg, #55585c 50%, transparent 50%);
+  background-position: calc(100% - 20px) calc(1.2em), calc(100% - 15px) calc(1.2em);
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+
+.form-section-body textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-error {
+  display: block;
+  color: #e53935;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.form-submit {
+  width: 100%;
+  background: #e53935;
+  color: #fff;
+  border: none;
+  padding: 13px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.form-submit:hover {
+  background: #ff4b46;
+}
+
+.form-submit:active {
+  transform: translateY(1px);
+}
+
+.form-submit:disabled {
+  background: transparent;
+  color: grey;
+  border: solid grey 1px;
+  cursor: auto;
+}
+
+.form-submit:disabled:hover {
+  background: none;
+}
+
+@media (max-width: 768px) {
+  .form-page-bg {
+    padding: 1rem;
+  }
+
+  .form-section-body {
+    grid-template-columns: 1fr;
+  }
+}

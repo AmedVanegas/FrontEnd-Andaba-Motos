@@ -40,6 +40,7 @@ export default class ProductForm {
       category: new FormControl('', Validators.required),
       productImage: new FormControl('', Validators.minLength(3)),
       description: new FormControl('', Validators.required),
+      status: new FormControl('', Validators.required),
       price: new FormControl(0, [Validators.required, Validators.min(1000)]),
       stock: new FormControl(0, [Validators.required, Validators.min(1)]),
     });

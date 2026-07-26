@@ -38,24 +38,34 @@ export const routes: Routes = [
     loadComponent: () => import('./features/services/services'),
   },
   {
-    path:'users/new',
+    path: 'users/new',
     loadComponent: () => import('./features/users/user-form/user-form'),
+  },
+  {
+    path: 'users/edit/:id',
+    loadComponent: () => import('./features/users/user-form/user-form'),
+  },
+  {
+    path: 'products/new',
+    loadComponent: () => import('./features/products/product-form/product-form'),
+  },
+  {
+    path: 'products/edit/:id',
+    loadComponent: () => import('./features/products/product-form/product-form'),
+  },
+  {
+    path: 'motorcycles',
+    loadComponent: () => import('./features/motorcycles/motorcycle-list/motorcycle-list'),
+  },
+  {
+    path: 'motorcycles/new',
+    loadComponent: () => import('./features/motorcycles/motorcycle-form/motorcycle-form'),
+  },
+  {
+    path: 'motorcycles/edit/:id',
+    loadComponent: () => import('./features/motorcycles/motorcycle-form/motorcycle-form'),
+  },
 
-
-  },
-  {
-    path:'users/edit/:id',
-    loadComponent: ()=> import('./features/users/user-form/user-form')
-  },
-  {
-    path:'products/new',
-    loadComponent: ()=> import('./features/products/product-form/product-form')
-  },
-  {
-    path:'products/edit/:id',
-    loadComponent: ()=> import('./features/products/product-form/product-form')
-  },
- 
   //Redirecciones
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', redirectTo: '404', pathMatch: 'full' },

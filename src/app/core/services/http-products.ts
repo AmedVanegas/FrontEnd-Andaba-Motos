@@ -28,7 +28,7 @@ export class HttpProducts {
   getProductById(id:string){
     return this.http.get<any>(`http://localhost:3000/api/products/${id}`)
   }
-  editProduct(id:string, updateData:string){
+  editProduct(id:string, updateData:any){
 
     return this.http.patch(`http://localhost:3000/api/products/${id}`,updateData)
 

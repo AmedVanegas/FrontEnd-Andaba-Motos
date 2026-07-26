@@ -1,0 +1,63 @@
+<div class="users-container">
+  <div class="users-wrapper">
+    <div class="header">
+      <h1>MOTOCICLETAS</h1>
+      <p>Gestionar y administrar motocicletas registradas</p>
+    </div>
+
+    <div class="toolbar">
+      <div class="search-box">
+        <input type="text" placeholder="Buscar por placa, marca...">
+      </div>
+      <select>
+        <option value="">Filtrar por estado</option>
+        <option value="true">Activa</option>
+        <option value="false">Inactiva</option>
+      </select>
+      <button class="btn-new-product" routerLink="/motorcycles/new" routerLinkActive="active">+ NUEVA MOTOCICLETA</button>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <p class="stat-label">Total Motocicletas</p>
+        <p class="stat-value">{{getAllMotorcycles()}}</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">Activas</p>
+        <p class="stat-value active">{{getActiveMotorcycles()}}</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">Inactivas</p>
+        <p class="stat-value suspended">{{getInactiveMotorcycles()}}</p>
+      </div>
+    </div>
+
+<div class="users-list-wrapper">
+      <!-- HEADER -->
+      <div class="users-header">
+        <div class="header-cell">PLACA / MOTO</div>
+        <div class="header-cell">CLIENTE</div>
+        <div class="header-cell">COLOR</div>
+        <div class="header-cell">ESTADO</div>
+        <div class="header-cell">REGISTRO</div>
+        <div class="header-cell">ACCIONES</div>
+      </div>
+            @for (motorcycle of motorcycles$ | async; track $index) {
+
+              <motorcycle-list-card [motorcycle]="motorcycle" (delete)="onDelete($event)">
+              </motorcycle-list-card>
+            }
+
+
+    <div class="pagination">
+      <span>Mostrando 1-5 de {{getAllMotorcycles()}} motocicletas</span>
+      <div class="pagination-controls">
+        <button class="btn-pagination" disabled>← ANTERIOR</button>
+        <button class="btn-pagination active">1</button>
+        <button class="btn-pagination">2</button>
+        <button class="btn-pagination">3</button>
+        <button class="btn-pagination">SIGUIENTE →</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -15,7 +15,12 @@
   <div class="products-grid">
     @for (product of products$ | async; track $index) {
       
-      <product-brochure-card [product] = 'product'></product-brochure-card>
+      @if(product.status !== 'no disponible' && product.status !== 'agotado'){
+         <product-brochure-card [product] = 'product'></product-brochure-card>
+        
+      }@else{
+       
+      }
     }
   </div>
 </div>
