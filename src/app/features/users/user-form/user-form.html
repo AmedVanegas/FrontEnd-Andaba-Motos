@@ -227,6 +227,73 @@
       <div class="form-section-title">Dirección</div>
       <div class="form-section-body">
         <div>
+          <label for="country">País</label>
+          <select
+            id="country"
+            formControlName="country"
+            (change)="onCountryChange($any($event.target).value)"
+          >
+            <option value="" disabled selected>Selecciona un país</option>
+            @for (item of countriesList$ | async; track item.iso2) {
+              <option [value]="item.name">{{ item.emoji }} {{ item.name }}</option>
+            }
+          </select>
+          @if (country?.invalid && (country?.dirty || country?.touched)) {
+            @if (country?.errors?.['required']) {
+              <small class="form-error">El país es obligatorio</small>
+            }
+          }
+        </div>
+
+        <div>
+          <label for="department">Departamento</label>
+          <select
+            id="department"
+            formControlName="department"
+            (change)="onDepartmentChange($any($event.target).value)"
+          >
+            <option value="" disabled selected>
+              {{ (departmentsList$ | async)?.length ? 'Selecciona un departamento' : 'Selecciona primero un país' }}
+            </option>
+            @for (item of departmentsList$ | async; track item.iso2) {
+              <option [value]="item.name">{{ item.name }}</option>
+            }
+          </select>
+          @if (department?.invalid && (department?.dirty || department?.touched)) {
+            @if (department?.errors?.['required']) {
+              <small class="form-error">El departamento es obligatorio</small>
+            }
+          }
+        </div>
+
+        <div>
+          <label for="city">Ciudad</label>
+          <select id="city" formControlName="city">
+            <option value="" disabled selected>
+              {{ (citiesList$ | async)?.length ? 'Selecciona una ciudad' : 'Selecciona primero un departamento' }}
+            </option>
+            @for (item of citiesList$ | async; track item.id) {
+              <option [value]="item.name">{{ item.name }}</option>
+            }
+          </select>
+          @if (city?.invalid && (city?.dirty || city?.touched)) {
+            @if (city?.errors?.['required']) {
+              <small class="form-error">La ciudad es obligatoria</small>
+            }
+          }
+        </div>
+
+        <div>
+          <label for="neighborhood">Barrio</label>
+          <input type="text" id="neighborhood" formControlName="neighborhood" placeholder="bosa" />
+          @if (neighborhood?.invalid && (neighborhood?.dirty || neighborhood?.touched)) {
+            @if (neighborhood?.errors?.['required']) {
+              <small class="form-error">El barrio es obligatorio</small>
+            }
+          }
+        </div>
+
+        <div>
           <label for="street">Calle</label>
           <input type="text" id="street" formControlName="street" placeholder="30" />
           @if (street?.invalid && (street?.dirty || street?.touched)) {
@@ -236,37 +303,12 @@
           }
         </div>
 
-        <div>
+        <div >
           <label for="carrera">Carrera</label>
           <input type="text" id="carrera" formControlName="carrera" placeholder="40" />
           @if (carrera?.invalid && (carrera?.dirty || carrera?.touched)) {
             @if (carrera?.errors?.['required']) {
               <small class="form-error">La carrera es obligatoria</small>
-            }
-          }
-        </div>
-
-        <div>
-          <label for="neighborhood">Barrio</label>
-          <input type="text" id="neighborhood" formControlName="neighborhood" placeholder="bosa" />
-        </div>
-
-        <div>
-          <label for="city">Ciudad</label>
-          <input type="text" id="city" formControlName="city" placeholder="Miami" />
-          @if (city?.invalid && (city?.dirty || city?.touched)) {
-            @if (city?.errors?.['required']) {
-              <small class="form-error">La ciudad es obligatoria</small>
-            }
-          }
-        </div>
-
-        <div class="form-field-full">
-          <label for="department">Departamento</label>
-          <input type="text" id="department" formControlName="department" placeholder="Mitu" />
-          @if (department?.invalid && (department?.dirty || department?.touched)) {
-            @if (department?.errors?.['required']) {
-              <small class="form-error">El departamento es obligatorio</small>
             }
           }
         </div>

@@ -9,13 +9,21 @@ import {
   Validators,
 } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
+import {
+  getCountries,
+  getStatesOfCountry,
+  getCitiesOfState,
+  type ICountry,
+  type IState,
+  type ICity,
+} from '@countrystatecity/countries-browser';
 import { HttpRoles } from '../../../core/services/http-roles';
 import { HttpUsers } from '../../../core/services/http-users';
 import { AlertService } from '../../../core/services/alert';
 import { AsyncPipe, CommonModule, NgClass } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
-// Regla tomada del modelo (User.model.js -> birthDate.max): el usuario debe tener al menos 18 años
+
 function minAgeValidator(minAge: number): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     if (!control.value) {
@@ -36,8 +44,6 @@ function minAgeValidator(minAge: number): ValidatorFn {
   };
 }
 
-// El modelo no tiene un campo "ConfirmPassword", pero el formulario sí lo necesita
-// para validar que coincida con "password" antes de enviar los datos.
 function passwordMatchValidator(group: AbstractControl): ValidationErrors | null {
   const password = group.get('password');
   const confirmPassword = group.get('ConfirmPassword');
@@ -73,6 +79,12 @@ export default class UserForm implements OnInit {
   private router = inject(Router);
 
   rolesList$ = new BehaviorSubject<any[]>([]);
+  countriesList$ = new BehaviorSubject<ICountry[]>([]);
+  departmentsList$ = new BehaviorSubject<IState[]>([]);
+  citiesList$ = new BehaviorSubject<ICity[]>([]);
+  private selectedCountryIso = '';
+  private selectedDepartmentIso = '';
+
   userFormData: FormGroup;
 
   // Variables que cambian
@@ -109,12 +121,13 @@ export default class UserForm implements OnInit {
         password: new FormControl(''),
         ConfirmPassword: new FormControl(''),
         address: new FormGroup({
+          country: new FormControl('', [Validators.required]),
+          department: new FormControl('', [Validators.required]),
+          city: new FormControl('', [Validators.required]),
           street: new FormControl('', [Validators.required]),
           carrera: new FormControl('', [Validators.required]),
           // El modelo NO marca "neighborhood" como obligatorio, así que no lleva Validators.required
-          neighborhood: new FormControl(''),
-          city: new FormControl('', [Validators.required]),
-          department: new FormControl('', [Validators.required]),
+          neighborhood: new FormControl('',[Validators.required] ),
         }),
         // Antes tenía como valor inicial 'client' (que nunca calza con los IDs reales
         // que llegan del backend), por eso el botón quedaba habilitado sin que se
@@ -128,6 +141,7 @@ export default class UserForm implements OnInit {
 
   ngOnInit() {
     this.getRoles();
+    this.loadCountries();
 
     // Toma el id de la ruta si existe
     this.userId = this.activatedRoute.snapshot.paramMap.get('id');
@@ -217,6 +231,76 @@ export default class UserForm implements OnInit {
     }
   }
 
+  async loadCountries() {
+    const countries = await getCountries();
+    this.countriesList$.next(countries);
+  }
+
+  async onCountryChange(countryName: string) {
+    const country = this.countriesList$.value.find((c) => c.name === countryName);
+    this.selectedCountryIso = country?.iso2 ?? '';
+    this.selectedDepartmentIso = '';
+
+    this.addressGroup?.get('department')?.setValue('');
+    this.addressGroup?.get('city')?.setValue('');
+    this.departmentsList$.next([]);
+    this.citiesList$.next([]);
+
+    if (!this.selectedCountryIso) {
+      return;
+    }
+
+    const states = await getStatesOfCountry(this.selectedCountryIso);
+    this.departmentsList$.next(states);
+  }
+
+
+  async onDepartmentChange(departmentName: string) {
+    const department = this.departmentsList$.value.find((s) => s.name === departmentName);
+    this.selectedDepartmentIso = department?.iso2 ?? '';
+
+    this.addressGroup?.get('city')?.setValue('');
+    this.citiesList$.next([]);
+
+    if (!this.selectedCountryIso || !this.selectedDepartmentIso) {
+      return;
+    }
+
+    const cities = await getCitiesOfState(this.selectedCountryIso, this.selectedDepartmentIso);
+    this.citiesList$.next(cities);
+  }
+
+  async syncAddressLocation(address: any) {
+    if (!address) {
+      return;
+    }
+
+    const countries = await getCountries();
+    this.countriesList$.next(countries);
+
+    const matchedCountry = countries.find(
+      (c) => c.name.toLowerCase() === (address.country ?? '').toLowerCase(),
+    );
+    if (!matchedCountry) {
+      return;
+    }
+    this.selectedCountryIso = matchedCountry.iso2;
+
+    const states = await getStatesOfCountry(matchedCountry.iso2);
+    this.departmentsList$.next(states);
+
+    const matchedState = states.find(
+      (s) => s.name.toLowerCase() === (address.department ?? '').toLowerCase(),
+    );
+    if (!matchedState) {
+      return;
+    }
+    this.selectedDepartmentIso = matchedState.iso2;
+
+    const cities = await getCitiesOfState(matchedCountry.iso2, matchedState.iso2);
+    this.citiesList$.next(cities);
+  }
+
   getRoles() {
     this.httpRoles.getRoles().subscribe({
       next: (roles) => {
@@ -237,6 +321,8 @@ export default class UserForm implements OnInit {
       next: (userData: any) => {
         this.userFormData.patchValue(userData.user);
         console.log(userData.user);
+
+        this.syncAddressLocation(userData.user.address);
 
         if (userData.user.birthDate) {
           const date = new Date(userData.user.birthDate);
@@ -281,6 +367,10 @@ export default class UserForm implements OnInit {
 
   get addressGroup() {
     return this.userFormData.get('address');
+  }
+
+  get country() {
+    return this.userFormData.get('address.country');
   }
 
   get street() {
