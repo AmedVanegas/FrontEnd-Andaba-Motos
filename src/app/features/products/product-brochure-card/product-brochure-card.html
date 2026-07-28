@@ -27,7 +27,7 @@
           <div class="card-footer">
             <div class="card-price">
               <span class="price-label">Precio base</span>
-              <span class="price-value">{{product.price | currency:'COP ':'symbol':'1.0'}}</span>
+              <span class="price-value">{{product.price + (product.price * product.roi) | currency:'COP ':'symbol':'1.0'}}</span>
             </div>
             <button class="btn-agregar">Agregar +</button>
           </div>

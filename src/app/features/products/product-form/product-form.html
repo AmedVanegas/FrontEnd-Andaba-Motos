@@ -47,6 +47,9 @@
             @if (nr?.errors?.['maxlength']) {
               <small class="form-error">Este campo debe tener máximo 17 números</small>
             }
+            @if (nr?.errors?.['pattern']) {
+              <small class="form-error">Este campo solo debe contener números</small>
+            }
           }
         </div>
 
@@ -73,6 +76,11 @@
             formControlName="productImage"
             placeholder="image.img"
           />
+          @if (productImage?.invalid && (productImage?.dirty || productImage?.touched)) {
+            @if (productImage?.errors?.['minlength']) {
+              <small class="form-error">El link debe tener mínimo 3 caracteres</small>
+            }
+          }
         </div>
       </div>
     </div>
@@ -129,12 +137,18 @@
             <option value="" disabled selected>Seleccione estado</option>
             <option value="disponible">Disponible</option>
             <option value="no disponible">No disponible</option>
+            <option value="agotado">Agotado</option>
             <option value="refactorizado">Refactorizado</option>
             <option value="pendiente">Pendiente</option>
           </select>
+          @if (status?.invalid && (status?.dirty || status?.touched)) {
+            @if (status?.errors?.['required']) {
+              <small class="form-error">Debes seleccionar un estado</small>
+            }
+          }
         </div>
 
-        <div class="form-field-full">
+        <div >
           <label for="stock">Stock</label>
           <input
             type="number"
@@ -147,7 +161,21 @@
               <small class="form-error">Este campo es obligatorio</small>
             }
             @if (stock?.errors?.['min']) {
-              <small class="form-error">El stock mínimo es 1</small>
+              <small class="form-error">El stock no puede ser negativo</small>
+            }
+          }
+        </div>
+        <div>
+          <label for="roi">Retorno inversión</label>
+          <input
+            type="number"
+            id="roi"
+            formControlName="roi"
+            placeholder="0.3"
+          />
+          @if (roi?.invalid && (roi?.dirty || roi?.touched)) {
+            @if (roi?.errors?.['min']) {
+              <small class="form-error">El ROI mínimo es 0.1</small>
             }
           }
         </div>

@@ -9,13 +9,92 @@
       <div class="form-section-title">Datos personales</div>
       <div class="form-section-body">
         <div>
+          <label for="firstName">Nombre</label>
+          <input
+            type="text"
+            id="firstName"
+            formControlName="firstName"
+            maxlength="50"
+            placeholder="Juan"
+          />
+          @if (firstName?.invalid && (firstName?.dirty || firstName?.touched)) {
+            @if (firstName?.errors?.['required']) {
+              <small class="form-error">El nombre es obligatorio</small>
+            }
+
+            @if (firstName?.errors?.['maxlength']) {
+              <small class="form-error">El nombre es demasiado largo</small>
+            }
+            @if (firstName?.errors?.['minlength']) {
+              <small class="form-error">El nombre es demasiado corto</small>
+            }
+          }
+        </div>
+        <div>
+          <label for="middleName">Segundo nombre</label>
+          <input
+            type="text"
+            id="middleName"
+            formControlName="middleName"
+            maxlength="50"
+            placeholder="Pablo"
+          />
+          @if (middleName?.invalid && (middleName?.dirty || middleName?.touched)) {
+
+            @if (middleName?.errors?.['maxlength']) {
+              <small class="form-error">El segundo nombre de usuario es demasiado largo</small>
+            }
+            @if (middleName?.errors?.['minlength']) {
+              <small class="form-error">El segundo nombre de usuario es demasiado corto</small>
+            }
+          }
+        </div>
+        <div>
+          <label for="lastName">Primer apellido</label>
+          <input
+            type="text"
+            id="lastName"
+            formControlName="lastName"
+            maxlength="50"
+            placeholder="Rodriguéz"
+          />
+          @if (lastName?.invalid && (lastName?.dirty || lastName?.touched)) {
+            @if (lastName?.errors?.['required']) {
+              <small class="form-error">El apellido es obligatorio</small>
+            }
+            @if (lastName?.errors?.['maxlength']) {
+              <small class="form-error">El apellido es demasiado largo</small>
+            }
+            @if (lastName?.errors?.['minlength']) {
+              <small class="form-error">El apellido es demasiado corto</small>
+            }
+          }
+        </div>
+        <div>
+          <label for="secondLastName">Segundo apellido</label>
+          <input
+            type="text"
+            id="secondLastName"
+            formControlName="secondLastName"
+            maxlength="50"
+            placeholder="Peréz"
+          />
+          @if (secondLastName?.invalid && (secondLastName?.dirty || secondLastName?.touched)) {
+
+            @if (secondLastName?.errors?.['maxlength']) {
+              <small class="form-error">El segundo apellido es demasiado largo</small>
+            }
+
+          }
+        </div>
+        <div>
           <label for="username">Nombre de usuario</label>
           <input
             type="text"
             id="username"
             formControlName="username"
             maxlength="50"
-            placeholder="pepito perez777"
+            placeholder="Nombre de usuario"
           />
           @if (name?.invalid && (name?.dirty || name?.touched)) {
             @if (name?.errors?.['required']) {
@@ -36,17 +115,30 @@
             type="text"
             id="document"
             formControlName="document"
-            required
             maxlength="16"
             placeholder="111111111"
           />
-          <small class="form-error">mensaje de error</small>
+          @if (document?.invalid && (document?.dirty || document?.touched)) {
+            @if (document?.errors?.['required']) {
+              <small class="form-error">El documento es obligatorio</small>
+            }
+            @if (document?.errors?.['maxlength']) {
+              <small class="form-error">El documento no puede tener más de 16 caracteres</small>
+            }
+          }
         </div>
 
         <div class="form-field-full">
           <label for="birthDate">Fecha de nacimiento</label>
           <input type="date" id="birthDate" formControlName="birthDate" />
-          <small class="form-error">mensaje de error</small>
+          @if (birthDate?.invalid && (birthDate?.dirty || birthDate?.touched)) {
+            @if (birthDate?.errors?.['required']) {
+              <small class="form-error">La fecha de nacimiento es obligatoria</small>
+            }
+            @if (birthDate?.errors?.['underage']) {
+              <small class="form-error">El usuario debe ser mayor de 18 años</small>
+            }
+          }
         </div>
       </div>
     </div>
@@ -63,13 +155,27 @@
             maxlength="13"
             placeholder="311 1111111"
           />
-          <small class="form-error">mensaje de error</small>
+          @if (phoneNumber?.invalid && (phoneNumber?.dirty || phoneNumber?.touched)) {
+            @if (phoneNumber?.errors?.['required']) {
+              <small class="form-error">El teléfono es obligatorio</small>
+            }
+            @if (phoneNumber?.errors?.['maxlength']) {
+              <small class="form-error">El teléfono no puede tener más de 13 caracteres</small>
+            }
+          }
         </div>
 
         <div>
           <label for="email">Correo electrónico</label>
           <input type="email" id="email" formControlName="email" placeholder="hola@mail.com" />
-          <small class="form-error">mensaje de error</small>
+          @if (email?.invalid && (email?.dirty || email?.touched)) {
+            @if (email?.errors?.['required']) {
+              <small class="form-error">El correo es obligatorio</small>
+            }
+            @if (email?.errors?.['email']) {
+              <small class="form-error">El correo no tiene un formato válido</small>
+            }
+          }
         </div>
 
         @if (!isEditMode) {
@@ -82,7 +188,14 @@
               minlength="8"
               placeholder="secreto ajjakdhjkahds"
             />
-            <small class="form-error">mensaje de error</small>
+            @if (password?.invalid && (password?.dirty || password?.touched)) {
+              @if (password?.errors?.['required']) {
+                <small class="form-error">La contraseña es obligatoria</small>
+              }
+              @if (password?.errors?.['minlength']) {
+                <small class="form-error">La contraseña debe tener mínimo 8 caracteres</small>
+              }
+            }
           </div>
 
           <div>
@@ -94,7 +207,17 @@
               minlength="8"
               placeholder="secreto ajjakdhjkahds"
             />
-            <small class="form-error">mensaje de error</small>
+            @if (confirmPassword?.invalid && (confirmPassword?.dirty || confirmPassword?.touched)) {
+              @if (confirmPassword?.errors?.['required']) {
+                <small class="form-error">Debes confirmar la contraseña</small>
+              }
+              @if (confirmPassword?.errors?.['minlength']) {
+                <small class="form-error">La contraseña debe tener mínimo 8 caracteres</small>
+              }
+              @if (confirmPassword?.errors?.['passwordMismatch']) {
+                <small class="form-error">Las contraseñas no coinciden</small>
+              }
+            }
           </div>
         }
       </div>
@@ -106,31 +229,46 @@
         <div>
           <label for="street">Calle</label>
           <input type="text" id="street" formControlName="street" placeholder="30" />
-          <small class="form-error">mensaje de error</small>
+          @if (street?.invalid && (street?.dirty || street?.touched)) {
+            @if (street?.errors?.['required']) {
+              <small class="form-error">La calle es obligatoria</small>
+            }
+          }
         </div>
 
         <div>
           <label for="carrera">Carrera</label>
           <input type="text" id="carrera" formControlName="carrera" placeholder="40" />
-          <small class="form-error">mensaje de error</small>
+          @if (carrera?.invalid && (carrera?.dirty || carrera?.touched)) {
+            @if (carrera?.errors?.['required']) {
+              <small class="form-error">La carrera es obligatoria</small>
+            }
+          }
         </div>
 
         <div>
           <label for="neighborhood">Barrio</label>
           <input type="text" id="neighborhood" formControlName="neighborhood" placeholder="bosa" />
-          <small class="form-error">mensaje de error</small>
         </div>
 
         <div>
           <label for="city">Ciudad</label>
           <input type="text" id="city" formControlName="city" placeholder="Miami" />
-          <small class="form-error">mensaje de error</small>
+          @if (city?.invalid && (city?.dirty || city?.touched)) {
+            @if (city?.errors?.['required']) {
+              <small class="form-error">La ciudad es obligatoria</small>
+            }
+          }
         </div>
 
         <div class="form-field-full">
           <label for="department">Departamento</label>
           <input type="text" id="department" formControlName="department" placeholder="Mitu" />
-          <small class="form-error">mensaje de error</small>
+          @if (department?.invalid && (department?.dirty || department?.touched)) {
+            @if (department?.errors?.['required']) {
+              <small class="form-error">El departamento es obligatorio</small>
+            }
+          }
         </div>
       </div>
     </div>
@@ -146,6 +284,11 @@
               <option [value]="role.id">{{ role.name }}</option>
             }
           </select>
+          @if (rol?.invalid && (rol?.dirty || rol?.touched)) {
+            @if (rol?.errors?.['required']) {
+              <small class="form-error">Debes seleccionar un rol</small>
+            }
+          }
         </div>
 
         <div>

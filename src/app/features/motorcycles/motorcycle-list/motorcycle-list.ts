@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { HttpMotorcycles } from '../../../core/services/http-motorcycles';
+import { AlertService } from '../../../core/services/alert';
 import { AsyncPipe } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 import MotorcycleListCard from '../motorcycle-list-card/motorcycle-list-card';
@@ -15,6 +16,7 @@ export default class MotorcycleList {
   motorcycles$ = new BehaviorSubject<any[]>([]);
   // Se injecta la dependecia de el servicio
   private httpMotorcycles = inject(HttpMotorcycles);
+  private alert = inject(AlertService);
 
   ngOnInit() {
     this.httpMotorcycles.getMotorcycles().subscribe({
@@ -31,14 +33,20 @@ export default class MotorcycleList {
     });
   }
 
-  onDelete(id: string) {
-    console.log(id);
-    this.httpMotorcycles.deleteMotorcycle(id).subscribe({
+  async onDelete(motorcycle: any) {
+    const confirmed = await this.alert.confirmDelete('la motocicleta', motorcycle.licensePlate);
+    if (!confirmed) {
+      return;
+    }
+
+    this.httpMotorcycles.deleteMotorcycle(motorcycle._id).subscribe({
       next: (data) => {
+        this.alert.success('Eliminada!', 'Motocicleta eliminada');
         console.log(data);
         this.ngOnInit();
       },
       error: (error) => {
+        this.alert.error('No se pudo eliminar la motocicleta', error.error?.msg);
         console.log(error);
       },
       complete: () => {

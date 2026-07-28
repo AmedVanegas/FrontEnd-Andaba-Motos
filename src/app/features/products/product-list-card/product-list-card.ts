@@ -46,11 +46,11 @@ import { MongoDatePipe } from '../../../core/pipes/mongo-date-pipe';
 })
 export default class ProductListCard {
   @Input() product: any;
-  @Output() delete = new EventEmitter<string>()
+  @Output() delete = new EventEmitter<any>()
   @Output() edit = new EventEmitter <string>()
 
   onDeleteClick(){
-    this.delete.emit(this.product._id)
+    this.delete.emit(this.product)
   }
 
   onEditCLick(){

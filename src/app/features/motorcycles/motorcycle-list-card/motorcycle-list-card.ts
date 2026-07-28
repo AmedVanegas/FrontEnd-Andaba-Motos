@@ -41,11 +41,11 @@ import { MongoDatePipe } from '../../../core/pipes/mongo-date-pipe';
 })
 export default class MotorcycleListCard {
   @Input() motorcycle: any;
-  @Output() delete = new EventEmitter<string>();
+  @Output() delete = new EventEmitter<any>();
   @Output() edit = new EventEmitter<string>();
 
   onDeleteClick() {
-    this.delete.emit(this.motorcycle._id);
+    this.delete.emit(this.motorcycle);
   }
 
   onEditCLick() {

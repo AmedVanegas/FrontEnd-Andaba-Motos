@@ -9,6 +9,7 @@ import { HttpUsers } from '../../../core/services/http-users';
 import { BehaviorSubject } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { HttpMotorcycles } from '../../../core/services/http-motorcycles';
+import { AlertService } from '../../../core/services/alert';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -21,6 +22,7 @@ export default class MotorcycleForm {
   private httpUsers = inject(HttpUsers);
   clientList$ = new BehaviorSubject<any[]>([]);
   private httpMotorcycles = inject(HttpMotorcycles);
+  private alert = inject(AlertService);
   activatedRoute = inject(ActivatedRoute);
   router = inject(Router);
 
@@ -32,7 +34,6 @@ export default class MotorcycleForm {
   motorcycleId: string | null = null;
 
   constructor() {
-    // Define la estructura equivalente del formulario en HTML
     this.formData = new FormGroup({
       licensePlate: new FormControl('', [Validators.required, Validators.maxLength(6)]),
       brand: new FormControl('', [Validators.required]),
@@ -43,42 +44,55 @@ export default class MotorcycleForm {
     });
   }
 
-  onSubmit() {
-    if (this.formData.valid) {
-      const formValue = this.formData.value;
+  async onSubmit() {
+    if (!this.formData.valid) {
+      return;
+    }
 
-      if (this.isEditMode && this.motorcycleId) {
-        this.httpMotorcycles.editMotorcycle(this.motorcycleId, formValue).subscribe({
-          next: (data) => {
-            console.log(data);
-            this.router.navigate(['/motorcycles']);
-          },
-          error: (error) => {
-            console.log(error);
-          },
-          complete: () => {},
-        });
-      } else {
-        this.httpMotorcycles.createMotorcycle(this.formData.value).subscribe({
-          next: (res) => {
-            console.log(res);
-            this.formData.reset();
-            this.router.navigate(['/motorcycles']);
-          },
+    const formValue = this.formData.value;
 
-          error: (error) => {
-            console.log(error);
-          },
-
-          complete: () => {
-            console.log('complete execute');
-          },
-        });
+    if (this.isEditMode && this.motorcycleId) {
+      // Confirmación antes de guardar los cambios (modo edición)
+      const confirmed = await this.alert.confirmSave('la motocicleta', true);
+      if (!confirmed) {
+        return;
       }
+
+      this.httpMotorcycles.editMotorcycle(this.motorcycleId, formValue).subscribe({
+        next: (data) => {
+          console.log(data);
+        },
+        error: (error) => {
+          this.alert.error('No se pudo editar la motocicleta', error.error?.msg);
+          console.log(error);
+        },
+        complete: () => {
+          this.alert.success('Guardado!', 'Motocicleta actualizada');
+          this.router.navigate(['/motorcycles']);
+        },
+      });
+    } else {
+      this.httpMotorcycles.createMotorcycle(this.formData.value).subscribe({
+        next: (res) => {
+          console.log(res);
+          this.formData.reset();
+        },
+
+        error: (error) => {
+          this.alert.error('No se pudo crear la motocicleta', error.error?.msg);
+          console.log(error);
+        },
+
+        complete: () => {
+          console.log('complete execute');
+          this.alert.success('Creada!', 'Motocicleta creada');
+          this.router.navigate(['/motorcycles']);
+        },
+      });
     }
   }
 
-  // Hook: ciclo de vida que se ejecuta al inicializar el componente
+  
   ngOnInit() {
     this.loadClients();
 
@@ -92,7 +106,7 @@ export default class MotorcycleForm {
     }
   }
 
-  // Trae solo los usuarios con rol "client" para el selector de dueño
+  
   loadClients() {
     this.httpUsers.getUsers().subscribe({
       next: (data) => {
@@ -105,7 +119,7 @@ export default class MotorcycleForm {
       },
 
       complete: () => {
-        // No hay acciones al completar
+
       },
     });
   }

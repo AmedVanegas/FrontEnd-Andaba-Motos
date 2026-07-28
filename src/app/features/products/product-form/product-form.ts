@@ -1,15 +1,10 @@
 import { Component, inject } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  NumberValueAccessor,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpCategories } from '../../../core/services/http-categories';
 import { BehaviorSubject } from 'rxjs';
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { HttpProducts } from '../../../core/services/http-products';
+import { AlertService } from '../../../core/services/alert';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -22,6 +17,7 @@ export default class ProductForm {
   private httpcategory = inject(HttpCategories);
   categoryList$ = new BehaviorSubject<any[]>([]);
   private httpProducts = inject(HttpProducts);
+  private alert = inject(AlertService);
   activatedRoute = inject(ActivatedRoute);
   router = inject(Router);
 
@@ -35,53 +31,80 @@ export default class ProductForm {
   constructor() {
     // Define la estructura equivalente del formulario en HTML
     this.formData = new FormGroup({
-      name: new FormControl('', [Validators.required]),
-      nr: new FormControl('', [Validators.required]),
+      name: new FormControl('', [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(50),
+      ]),
+      nr: new FormControl('', [
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(17),
+        Validators.pattern(/^[0-9]+$/),
+      ]),
       category: new FormControl('', Validators.required),
       productImage: new FormControl('', Validators.minLength(3)),
-      description: new FormControl('', Validators.required),
+      description: new FormControl('', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(1500),
+      ]),
       status: new FormControl('', Validators.required),
       price: new FormControl(0, [Validators.required, Validators.min(1000)]),
-      stock: new FormControl(0, [Validators.required, Validators.min(1)]),
+      stock: new FormControl(0, [Validators.required, Validators.min(0)]),
+      roi: new FormControl(0.3, [Validators.min(0.1)]),
     });
   }
 
-  onSubmit() {
-    if (this.formData.valid) {
-      const formValue = this.formData.value;
+  async onSubmit() {
+    if (!this.formData.valid) {
+      return;
+    }
 
-      if (this.isEditMode && this.productId) {
-        this.httpProducts.editProduct(this.productId, formValue).subscribe({
-          next: (data) => {
-            console.log(data);
-            this.router.navigate(['/products']);
-          },
-          error: (error) => {
-            console.log(error);
-          },
-          complete: () => {},
-        });
-      } else {
-        if (formValue.productImage == '') {
-          delete formValue.productImage;
-        }
+    const formValue = this.formData.value;
 
-        this.httpProducts.createProducts(this.formData.value).subscribe({
-          next: (res) => {
-            console.log(res);
-            this.formData.reset();
-            this.router.navigate(['/products']);
-          },
-
-          error: (error) => {
-            console.log(error);
-          },
-
-          complete: () => {
-            console.log('complete execute');
-          },
-        });
+    if (this.isEditMode && this.productId) {
+      // Confirmación antes de guardar los cambios (modo edición)
+      const confirmed = await this.alert.confirmSave('el producto', true);
+      if (!confirmed) {
+        return;
       }
+
+      this.httpProducts.editProduct(this.productId, formValue).subscribe({
+        next: (data) => {
+          console.log(data);
+        },
+        error: (error) => {
+          this.alert.error('No se pudo editar el producto', error.error?.msg);
+          console.log(error);
+        },
+        complete: () => {
+          this.alert.success('Guardado!', 'Producto actualizado');
+          this.router.navigate(['/products']);
+        },
+      });
+    } else {
+      if (formValue.productImage == '') {
+        delete formValue.productImage;
+      }
+
+      this.httpProducts.createProducts(this.formData.value).subscribe({
+        next: (res) => {
+          console.log(res);
+          this.formData.reset();
+        },
+
+        error: (error) => {
+          this.alert.error('No se pudo crear el producto', error.error?.msg);
+          console.log(error);
+        },
+
+        complete: () => {
+          console.log('complete execute');
+          this.alert.success('Creado!', 'Producto creado');
+          this.router.navigate(['/products']);
+        },
+      });
     }
   }
 
@@ -142,8 +165,16 @@ export default class ProductForm {
     return this.formData.get('category');
   }
 
+  get productImage() {
+    return this.formData.get('productImage');
+  }
+
   get description() {
     return this.formData.get('description');
+  }
+
+  get status() {
+    return this.formData.get('status');
   }
 
   get price() {
@@ -152,5 +183,9 @@ export default class ProductForm {
 
   get stock() {
     return this.formData.get('stock');
+  }
+
+  get roi() {
+    return this.formData.get('roi');
   }
 }

@@ -1,5 +1,6 @@
 import { Component, inject, NgZone } from '@angular/core';
 import { HttpProducts } from '../../../core/services/http-products';
+import { AlertService } from '../../../core/services/alert';
 import { AsyncPipe, CurrencyPipe, JsonPipe, TitleCasePipe } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 import ProductListCard from '../product-list-card/product-list-card';
@@ -15,6 +16,7 @@ export default class ProductList {
   products$ = new BehaviorSubject<any[]>([])
   // Se injecta la dependecia de el servicio
   private httpProducts = inject(HttpProducts);
+  private alert = inject(AlertService);
   
 
   ngOnInit() {
@@ -32,20 +34,26 @@ export default class ProductList {
     });
   }
 
-  onDelete(id:string){
-    console.log(id)
-    this.httpProducts.deleteProduct(id).subscribe({
-      next:(data)=>{
-        console.log(data)
-        this.ngOnInit()
+  async onDelete(product: any) {
+    const confirmed = await this.alert.confirmDelete('el producto', product.name);
+    if (!confirmed) {
+      return;
+    }
+
+    this.httpProducts.deleteProduct(product._id).subscribe({
+      next: (data) => {
+        this.alert.success('Eliminado!', 'Producto eliminado');
+        console.log(data);
+        this.ngOnInit();
       },
-      error:(error)=>{
-        console.log(error)
+      error: (error) => {
+        this.alert.error('No se pudo eliminar el producto', error.error?.msg);
+        console.log(error);
       },
-      complete:()=>{
-        console.log('se elimino el producto')
-      }
-    })
+      complete: () => {
+        console.log('se elimino el producto');
+      },
+    });
   }
 
   getAllProducts(){

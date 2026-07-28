@@ -4,13 +4,12 @@ import { RouterLink } from '@angular/router';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 import { HttpUsers } from '../../../core/services/http-users';
+import { AlertService } from '../../../core/services/alert';
 import UserCard from '../user-list-card/user-list-card';
 import UserForm from '../user-form/user-form';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
-
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-user-list',
@@ -32,56 +31,30 @@ export default class UserList {
   users$ = new BehaviorSubject<any[]>([]);
 
   private httpUsers = inject(HttpUsers);
+  private alert = inject(AlertService);
 
   ngOnInit() {
     this.loadUsers();
   }
-  onDelete(user: any) {
-    //confimacion yupiu
+  async onDelete(user: any) {
+    const confirmed = await this.alert.confirmDelete('el usuario', user.username);
+    if (!confirmed) {
+      return;
+    }
 
-    Swal.fire({
-      title: `¿ Seguro que quiere eliminar el usuario ${user.username} ?`,
-      text: 'No se puede deshacer!',
-      color:'#fff',
-      background:'#000000' ,
-      icon: 'warning',
-      iconColor:'#d33',      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#5e5e5e',
-      cancelButtonText: 'Cancelar',
-      confirmButtonText: 'Eliminar',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        
-        this.subscriberDeleteUser = this.httpUsers.deleteUserbyId(user._id).subscribe({
-          next: (data) => {
-            Swal.fire({
-          title: 'Eliminado!',
-          text: 'Usuario eliminado',
-          background:'#000000' ,
-          icon: 'success',
-          color:'#fff',
-          confirmButtonColor:'#5e5e5e'
-        });
-            console.log(data);
-            this.loadUsers();
-          },
-          error: (error) => {
-            Swal.fire({
-          title: 'No se pudo eliminar el usuario',
-          text: error.error.msg,
-          background:'#000000' ,
-          icon: 'error',
-          color:'#fff',
-          confirmButtonColor:'#5e5e5e'
-        });
-            console.error(error);
-          },
-          complete: () => {
-            console.log('eliminado');
-          },
-        });
-      }
+    this.subscriberDeleteUser = this.httpUsers.deleteUserbyId(user._id).subscribe({
+      next: (data) => {
+        this.alert.success('Eliminado!', 'Usuario eliminado');
+        console.log(data);
+        this.loadUsers();
+      },
+      error: (error) => {
+        this.alert.error('No se pudo eliminar el usuario', error.error?.msg);
+        console.error(error);
+      },
+      complete: () => {
+        console.log('eliminado');
+      },
     });
   }
 

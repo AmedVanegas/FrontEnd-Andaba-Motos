@@ -1,20 +1,74 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { HttpRoles } from '../../../core/services/http-roles';
 import { HttpUsers } from '../../../core/services/http-users';
+import { AlertService } from '../../../core/services/alert';
 import { AsyncPipe, CommonModule, NgClass } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
+// Regla tomada del modelo (User.model.js -> birthDate.max): el usuario debe tener al menos 18 años
+function minAgeValidator(minAge: number): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (!control.value) {
+      return null;
+    }
+
+    const birthDate = new Date(control.value);
+    const today = new Date();
+
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+
+    return age < minAge ? { underage: { requiredAge: minAge, actualAge: age } } : null;
+  };
+}
+
+// El modelo no tiene un campo "ConfirmPassword", pero el formulario sí lo necesita
+// para validar que coincida con "password" antes de enviar los datos.
+function passwordMatchValidator(group: AbstractControl): ValidationErrors | null {
+  const password = group.get('password');
+  const confirmPassword = group.get('ConfirmPassword');
+
+  if (!password || !confirmPassword) {
+    return null;
+  }
+
+  if (password.value !== confirmPassword.value) {
+    confirmPassword.setErrors({ ...confirmPassword.errors, passwordMismatch: true });
+    return { passwordMismatch: true };
+  }
+
+  if (confirmPassword.errors) {
+    const { passwordMismatch, ...rest } = confirmPassword.errors;
+    confirmPassword.setErrors(Object.keys(rest).length ? rest : null);
+  }
+
+  return null;
+}
+
 @Component({
   selector: 'app-user-form',
-  imports: [ReactiveFormsModule, AsyncPipe, NgClass, CommonModule],
+  imports: [ReactiveFormsModule, AsyncPipe, CommonModule],
   templateUrl: './user-form.html',
   styleUrl: './user-form.css',
 })
 export default class UserForm implements OnInit {
   private httpRoles = inject(HttpRoles);
   private httpUsers = inject(HttpUsers);
+  private alert = inject(AlertService);
   private activatedRoute = inject(ActivatedRoute);
   private router = inject(Router);
 
@@ -29,31 +83,47 @@ export default class UserForm implements OnInit {
   submitButtonText = 'Crear usuario';
 
   constructor() {
-    this.userFormData = new FormGroup({
-      username: new FormControl('', [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(20),
-      ]),
-      document: new FormControl('', [Validators.required, Validators.maxLength(16)]),
-      birthDate: new FormControl(''),
-      phoneNumber: new FormControl('', [Validators.required, Validators.maxLength(13)]),
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl(''),
-      ConfirmPassword: new FormControl(''),
-      address: new FormGroup(
-        {
+    this.userFormData = new FormGroup(
+      {
+        username: new FormControl('', [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(20),
+        ]),
+        firstName: new FormControl('', [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(50),
+        ]),
+        middleName: new FormControl('', [Validators.minLength(2), Validators.maxLength(50)]),
+        lastName: new FormControl('', [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(50),
+        ]),
+        secondLastName: new FormControl('', [Validators.maxLength(50)]),
+        document: new FormControl('', [Validators.required, Validators.maxLength(16)]),
+        birthDate: new FormControl('', [Validators.required, minAgeValidator(18)]),
+        phoneNumber: new FormControl('', [Validators.required, Validators.maxLength(13)]),
+        email: new FormControl('', [Validators.required, Validators.email]),
+        password: new FormControl(''),
+        ConfirmPassword: new FormControl(''),
+        address: new FormGroup({
           street: new FormControl('', [Validators.required]),
           carrera: new FormControl('', [Validators.required]),
-          neighborhood: new FormControl('', [Validators.required]),
+          // El modelo NO marca "neighborhood" como obligatorio, así que no lleva Validators.required
+          neighborhood: new FormControl(''),
           city: new FormControl('', [Validators.required]),
           department: new FormControl('', [Validators.required]),
-        },
-        [Validators.required],
-      ),
-      rol: new FormControl('client'),
-      status: new FormControl('active'),
-    });
+        }),
+        // Antes tenía como valor inicial 'client' (que nunca calza con los IDs reales
+        // que llegan del backend), por eso el botón quedaba habilitado sin que se
+        // eligiera un rol real. Ahora arranca vacío y es obligatorio.
+        rol: new FormControl('', [Validators.required]),
+        status: new FormControl('active'),
+      },
+      { validators: passwordMatchValidator },
+    );
   }
 
   ngOnInit() {
@@ -68,9 +138,12 @@ export default class UserForm implements OnInit {
       this.pageTitle = 'Editar usuario';
       this.submitButtonText = 'Editar';
 
-      // se desactiva la validacion de la contraseña
-      this.userFormData.get('password')?.clearAsyncValidators();
-      this.userFormData.get('ConfirmPassword')?.clearAsyncValidators();
+      // se desactiva la validacion de la contraseña (antes usaba clearAsyncValidators,
+      // que no hacía nada porque no había async validators configurados)
+      this.userFormData.get('password')?.clearValidators();
+      this.userFormData.get('password')?.updateValueAndValidity();
+      this.userFormData.get('ConfirmPassword')?.clearValidators();
+      this.userFormData.get('ConfirmPassword')?.updateValueAndValidity();
 
       //Carga los datos del usuario
       this.loadUserData(this.userId);
@@ -78,58 +151,69 @@ export default class UserForm implements OnInit {
       // si no existe el user id, esta en modo de crear user, se pone en falso, cambia el titulo y el boton
 
       // Hace que los campos de contraseña sean requeridos
-      this.userFormData.get('password')?.setValidators([
-        Validators.required,
-        Validators.minLength(8),
-      ]);
-      this.userFormData.get('ConfirmPassword')?.setValidators([
-        Validators.required,
-        Validators.minLength(8),
-      ]);
+      this.userFormData
+        .get('password')
+        ?.setValidators([Validators.required, Validators.minLength(8)]);
+      this.userFormData.get('password')?.updateValueAndValidity();
+
+      this.userFormData
+        .get('ConfirmPassword')
+        ?.setValidators([Validators.required, Validators.minLength(8)]);
+      this.userFormData.get('ConfirmPassword')?.updateValueAndValidity();
     }
 
     this.userFormData.updateValueAndValidity();
   }
 
-  onSubmit() {
-    if (this.userFormData.valid) {
-      const formValue = this.userFormData.value;
+  async onSubmit() {
+    if (!this.userFormData.valid) {
+      return;
+    }
 
-  
-      if (formValue.birthDate) {
-        formValue.birthDate = `${formValue.birthDate}T00:00:00.000+00:00`;
+    const formValue = this.userFormData.value;
+
+    if (formValue.birthDate && !formValue.birthDate.includes('T')) {
+      formValue.birthDate = `${formValue.birthDate}T00:00:00.000+00:00`;
+    }
+
+    if (this.isEditMode && this.userId) {
+      // Confirmación antes de guardar los cambios (modo edición)
+      const confirmed = await this.alert.confirmSave('el usuario', true);
+      if (!confirmed) {
+        return;
       }
 
-      if (this.isEditMode && this.userId) {
-        // si el modo de ecicion esat activo, activa el services de edit
-        this.httpUsers.editUserbyId(this.userId, formValue).subscribe({
-          next: (data) => {
-            console.log(data);
-          },
-          error: (error) => {
-            console.log(error);
-          },
-          complete: () => {
-            console.log('Usuario actualizado');
-            this.router.navigate(['/users']);
-          },
-        });
-      } else {
-        // si no activa el service de create
-        this.httpUsers.createUser(formValue).subscribe({
-          next: (data) => {
-            console.log(data);
-            this.userFormData.reset();
-          },
-          error: (error) => {
-            console.log(error);
-          },
-          complete: () => {
-            console.log('Usuario creado');
-            this.router.navigate(['/users']);
-          },
-        });
-      }
+      this.httpUsers.editUserbyId(this.userId, formValue).subscribe({
+        next: (data) => {
+          console.log(data);
+        },
+        error: (error) => {
+          this.alert.error('No se pudo editar el usuario', error.error?.msg);
+          console.log(error);
+        },
+        complete: () => {
+          console.log('Usuario actualizado');
+          this.alert.success('Guardado!', 'Usuario actualizado');
+          this.router.navigate(['/users']);
+        },
+      });
+    } else {
+      // si no activa el service de create
+      this.httpUsers.createUser(formValue).subscribe({
+        next: (data) => {
+          console.log(data);
+          this.userFormData.reset();
+        },
+        error: (error) => {
+          this.alert.error('No se pudo crear el usuario', error.error?.msg);
+          console.log(error);
+        },
+        complete: () => {
+          console.log('Usuario creado');
+          this.alert.success('Creado!', 'Usuario creado');
+          this.router.navigate(['/users']);
+        },
+      });
     }
   }
 
@@ -167,7 +251,6 @@ export default class UserForm implements OnInit {
     });
   }
 
-
   get name() {
     return this.userFormData.get('username');
   }
@@ -198,5 +281,42 @@ export default class UserForm implements OnInit {
 
   get addressGroup() {
     return this.userFormData.get('address');
+  }
+
+  get street() {
+    return this.userFormData.get('address.street');
+  }
+
+  get carrera() {
+    return this.userFormData.get('address.carrera');
+  }
+
+  get neighborhood() {
+    return this.userFormData.get('address.neighborhood');
+  }
+
+  get city() {
+    return this.userFormData.get('address.city');
+  }
+
+  get department() {
+    return this.userFormData.get('address.department');
+  }
+
+  get rol() {
+    return this.userFormData.get('rol');
+  }
+
+  get firstName() {
+    return this.userFormData.get('firstName');
+  }
+  get middleName() {
+    return this.userFormData.get('middleName');
+  }
+  get lastName() {
+    return this.userFormData.get('lastName');
+  }
+  get secondLastName() {
+    return this.userFormData.get('secondLastName');
   }
 }
