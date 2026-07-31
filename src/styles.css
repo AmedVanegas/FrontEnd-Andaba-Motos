@@ -65,7 +65,7 @@ router-outlet + * {
   border: 1px solid #333;
   border-radius: 4px;
   margin-bottom: 16px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .form-section-title {

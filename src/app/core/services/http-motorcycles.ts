@@ -37,4 +37,9 @@ export class HttpMotorcycles {
   deleteMotorcycle(id: string) {
     return this.http.delete(`${this.BASE_URL}/motorcycles/${id}`);
   }
+
+  getMotorcycleByUserId(id:string){
+    return this.http.get<any>(`${this.BASE_URL}/motorcycles/user/${id}`)
+  }
+
 }

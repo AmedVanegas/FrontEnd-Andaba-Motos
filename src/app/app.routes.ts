@@ -65,6 +65,18 @@ export const routes: Routes = [
     path: 'motorcycles/edit/:id',
     loadComponent: () => import('./features/motorcycles/motorcycle-form/motorcycle-form'),
   },
+  {
+    path:'login',
+    loadComponent:()=> import('./features/login/login')
+  },
+  {
+    path:'dashboard',
+    loadComponent:()=> import('./features/dashboard/dashboard')
+  },
+  {
+    path:'appointment',
+    loadComponent:()=> import ('./features/appointment/appointment-form/appointment-form')
+  },
 
   //Redirecciones
   { path: '', redirectTo: 'home', pathMatch: 'full' },

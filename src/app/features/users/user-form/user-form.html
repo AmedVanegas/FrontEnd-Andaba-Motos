@@ -320,10 +320,10 @@
       <div class="form-section-body">
         <div>
           <label for="rol">Rol</label>
-          <select id="rol" formControlName="rol">
+          <select id="rol" formControlName="rol" >
             <option value="" disabled selected>Selecciona un rol</option>
             @for (role of rolesList$ | async; track $index) {
-              <option [value]="role.id">{{ role.name }}</option>
+              <option [value]="role.id" [disabled]="userOwner">{{ role.name }} </option>
             }
           </select>
           @if (rol?.invalid && (rol?.dirty || rol?.touched)) {
@@ -337,8 +337,8 @@
           <label for="status">Estado</label>
           <select id="status" formControlName="status">
             <option value="active" selected>Activo</option>
-            <option value="inactive">Inactivo</option>
-            <option value="banned">Bloqueado</option>
+            <option value="inactive" [disabled]="userOwner">Inactivo</option>
+            <option value="banned" [disabled]="userOwner">Bloqueado</option>
           </select>
         </div>
       </div>

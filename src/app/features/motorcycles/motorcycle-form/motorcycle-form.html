@@ -76,14 +76,32 @@
     <div class="form-section">
       <div class="form-section-title">Cliente y estado</div>
       <div class="form-section-body">
-        <div>
-          <label for="client">Cliente</label>
-          <select id="client" formControlName="client">
-            <option value="" disabled selected>Seleccione cliente</option>
-            @for (c of clientList$ | async; track $index) {
-              <option [value]="c._id">{{ c.username }}</option>
-            }
-          </select>
+        <div class="client-search">
+          <label for="clientSearch">Cliente</label>
+          <input
+            type="text"
+            id="clientSearch"
+            [formControl]="clientSearchControl"
+            (focus)="onClientSearchFocus()"
+            (blur)="onClientSearchBlur()"
+            placeholder="Busca por nombre o usuario..."
+            autocomplete="off"
+          />
+          @if (searchingClient) {
+            <small class="client-search-hint">Buscando...</small>
+          }
+          @if (showClientResults) {
+            <ul class="client-results">
+              @for (user of clientResults; track user._id) {
+                <li (mousedown)="selectClient(user)">
+                  {{ user.firstName }} {{ user.lastName }} — {{ user.username }}
+                </li>
+              } @empty {
+                <li class="client-results-empty">No se encontraron usuarios</li>
+              }
+            </ul>
+          }
+          <input type="hidden" formControlName="client" />
           @if (client?.invalid && (client?.dirty || client?.touched)) {
             @if (client?.errors?.['required']) {
               <small class="form-error">Debe seleccionar el cliente dueño de la moto</small>

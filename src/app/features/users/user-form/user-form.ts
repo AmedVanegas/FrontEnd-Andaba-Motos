@@ -93,6 +93,7 @@ export default class UserForm implements OnInit {
   userId: string | null = null;
   pageTitle = 'Registro Usuario';
   submitButtonText = 'Crear usuario';
+  userOwner: boolean = false
 
   constructor() {
     this.userFormData = new FormGroup(
@@ -186,6 +187,11 @@ export default class UserForm implements OnInit {
 
     const formValue = this.userFormData.value;
 
+    if(this.userOwner){
+     delete formValue.rol
+
+    }
+
     if (formValue.birthDate && !formValue.birthDate.includes('T')) {
       formValue.birthDate = `${formValue.birthDate}T00:00:00.000+00:00`;
     }
@@ -196,6 +202,8 @@ export default class UserForm implements OnInit {
       if (!confirmed) {
         return;
       }
+
+      delete formValue.password
 
       this.httpUsers.editUserbyId(this.userId, formValue).subscribe({
         next: (data) => {
@@ -319,8 +327,13 @@ export default class UserForm implements OnInit {
   loadUserData(userId: string) {
     this.httpUsers.getUserById(userId).subscribe({
       next: (userData: any) => {
+        if(userData.user.rol == 'owner'){
+          this.userOwner = true
+        }
         this.userFormData.patchValue(userData.user);
         console.log(userData.user);
+
+
 
         this.syncAddressLocation(userData.user.address);
 

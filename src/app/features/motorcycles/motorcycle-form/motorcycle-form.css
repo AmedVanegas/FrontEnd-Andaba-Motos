@@ -1,3 +1,51 @@
 :host{
   display: block;
 }
+
+.client-search {
+  position: relative;
+}
+
+.client-search-hint {
+  display: block;
+  color: #9a9da2;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.client-results {
+  position: absolute;
+  z-index: 10;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  max-height: 220px;
+  overflow-y: auto;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 4px;
+  list-style: none;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.client-results li {
+  padding: 10px 12px;
+  font-size: 13px;
+  color: #e0e0e0;
+  cursor: pointer;
+}
+
+.client-results li:hover {
+  background: #242424;
+  color: #ffffff;
+}
+
+.client-results-empty {
+  color: #5f6266;
+  cursor: default;
+}
+
+.client-results-empty:hover {
+  background: transparent;
+  color: #5f6266;
+}

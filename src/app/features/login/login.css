@@ -1,0 +1,292 @@
+/* .omg{
+    font-size: 50px;
+
+}
+.loginPage{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.imageLogin{
+    
+    object-fit: contain;
+}
+
+.imageloginimg{
+    
+    object-fit: cover;
+    overflow: hidden;
+    height: 100vh;
+
+}
+
+.form-page-bg{
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.form-page{
+    width: 80%;
+    margin-bottom: 100px;
+   
+} */
+
+
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+/* ===== Token system: pista nocturna / moto racing ===== */
+.loginPage {
+  --moto-carbon: #131313;
+  --moto-steel: #2a2a2a;
+  --moto-red: #e53935;
+  --moto-red-dark: #a82420;
+  --moto-amber: #f2a900;
+  --moto-chrome: #c9ccd1;
+  --moto-white: #f5f5f5;
+  --moto-dim: #8a8d92;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.loginPage {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ===== Panel de imagen ===== */
+.imageLogin {
+  object-fit: contain;
+  position: relative;
+}
+
+.imageloginimg {
+  object-fit: cover;
+  overflow: hidden;
+  height: 100vh;
+  filter: saturate(1.05) contrast(1.03);
+}
+
+/* ===== Fondo del formulario ===== */
+.form-page-bg {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+  background:
+    radial-gradient(ellipse 900px 600px at 15% 20%, rgba(229, 57, 53, 0.07), transparent 60%),
+    var(--moto-carbon);
+}
+
+.form-page {
+  width: 80%;
+  margin-bottom: 100px;
+}
+
+/* ===== Encabezado ===== */
+.form-header {
+  position: relative;
+  overflow: visible;
+}
+
+.gauge-mark {
+  position: absolute;
+  top: -34px;
+  right: -6px;
+  width: 168px;
+  height: 168px;
+  pointer-events: none;
+}
+
+.gauge-mark .gauge-ticks {
+  color: var(--moto-chrome);
+  opacity: 0.1;
+}
+
+.gauge-mark .gauge-needle {
+  color: var(--moto-red);
+  opacity: 0.4;
+}
+
+.omg {
+  font-family: 'Rajdhani', 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 50px;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--moto-white);
+  line-height: 1.05;
+  position: relative;
+}
+
+.form-header p {
+  font-family: 'Inter', sans-serif;
+  color: var(--moto-dim);
+}
+
+.ignition-bar {
+  height: 3px;
+  width: 64px;
+  margin-top: 18px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--moto-red), var(--moto-amber));
+  transform-origin: left;
+  animation: ignite 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes ignite {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ignition-bar { animation: none; }
+}
+
+/* ===== Panel "Datos de acceso" ===== */
+.loginPage .form-section {
+  position: relative;
+  background: #17181a;
+  border-color: var(--moto-steel);
+}
+
+.loginPage .form-section::before,
+.loginPage .form-section::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+}
+
+.loginPage .form-section::before {
+  top: -1px;
+  left: -1px;
+  border-top: 2px solid var(--moto-red);
+  border-left: 2px solid var(--moto-red);
+}
+
+.loginPage .form-section::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 2px solid var(--moto-red);
+  border-right: 2px solid var(--moto-red);
+}
+
+.loginPage .form-section-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+/* ===== Campos con icono tipo tablero ===== */
+.loginPage .input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.loginPage .input-wrap svg {
+  position: absolute;
+  left: 13px;
+  width: 16px;
+  height: 16px;
+  color: var(--moto-dim);
+  transition: color 0.15s ease;
+  pointer-events: none;
+}
+
+.loginPage .input-wrap:focus-within svg {
+  color: var(--moto-amber);
+}
+
+.loginPage .form-section-body input {
+  padding-left: 40px;
+  background: #1d1e20;
+  letter-spacing: 0.01em;
+}
+
+.loginPage .form-section-body input:focus {
+  border-color: var(--moto-amber);
+  box-shadow: 0 0 0 3px rgba(242, 169, 0, 0.16), 0 0 18px rgba(242, 169, 0, 0.12);
+}
+
+.loginPage .form-section-body input.ng-valid.ng-touched {
+  border-color: #43a047;
+}
+
+/* ===== Boton ignicion ===== */
+.loginPage .form-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  background: linear-gradient(100deg, var(--moto-red-dark), var(--moto-red));
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.14em;
+}
+
+.loginPage .form-submit svg {
+  width: 16px;
+  height: 16px;
+}
+
+.loginPage .form-submit::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 0%, rgba(255, 255, 255, 0.22) 45%, transparent 62%);
+  transform: translateX(-130%);
+  transition: transform 0.55s ease;
+}
+
+.loginPage .form-submit:hover:not(:disabled)::after {
+  transform: translateX(130%);
+}
+
+.loginPage .form-submit:hover:not(:disabled) {
+  background: linear-gradient(100deg, var(--moto-red), #ff5147);
+}
+
+.loginPage .form-submit:disabled {
+  border-color: var(--moto-steel);
+}
+/* ===== Efecto Fade (Transición Formulario -> Imagen) ===== */
+.imageLogin::after {
+  content: '';
+  position: absolute;
+  inset: 0; /* Es un atajo para top:0, left:0, right:0, bottom:0 */
+  pointer-events: none; /* Evita que el degradado bloquee clics si luego agregas botones ahí */
+  
+  /* En PC (lado a lado): El degradado va de izquierda a derecha. 
+     Usamos tu variable --moto-carbon para que se fusione perfecto con el fondo */
+  background: linear-gradient(to right, var(--moto-carbon) 10%, transparent 80%);
+}
+
+/* ===== Ajuste del Fade para la vista móvil ===== */
+@media (max-width: 900px) {
+  .imageLogin{
+    display: none;
+
+  }
+  
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loginPage .form-submit::after { transition: none; }
+}
+
+@media (max-width: 900px) {
+  .loginPage {
+    flex-direction: column-reverse;
+  }
+  .imageloginimg {
+    height: 40vh;
+    width: 100%;
+  }
+  .gauge-mark {
+    display: none;
+  }
+}

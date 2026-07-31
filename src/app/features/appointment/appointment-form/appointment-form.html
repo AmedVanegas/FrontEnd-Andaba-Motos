@@ -1,0 +1,68 @@
+<div class="form-page-bg">
+  <form class="form-page">
+    <div class="form-header">
+      <h1>Agendar cita</h1>
+      <p>Completa los datos para registrar la cita</p>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Datos de la cita</div>
+      <div class="form-section-body">
+        <div>
+          <label for="client">Cliente</label>
+          <select id="client" formControlName="client" (change)="onClientChange($any($event.target).value)">
+            <option value="" disabled selected>Selecciona un cliente</option>
+                @for(user of usersList$ | async ; track $index){
+                    <option [value]="user._id" >{{user.username}}</option>
+                }
+          </select>
+          <!-- mensaje de error -->
+        </div>
+
+        <div>
+          <label for="motorcycle">Moto</label>
+          <select id="motorcycle">
+            <option value="" disabled selected>Selecciona una moto</option>
+            @for(motorcycle of motorcycleslist$ | async; track $index){
+
+                <option [value]="motorcycle._id">{{motorcycle.brand}}{{motorcycle.modelName}}</option>
+
+            }
+          </select>
+          <!-- mensaje de error -->
+        </div>
+
+        <div>
+          <label for="service">Servicio</label>
+          <select id="service">
+            <option value="" disabled selected>Selecciona un servicio</option>
+            <!-- opciones de servicios -->
+          </select>
+          <!-- mensaje de error -->
+        </div>
+
+        <div class="form-field-full">
+          <label for="schedule">Fecha y hora</label>
+          <input type="datetime-local" id="schedule" />
+          <!-- mensaje de error -->
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Estado</div>
+      <div class="form-section-body">
+        <div class="form-field-full">
+          <label for="status">Estado</label>
+          <select id="status">
+            <option value="confirmada" selected>Confirmada</option>
+            <option value="aplazada">Aplazada</option>
+            <option value="cancelada">Cancelada</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="form-submit">Agendar cita</button>
+  </form>
+</div>

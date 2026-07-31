@@ -1,8 +1,8 @@
 <header class="app-header">
   <a class="header-logo" routerLink="/">
-  <img src="assets/images/logo.png" alt="AndubaMotos Logo" class="logo-img">
-  <span class="logo-text">Anduba<span>Motos</span></span>
-</a>
+    <img src="assets/images/logo.png" alt="AndubaMotos Logo" class="logo-img" />
+    <span class="logo-text">Anduba<span>Motos</span></span>
+  </a>
 
   <button class="hamburger" (click)="toggleMenu()">
     <span></span>
@@ -17,8 +17,12 @@
       <li><a routerLink="/services" routerLinkActive="active">Servicios</a></li>
       <li><a routerLink="/about-us" routerLinkActive="active">Nosotros</a></li>
       <li><a routerLink="/contact" routerLinkActive="active">Contacto</a></li>
-      <li><a routerLink="/users" routerLinkActive="active">Usuarios</a></li>
-      <li><a routerLink="/products" routerLinkActive="active">Productos</a></li>
+      @if (currentUser$ | async; as user) {
+        @if (user.rol == 'admin' || user.rol == 'owner') {
+          <li><a routerLink="/users" routerLinkActive="active">Usuarios</a></li>
+          <li><a routerLink="/products" routerLinkActive="active">Productos</a></li>
+        }
+      }
     </ul>
     <div class="nav-actions-mobile">
       <button class="btn-outline">Iniciar sesión</button>
@@ -27,7 +31,15 @@
   </nav>
 
   <div class="header-actions">
-    <button class="btn-outline">Inicia sesión</button>
-    <button class="btn-primary">Registrate</button>
+    @if (!logged()) {
+      <button routerLink="/login" routerLinkActive="active" class="btn-outline">
+        Inicia sesión
+      </button>
+      <button class="btn-primary">Regístrate</button>
+    }
+    @if (currentUser$ | async; as user) {
+      <p class="lol">{{ user.username }}</p>
+      <button (click)="logOut()" class="btn-primary">Cerrar sesión</button>
+    }
   </div>
 </header>

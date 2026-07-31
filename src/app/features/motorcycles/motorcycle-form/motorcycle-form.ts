@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -6,27 +6,35 @@ import {
   Validators,
 } from '@angular/forms';
 import { HttpUsers } from '../../../core/services/http-users';
-import { BehaviorSubject } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { debounceTime, distinctUntilChanged, EMPTY, filter, switchMap } from 'rxjs';
 import { HttpMotorcycles } from '../../../core/services/http-motorcycles';
 import { AlertService } from '../../../core/services/alert';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-motorcycle-form',
-  imports: [ReactiveFormsModule, AsyncPipe],
+  imports: [ReactiveFormsModule],
   templateUrl: './motorcycle-form.html',
   styleUrl: './motorcycle-form.css',
 })
-export default class MotorcycleForm {
+export default class MotorcycleForm implements OnInit {
   private httpUsers = inject(HttpUsers);
-  clientList$ = new BehaviorSubject<any[]>([]);
   private httpMotorcycles = inject(HttpMotorcycles);
   private alert = inject(AlertService);
+  private cdr = inject(ChangeDetectorRef);
   activatedRoute = inject(ActivatedRoute);
   router = inject(Router);
 
   formData: FormGroup;
+
+  // Buscador de cliente: reemplaza el <select> que cargaba TODOS los
+  // usuarios. Este control es independiente del formData -- solo maneja
+  // el texto que se ve en el input; el id real que se envía al backend
+  // vive en formData.get('client').
+  clientSearchControl = new FormControl('');
+  clientResults: any[] = [];
+  searchingClient = false;
+  showClientResults = false;
 
   isEditMode = false;
   formTitle: string = 'Registrar motocicleta';
@@ -94,8 +102,6 @@ export default class MotorcycleForm {
 
   
   ngOnInit() {
-    this.loadClients();
-
     this.motorcycleId = this.activatedRoute.snapshot.paramMap.get('id');
 
     if (this.motorcycleId) {
@@ -104,24 +110,54 @@ export default class MotorcycleForm {
       this.formTitle = 'Editar motocicleta';
       this.formButton = 'Editar';
     }
+
+    this.clientSearchControl.valueChanges
+      .pipe(
+        filter((term): term is string => typeof term === 'string'),
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap((term) => {
+          const trimmed = term.trim();
+
+          // si el término quedó muy corto (incluido vacío, al borrar todo)
+          // limpiamos la lista en vez de dejarla con el último resultado
+          if (trimmed.length < 2) {
+            this.clientResults = [];
+            this.showClientResults = false;
+            this.searchingClient = false;
+            this.cdr.markForCheck();
+            return EMPTY;
+          }
+
+          this.searchingClient = true;
+          return this.httpUsers.searchUsers(trimmed, 'client');
+        }),
+      )
+      .subscribe((results) => {
+        this.searchingClient = false;
+        this.clientResults = results;
+        this.showClientResults = true;
+        this.cdr.markForCheck();
+      });
   }
 
-  
-  loadClients() {
-    this.httpUsers.getUsers().subscribe({
-      next: (data) => {
-        console.log(data);
-        this.clientList$.next(data.filter((user: any) => user.rol === 'client'));
-      },
+  selectClient(user: any) {
+    this.formData.get('client')?.setValue(user._id);
+    this.clientSearchControl.setValue(user.username, { emitEvent: false });
+    this.clientResults = [];
+    this.showClientResults = false;
+  }
 
-      error: (err) => {
-        console.log(err);
-      },
+  onClientSearchFocus() {
+    this.showClientResults = this.clientResults.length > 0;
+  }
 
-      complete: () => {
-
-      },
-    });
+  onClientSearchBlur() {
+    // pequeño delay: si no, el blur cierra la lista antes de que el click
+    // en un resultado alcance a dispararse
+    setTimeout(() => {
+      this.showClientResults = false;
+    }, 150);
   }
 
   loadMotorcycle(motorcycleId: string) {
@@ -129,6 +165,15 @@ export default class MotorcycleForm {
       next: (data: any) => {
         const { motorcycle } = data;
         this.formData.patchValue(motorcycle);
+
+        // motorcycle.client viene poblado ({_id, username}), no es el id
+        // plano que espera el form -- se corrige aparte y se pinta el
+        // nombre en el buscador
+        if (motorcycle.client?._id) {
+          this.formData.get('client')?.setValue(motorcycle.client._id);
+          this.clientSearchControl.setValue(motorcycle.client.username, { emitEvent: false });
+        }
+        this.cdr.markForCheck();
       },
       error: () => {},
       complete: () => {},
