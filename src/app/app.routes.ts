@@ -77,6 +77,10 @@ export const routes: Routes = [
     path:'appointment',
     loadComponent:()=> import ('./features/appointment/appointment-form/appointment-form')
   },
+  {
+    path:'register',
+    loadComponent:()=> import('./features/register/register')
+  },
 
   //Redirecciones
   { path: '', redirectTo: 'home', pathMatch: 'full' },

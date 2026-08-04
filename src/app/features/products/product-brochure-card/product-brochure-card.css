@@ -1,17 +1,25 @@
 .product-card {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  background: #111;
-  border: 1px solid #1a1a1a;
-  transition: border-color 0.2s;
-  min-height: 340px;
+  position: relative;
+  width: 100%;
+  height: 410px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #0a0a0a;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
 }
 
-.product-card:hover { border-color: #CC2222; }
+.product-card:hover {
+  border-color: rgba(204, 34, 34, 0.5);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(204, 34, 34, 0.15);
+  transform: translateY(-3px);
+}
 
+/* ── IMAGEN (protagonista) ── */
 .card-image {
-  position: relative;
-  overflow: hidden;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
   background: #0a0a0a;
 }
 
@@ -20,124 +28,170 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  filter: grayscale(30%);
-  transition: transform 0.4s, filter 0.3s;
+  transition: transform 0.6s ease, filter 0.5s ease;
 }
 
 .product-card:hover .card-image img {
-  transform: scale(1.04);
-  filter: grayscale(0%);
+  transform: scale(1.01);
+
 }
 
-.card-category {
+.card-image::after {
+  content: '';
   position: absolute;
-  top: 12px;
-  left: 12px;
+  inset: 0;
+  background: linear-gradient(to top, rgba(5, 5, 5, 0.15) 0%, transparent 45%);
+  pointer-events: none;
+}
+
+/* ── ESTATUS (chip flotante de vidrio) ── */
+.card-status {
+  position: absolute;
+  z-index: 2;
+  top: 14px;
+  left: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #aaa;
-  background: rgba(0,0,0,0.6);
-  padding: 4px 8px;
+  color: #e8fff0;
+  background: rgba(10, 10, 11, 0.5);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 6px 12px 6px 8px;
 }
 
-.card-info {
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #2ecc71;
+  box-shadow: 0 0 8px #2ecc71;
+  flex-shrink: 0;
+}
+
+.card-status.out {
+  color: #ffd6d6;
+}
+
+.card-status.out .status-dot {
+  background: #cc2222;
+  box-shadow: 0 0 8px #cc2222;
+}
+
+/* ── PANEL DE VIDRIO (datos mínimos) ── */
+.card-glass {
+  position: absolute;
+  z-index: 1;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  padding: 1rem 1.1rem;
+  background: rgba(15, 15, 16, 0.7);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+}
+
+.card-glass-top {
   display: flex;
-  flex-direction: column;
-  padding: 1.5rem;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .card-name {
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 800;
   color: #ffffff;
   text-transform: uppercase;
   letter-spacing: 0.03em;
-  line-height: 1.2;
-  margin: 0 0 1.5rem 0;
+  line-height: 1.25;
+  margin: 0;
 }
 
-.card-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  flex: 1;
-}
-
-.meta-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #1e1e1e;
-}
-
-.meta-label {
-  font-size: 11px;
+.card-stock {
+  font-size: 10.5px;
   font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #555;
+  color: #999;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
-.meta-value {
-  font-size: 13px;
-  font-weight: 700;
-  color: #ccc;
-}
-
-.meta-value.stock { color: #2ecc71; }
-.meta-value.out { color: #CC2222; }
-
-.card-footer {
-  margin-top: 1.5rem;
+.card-glass-bottom {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   gap: 12px;
 }
 
+.card-price {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
 .price-label {
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #555;
-  display: block;
-  margin-bottom: 4px;
+  color: #cc2222;
 }
 
 .price-value {
-  font-size: 26px;
+  font-size: 20px;
   font-weight: 800;
   color: #ffffff;
   letter-spacing: -0.02em;
-  text-align: left;
 }
 
 .btn-agregar {
-  background: transparent;
-  border: 1px solid #CC2222;
-  color: #CC2222;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 12px;
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(204, 34, 34, 0.15);
+  border: 1px solid rgba(204, 34, 34, 0.45);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transition: background 0.2s, transform 0.15s, border-color 0.2s;
+}
+
+.btn-agregar svg {
+  width: 18px;
+  height: 18px;
 }
 
 .btn-agregar:hover {
-  background: #CC2222;
-  color: #ffffff;
+  background: #cc2222;
+  border-color: #cc2222;
+  transform: scale(1.08);
 }
 
-@media (max-width: 768px) {
-    .product-card {
-    grid-template-columns: 1fr;
-    min-height: auto;
-  }
+.btn-agregar:active {
+  transform: scale(0.94);
+}
 
-  .card-image { height: 220px; }
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .product-card {
+    width: 100%;
+    height: 320px;
+  }
 }

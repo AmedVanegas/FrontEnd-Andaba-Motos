@@ -39,7 +39,7 @@ import { MongoDatePipe } from '../../../core/pipes/mongo-date-pipe';
 
       <div class="card-cell actions">
         <a class="btn-edit"  (click)="onEditCLick()" [routerLink]="['/products/edit', product._id]">Editar</a>
-        <a class="btn-edit" (click)="onDeleteClick()">Eliminar</a>
+        <a class="btn-delete" (click)="onDeleteClick()">Eliminar</a>
       </div>
     </div>`,
   styleUrl: './product-list-card.css',

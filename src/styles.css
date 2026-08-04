@@ -1,20 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
 }
 
-.active{
+/* ===== Paleta / tokens compartidos (mismos valores que header + home + login) ===== */
+:root {
+  --carbon: #0a0a0a;
+  --glass: rgba(17, 17, 17, 0.4);
+  --glass-fill: rgba(255, 255, 255, 0.04);
+  --glass-fill-strong: rgba(255, 255, 255, 0.065);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-strong: rgba(255, 255, 255, 0.18);
+
+  --ink: #f2f1ee;
+  --dim: #8d8d92;
+  --faint: #5f6266;
+
+  --red: #e5383b;
+  --red-solid: #b52c2f;
+  --red-soft: rgba(229, 56, 59, 0.14);
+  --red-border: rgba(229, 56, 59, 0.5);
+
+  --green: #4ade80;
+  --amber: #f2a900;
+
+  --radius-lg: 12px;
+  --radius-md: 10px;
+  --radius-sm: 4px;
+}
+
+/* .active{
   border-bottom: 1px  #CC2222 solid;
   transition: all 2s;
-}
+} */
 
 body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: black;
+  background-color: var(--carbon);
+}
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
 app-root {
@@ -25,65 +58,98 @@ app-root {
 
 router-outlet + * {
   flex: 1;
+
+
 }
 
-/* ===== Formularios compartidos (user-form, product-form, etc.) ===== */
+
+
+/* ============================================================
+   FORMULARIOS COMPARTIDOS (user-form, product-form, motorcycle-form...)
+   Un solo sistema Liquid Glass — cada *-form.css solo agrega
+   lo que sea realmente propio de ese formulario.
+   ============================================================ */
 .form-page-bg {
-  background: #0a0a0a;
+  position: relative;
   min-height: 100vh;
-  padding: 2rem;
+  padding: 2.5rem 2rem;
+  background: var(--carbon);
+  isolation: isolate;
+}
+
+/* Fijo al viewport (no al scroll): así el blur de los paneles glass
+   se nota de verdad — el glow se queda quieto mientras el contenido
+   pasa por encima, en vez de desaparecer al bajar la página. */
+.form-page-bg::before {
+  content: '';
+  position: fixed;
+  z-index: 0;
+  top: -12%;
+  left: 6%;
+  width: 640px;
+  height: 640px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--red-soft) 0%, transparent 70%);
+  filter: blur(10px);
+  pointer-events: none;
 }
 
 .form-page {
-  max-width: 680px;
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
 }
 
 .form-header {
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #2a2a2a;
+  margin-bottom: 2rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--glass-border);
 }
 
 .form-header h1 {
   margin: 0 0 6px;
-  font-size: 24px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 26px;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--ink);
 }
 
 .form-header p {
   margin: 0;
-  color: #888;
+  color: var(--dim);
   font-size: 13px;
 }
 
 .form-section {
-  background: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 4px;
+  position: relative;
+  background: var(--glass-fill);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: inset 0 1px 0 var(--glass-border-strong);
   margin-bottom: 16px;
   overflow: visible;
 }
 
 .form-section-title {
-  padding: 10px 16px;
-  background: #0a0a0a;
-  border-bottom: 2px solid #e53935;
-  color: #e53935;
-  font-weight: 700;
-  font-size: 11.5px;
-  letter-spacing: 0.08em;
+  padding: 12px 20px;
+  color: var(--red);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
+  border-bottom: 1px solid var(--glass-border);
 }
 
 .form-section-body {
-  padding: 16px;
+  padding: 20px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  gap: 18px;
 }
 
 .form-field-full {
@@ -92,43 +158,47 @@ router-outlet + * {
 
 .form-section-body label {
   display: block;
-  font-size: 12px;
-  color: #9a9da2;
-  margin-bottom: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 8px;
 }
 
 .form-section-body input,
 .form-section-body select,
 .form-section-body textarea {
   width: 100%;
-  background: #242424;
-  border: 1px solid #333;
-  color: #e0e0e0;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid var(--glass-border);
+  color: var(--ink);
   padding: 10px 12px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   font-size: 14px;
-  font-family: inherit;
+  font-family: 'Inter', sans-serif;
   outline: none;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
 }
 
 .form-section-body input::placeholder,
 .form-section-body textarea::placeholder {
-  color: #5f6266;
+  color: rgba(141, 141, 146, 0.55);
 }
 
 .form-section-body input:focus,
 .form-section-body select:focus,
 .form-section-body textarea:focus {
-  border-color: #e53935;
-  box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.25);
+  border-color: var(--red);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 0 3px var(--red-soft);
 }
 
 .form-section-body select {
   appearance: none;
   cursor: pointer;
-  background-image: linear-gradient(45deg, transparent 50%, #55585c 50%),
-    linear-gradient(135deg, #55585c 50%, transparent 50%);
+  background-image: linear-gradient(45deg, transparent 50%, var(--dim) 50%),
+    linear-gradient(135deg, var(--dim) 50%, transparent 50%);
   background-position: calc(100% - 20px) calc(1.2em), calc(100% - 15px) calc(1.2em);
   background-size: 5px 5px, 5px 5px;
   background-repeat: no-repeat;
@@ -141,58 +211,586 @@ router-outlet + * {
 
 .form-error {
   display: block;
-  color: #e53935;
+  color: var(--red);
   font-size: 12px;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 .form-submit {
   width: 100%;
-  background: #e53935;
+  background: #e5383b40;
+  border: 1px solid #e5383baa;
   color: #fff;
-  border: none;
   padding: 13px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: background-color 0.15s ease, transform 0.1s ease;
+  transition: background 0.2s, transform 0.15s, opacity 0.2s;
 }
 
-.form-submit:hover {
-  background: #ff4b46;
+.form-submit:hover:not(:disabled) {
+  background: var(--red-solid);
 }
 
-.form-submit:active {
-  transform: translateY(1px);
+.form-submit:active:not(:disabled) {
+  transform: scale(0.99);
 }
 
 .form-submit:disabled {
-  background: transparent;
-  color: grey;
-  border: solid grey 1px;
-  cursor: auto;
-}
-
-.form-submit:disabled:hover {
-  background: none;
+  opacity: 0.4;
+  color: var(--dim);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 .form-section-body input.ng-valid.ng-touched,
 .form-section-body select.ng-valid.ng-touched,
 .form-section-body textarea.ng-valid.ng-touched {
-  border-color: #43a047;
+  border-color: rgba(74, 222, 128, 0.5);
   box-shadow: none;
 }
 
 @media (max-width: 768px) {
   .form-page-bg {
-    padding: 1rem;
+    padding: 1.5rem 1rem;
   }
 
   .form-section-body {
     grid-template-columns: 1fr;
   }
+}
+
+/* ============================================================
+   LISTADOS / TABLAS COMPARTIDOS (user-list, product-list, motorcycle-list...)
+   Igual que arriba: un solo sistema Liquid Glass en styles.css.
+   Cada *-list.css / *-list-card.css solo define el ancho de sus
+   columnas (grid-template-columns) cuando difiere del default.
+   ============================================================ */
+.users-container {
+  position: relative;
+  min-height: 100vh;
+  padding: 2.5rem 2rem;
+  background: var(--carbon);
+  color: var(--ink);
+  isolation: isolate;
+}
+
+/* Fijo al viewport: en listas largas, antes el glow desaparecía a los
+   pocos scrolls y los paneles glass quedaban planos (blur sobre un
+   fondo uniforme no se nota). Ahora se queda quieto detrás de todo. */
+.users-container::before {
+  content: '';
+  position: fixed;
+  z-index: 0;
+  top: -12%;
+  right: 4%;
+  width: 700px;
+  height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--red-soft) 0%, transparent 70%);
+  filter: blur(10px);
+  pointer-events: none;
+}
+
+.users-wrapper {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Header de página */
+.header {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--glass-border);
+}
+.header h1 {
+  margin: 0 0 0.5rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+}
+.header p {
+  margin: 0;
+  color: var(--dim);
+  font-size: 13.5px;
+}
+
+/* Toolbar */
+.toolbar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.search-box {
+  flex: 1;
+  min-width: 200px;
+}
+.search-box input {
+  width: 100%;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.search-box input::placeholder {
+  color: rgba(141, 141, 146, 0.55);
+}
+.search-box input:focus {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px var(--red-soft);
+}
+
+.toolbar select {
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.btn-new {
+  padding: 10px 22px;
+  background: #e5383b40;
+  border: 1px solid #e5383baa;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-new:hover {
+  background: var(--red-solid);
+}
+.btn-new:active {
+  transform: scale(0.97);
+}
+
+/* Stats */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 2rem;
+}
+.stat-card {
+  background: var(--glass-fill);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  padding: 1rem 1.1rem;
+  border-radius: var(--radius-md);
+}
+.stat-label {
+  margin: 0 0 8px;
+  color: var(--dim);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.stat-value {
+  margin: 0;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--ink);
+  border: none;
+  padding: 0;
+  text-decoration: none;
+}
+/* Semántica de color: verde = positivo, ámbar = requiere atención, rojo = crítico */
+.stat-value.active {
+  color: var(--green);
+}
+.stat-value.warn {
+  color: var(--amber);
+}
+.stat-value.suspended {
+  color: var(--red);
+}
+
+/* Tabla como grid de filas */
+.users-list-wrapper {
+  background: var(--glass-fill);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.users-header {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr 0.5fr 0.5fr 0.7fr 1fr;
+  gap: 16px;
+  padding: 14px 18px;
+  color: var(--dim);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.header-cell {
+  display: flex;
+  align-items: center;
+}
+
+/* Fila (usada por *-list-card) */
+.user-card {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr 0.5fr 0.5fr 0.7fr 1fr;
+  gap: 16px;
+  padding: 14px 18px;
+  color: #d8d8db;
+  border-bottom: 1px solid var(--glass-border);
+  align-items: center;
+  font-size: 14px;
+  transition: background 0.15s ease;
+}
+.user-card:hover {
+  background: rgba(255, 255, 255, 0.025);
+}
+.user-card:last-child {
+  border-bottom: none;
+}
+
+.card-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.user-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.avatar-JC {
+  background: var(--red-soft);
+  border: 1px solid var(--red-border);
+  color: var(--ink);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.role-badge {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--glass-border);
+  color: var(--ink);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  text-transform: capitalize;
+}
+
+.status {
+  font-size: 12px;
+  font-weight: 500;
+}
+.status-Activo {
+  color: var(--green);
+}
+.status-Inactivo {
+  color: var(--amber);
+}
+.status-Banned {
+  color: var(--red);
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  white-space: nowrap;
+}
+
+/* Editar = acción neutra (glass) · Eliminar = acción destructiva (rojo) */
+.btn-edit,
+.btn-delete {
+  text-decoration: none;
+  background: transparent;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 11.5px;
+  padding: 5px 10px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+
+.btn-edit {
+  border: 1px solid var(--glass-border-strong);
+  color: var(--dim);
+}
+.btn-edit:hover {
+  color: var(--ink);
+  border-color: rgba(255, 255, 255, 0.34);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.btn-delete {
+  border: 1px solid var(--red-border);
+  color: var(--red);
+}
+.btn-delete:hover {
+  color: #fff;
+  background: var(--red);
+  border-color: var(--red);
+}
+
+/* Paginación */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  color: var(--dim);
+  font-size: 13px;
+}
+.pagination-controls {
+  display: flex;
+  gap: 6px;
+}
+.btn-pagination {
+  padding: 7px 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  color: var(--dim);
+  cursor: pointer;
+  font-size: 12.5px;
+  transition: all 0.15s ease;
+}
+.btn-pagination:hover:not(:disabled) {
+  border-color: var(--glass-border-strong);
+  color: var(--ink);
+}
+.btn-pagination.active {
+  background: #e5383b40;
+  border-color: #e5383baa;
+  color: #fff;
+}
+.btn-pagination:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .users-container {
+    padding: 1.25rem 1rem;
+  }
+
+  .header h1 {
+    font-size: 22px;
+  }
+
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-box {
+    width: 100%;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .users-header {
+    display: none;
+  }
+
+  .user-card {
+    grid-template-columns: 1fr !important;
+    gap: 10px;
+  }
+
+  .card-cell {
+    justify-content: space-between;
+  }
+
+  .avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 10px;
+  }
+
+  .btn-edit,
+  .btn-delete {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+
+  .actions {
+    justify-content: flex-start;
+  }
+
+  .pagination {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .pagination-controls {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+}
+
+/* ============================================================
+   ALERTAS (SweetAlert2)
+   Los modales de SweetAlert2 se inyectan directo en <body>, fuera
+   del árbol de Angular, así que no hay componente que los pueda
+   estilar por scope: tienen que vivir en el global. alert.ts les
+   pasa customClass: 'glass-swal' / 'glass-btn ...' y buttonsStyling:
+   false para que sea este CSS, y no swal2, el que mande.
+   ============================================================ */
+.swal2-container {
+  background: rgba(10, 10, 10, 0.55) !important;
+}
+
+.swal2-popup.glass-swal {
+  width: auto;
+  max-width: 420px;
+  padding: 2rem 1.75rem 1.75rem;
+  background: rgba(17, 17, 17, 0.55) !important;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg) !important;
+  backdrop-filter: blur(26px) saturate(150%);
+  -webkit-backdrop-filter: blur(26px) saturate(150%);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+  color: var(--ink);
+  font-family: 'Inter', sans-serif;
+}
+
+.glass-swal .swal2-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--ink) !important;
+  padding: 0;
+  margin: 0.75rem 0 0.5rem;
+}
+
+.glass-swal .swal2-html-container {
+  font-size: 13.5px;
+  color: var(--dim) !important;
+  margin: 0.25rem 0 0;
+}
+
+.glass-swal .swal2-actions {
+  margin-top: 1.75rem;
+  gap: 10px;
+}
+
+/* Iconos recoloreados a la paleta del proyecto (nada de azul/verde/rojo genéricos) */
+.glass-swal .swal2-icon.swal2-warning {
+  border-color: var(--red-border) !important;
+  color: var(--red) !important;
+}
+.glass-swal .swal2-icon.swal2-question {
+  border-color: var(--glass-border-strong) !important;
+  color: var(--ink) !important;
+}
+.glass-swal .swal2-icon.swal2-success {
+  border-color: rgba(74, 222, 128, 0.4) !important;
+  color: var(--green) !important;
+}
+.glass-swal .swal2-icon.swal2-success [class^='swal2-success-line'] {
+  background-color: var(--green) !important;
+}
+.glass-swal .swal2-icon.swal2-error {
+  border-color: var(--red-border) !important;
+  color: var(--red) !important;
+}
+.glass-swal .swal2-icon.swal2-error [class^='swal2-x-mark-line'] {
+  background-color: var(--red) !important;
+}
+
+/* Botones — mismos glass buttons que el resto del sitio */
+.glass-btn {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 10px 22px !important;
+  border-radius: var(--radius-sm) !important;
+  box-shadow: none !important;
+  transition: background 0.2s, transform 0.15s, border-color 0.2s;
+}
+.glass-btn:hover {
+  transform: none;
+}
+.glass-btn:active {
+  transform: scale(0.97);
+}
+
+.glass-btn--danger {
+  background: #e5383b40 !important;
+  border: 1px solid #e5383baa !important;
+  color: #fff !important;
+}
+.glass-btn--danger:hover {
+  background: var(--red-solid) !important;
+}
+
+.glass-btn--success {
+  background: rgba(74, 222, 128, 0.16) !important;
+  border: 1px solid rgba(74, 222, 128, 0.5) !important;
+  color: #fff !important;
+}
+.glass-btn--success:hover {
+  background: rgba(74, 222, 128, 0.32) !important;
+}
+
+.glass-btn--ghost {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid var(--glass-border-strong) !important;
+  color: var(--dim) !important;
+}
+.glass-btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: var(--ink) !important;
 }

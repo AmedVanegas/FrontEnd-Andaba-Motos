@@ -11,22 +11,21 @@ import { AsyncPipe } from '@angular/common';
 })
 export class Header {
   menuOpen = false;
-  private httpAuth = inject(HttpAuth)
-
-  currentUser$ = this.httpAuth.currentUser$
+  public httpAuth = inject(HttpAuth)
+  
 
 toggleMenu() {
   this.menuOpen = !this.menuOpen;
 }
 
 logOut(){
-
   this.httpAuth.logoutUser()
-
 }
 
 logged(){
+  console.log(this.httpAuth.isLogged())
   return this.httpAuth.isLogged()
+ 
 }
 }
 

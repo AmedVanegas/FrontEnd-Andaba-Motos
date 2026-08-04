@@ -15,7 +15,7 @@
         <option value="no disponible">No disponible</option>
         <option value="pendiente">Pendiente</option>
       </select>
-      <button class="btn-new-product" routerLink="/products/new" routerLinkActive="active">+ NUEVO PRODUCTO</button>
+      <button class="btn-new" routerLink="/products/new" routerLinkActive="active">+ NUEVO PRODUCTO</button>
     </div>
 
     <div class="stats-grid">
@@ -29,11 +29,11 @@
       </div>
       <div class="stat-card">
         <p class="stat-label">No disponibles</p>
-        <p class="stat-value suspended">{{getUnavailableProducts()}}</p>
+        <p class="stat-value">{{getUnavailableProducts()}}</p>
       </div>
       <div class="stat-card">
         <p class="stat-label">Pendientes</p>
-        <p class="stat-value">{{getPendingProducts()}}</p>
+        <p class="stat-value warn">{{getPendingProducts()}}</p>
       </div>
     </div>
 
@@ -53,6 +53,7 @@
               </product-list-card>
             }
        
+    </div>
 
     <div class="pagination">
       <span>Mostrando 1-5 de 12 usuarios</span>

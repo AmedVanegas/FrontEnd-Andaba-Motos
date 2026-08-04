@@ -1,16 +1,41 @@
-.lol{
-  color:white
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600&family=Inter:wght@400;500;600&display=swap');
+
+:host {
+  
+  display: block; /* ¡Súper importante! Los componentes en Angular son 'inline' por defecto */
+  width: 100%;
 }
+
+.header-spacer {
+  height: calc(64px + env(safe-area-inset-top, 0px));
+}
+
+
 .app-header {
-  background: #111111;
-  border-bottom: 2px solid #CC2222;
+  position:fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 50;
+  background: rgba(10, 10, 11, 0.4);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 2rem;
   height: 64px;
   gap: 20px;
-  position: relative;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 20px);
+  height: calc(64px + env(safe-area-inset-top, 0px));
+  transition: all 0.4s;
+}
+
+.app-header:hover{
+  background: rgba(10, 10, 11, 0.7);
+
 }
 
 .header-logo {
@@ -22,27 +47,28 @@
 }
 
 .logo-img {
-  height: 40px;
+  height: 30px;
   width: auto;
   object-fit: contain;
 }
 
 .logo-mark svg {
-  width: 20px;
-  height: 20px;
-  fill: #ffffff;
+  width: 18px;
+  height: 18px;
+  fill: #f2f1ee;
 }
 
 .logo-text {
+  font-family: 'Space Grotesk', sans-serif;
   font-size: 18px;
-  font-weight: 700;
-  color: #ffffff;
-  letter-spacing: 0.04em;
+  font-weight: 600;
+  color: #f2f1ee;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
 }
 
 .logo-text span {
-  color: #CC2222;
+  color: #e5383b;
 }
 
 nav {
@@ -65,64 +91,96 @@ nav {
   align-items: center;
   height: 64px;
   padding: 0 1.1rem;
-  font-size: 15px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14.5px;
+  line-height: 20px;
   font-weight: 500;
-  color: #e0e0e0;
+  color: #8d8d92;
   text-decoration: none;
-  letter-spacing: 0.03em;
-  border-bottom: 2px solid transparent;
-  transition: color 0.15s, border-color 0.15s;
+  letter-spacing: 0.01em;
   position: relative;
-  top: 2px;
+  transition: color 0.2s;
+}
+
+.header-nav li a::after {
+  content: '';
+  position: absolute;
+  left: 1.1rem;
+  right: 1.1rem;
+  bottom: 22px;
+  height: 1.5px;
+  background: #e5383b;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.25s ease;
 }
 
 .header-nav li a:hover {
-  color: #ffffff;
+  color: #f2f1ee;
+}
+
+.header-nav li a:hover::after,
+.header-nav li a.active::after {
+  transform: scaleX(1);
 }
 
 .header-nav li a.active {
-  color: #ffffff;
-  border-bottom-color: #CC2222;
+  color: #f2f1ee;
 }
 
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
+}
+
+.lol {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #8d8d92;
+  margin: 0;
 }
 
 .btn-outline {
   background: transparent;
-  border: 1px solid #3a3a3a;
-  color: #e0e0e0;
-  padding: 6px 14px;
-  border-radius: 5px;
+  border:  #8d8d92 1px solid;;
+  color: #8d8d92;
+  padding: 9px 18px;
+  font-family: 'Inter', sans-serif;
   font-size: 13px;
+  font-weight: 500;
+  border-radius: 4px;
   cursor: pointer;
-  transition: border-color 0.15s, color 0.15s;
+  transition: color 0.2s;
   white-space: nowrap;
 }
 
 .btn-outline:hover {
-  border-color: #666;
-  color: #ffffff;
+  color: #f2f1ee;
+  background-color: #8d8d9280 ;
 }
 
 .btn-primary {
-  background: #CC2222;
-  border: none;
+  background: #e5383b40;
+  border: #e5383baa 1px solid;
   color: #ffffff;
-  padding: 7px 16px;
-  border-radius: 5px;
+  padding: 9px 18px;
+  border-radius: 4px;
+  font-family: 'Inter', sans-serif;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background 0.2s, transform 0.15s;
   white-space: nowrap;
 }
 
 .btn-primary:hover {
-  background: #e02929;
+  background: #b52c2f;
+}
+
+.btn-primary:active {
+  transform: scale(0.96);
 }
 
 .hamburger {
@@ -139,14 +197,14 @@ nav {
 
 .hamburger span {
   display: block;
-  width: 24px;
-  height: 2px;
-  background: #e0e0e0;
-  border-radius: 2px;
+  width: 22px;
+  height: 1.5px;
+  background: #8d8d92;
+  transition: background 0.2s;
 }
 
 .hamburger:hover span {
-  background: #ffffff;
+  background: #f2f1ee;
 }
 
 .nav-actions-mobile {
@@ -169,8 +227,10 @@ nav {
     top: 64px;
     left: 0;
     right: 0;
-    background: #111111;
-    border-bottom: 2px solid #CC2222;
+    background: rgba(10, 10, 11, 0.96);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     padding: 1rem 2rem 1.5rem;
     z-index: 100;
   }
@@ -193,11 +253,12 @@ nav {
   .header-nav li a {
     height: auto;
     padding: 0.75rem 0;
-    font-size: 16px;
-    border-bottom: none;
-    border-top: 1px solid #222;
-    top: 0;
-    width: 100%;
+    font-size: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .header-nav li a::after {
+    display: none;
   }
 
   .header-nav li:first-child a {
@@ -222,5 +283,16 @@ nav {
     padding: 10px;
     font-size: 14px;
     text-align: center;
+    border-radius: 4px;
+  }
+
+  .nav-actions-mobile .btn-outline {
+    border: 1px solid rgba(255, 255, 255, 0.18);
   }
 }
+
+
+
+
+
+

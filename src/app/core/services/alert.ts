@@ -1,12 +1,6 @@
 import { Injectable } from '@angular/core';
 import Swal from 'sweetalert2';
 
-
-const BASE_STYLE = {
-  color: '#fff',
-  background: '#1a1a1a',
-};
-
 @Injectable({ providedIn: 'root' })
 export class AlertService {
   /**
@@ -20,13 +14,15 @@ export class AlertService {
       title: `¿Seguro que quiere eliminar ${entityLabel} ${itemName}?`,
       text: 'No se puede deshacer!',
       icon: 'warning',
-      iconColor: '#d33',
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#5e5e5e',
       cancelButtonText: 'Cancelar',
       confirmButtonText: 'Eliminar',
-      ...BASE_STYLE,
+      buttonsStyling: false,
+      customClass: {
+        popup: 'glass-swal',
+        confirmButton: 'glass-btn glass-btn--danger',
+        cancelButton: 'glass-btn glass-btn--ghost',
+      },
     });
     return result.isConfirmed;
   }
@@ -45,11 +41,14 @@ export class AlertService {
       text: isEditMode ? 'Se actualizará la información existente.' : undefined,
       icon: 'question',
       showCancelButton: true,
-      confirmButtonColor: '#2e7d32',
-      cancelButtonColor: '#5e5e5e',
       cancelButtonText: 'Cancelar',
       confirmButtonText: isEditMode ? 'Guardar' : 'Crear',
-      ...BASE_STYLE,
+      buttonsStyling: false,
+      customClass: {
+        popup: 'glass-swal',
+        confirmButton: 'glass-btn glass-btn--success',
+        cancelButton: 'glass-btn glass-btn--ghost',
+      },
     });
     return result.isConfirmed;
   }
@@ -61,11 +60,14 @@ export class AlertService {
       text,
       icon: 'question',
       showCancelButton: true,
-      confirmButtonColor: '#2e7d32',
-      cancelButtonColor: '#5e5e5e',
       cancelButtonText: 'Cancelar',
       confirmButtonText,
-      ...BASE_STYLE,
+      buttonsStyling: false,
+      customClass: {
+        popup: 'glass-swal',
+        confirmButton: 'glass-btn glass-btn--success',
+        cancelButton: 'glass-btn glass-btn--ghost',
+      },
     });
     return result.isConfirmed;
   }
@@ -75,7 +77,11 @@ export class AlertService {
       title,
       text,
       icon: 'success',
-      ...BASE_STYLE,
+      buttonsStyling: false,
+      customClass: {
+        popup: 'glass-swal',
+        confirmButton: 'glass-btn glass-btn--success',
+      },
     });
   }
 
@@ -84,9 +90,11 @@ export class AlertService {
       title,
       text,
       icon: 'error',
-      iconColor:"#d33",
-      confirmButtonColor:'#5e5e5e',
-      ...BASE_STYLE,
+      buttonsStyling: false,
+      customClass: {
+        popup: 'glass-swal',
+        confirmButton: 'glass-btn glass-btn--danger',
+      },
     });
   }
 }

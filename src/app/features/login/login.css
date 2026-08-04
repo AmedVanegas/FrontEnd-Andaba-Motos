@@ -1,138 +1,135 @@
-/* .omg{
-    font-size: 50px;
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
 
-}
-.loginPage{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+:host {
+  display: block;
 }
 
-.imageLogin{
-    
-    object-fit: contain;
-}
+/* ===== Tokens (heredados del header/carbon theme) ===== */
+.login-page {
+  --carbon: #0a0a0b;
+  --ink: #f2f1ee;
+  --dim: #8d8d92;
+  --red: #e5383b;
+  --red-dim: rgba(229, 56, 59, 0.5);
+  --glass: rgba(255, 255, 255, 0.045);
+  --glass-border: rgba(255, 255, 255, 0.09);
+  --glass-highlight: rgba(255, 255, 255, 0.14);
+  --error: #ff6b6b;
 
-.imageloginimg{
-    
-    object-fit: cover;
-    overflow: hidden;
-    height: 100vh;
-
-}
-
-.form-page-bg{
-    width: 100%;
-    display: flex;
-    align-items: center;
-}
-
-.form-page{
-    width: 80%;
-    margin-bottom: 100px;
-   
-} */
-
-
-@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
-
-/* ===== Token system: pista nocturna / moto racing ===== */
-.loginPage {
-  --moto-carbon: #131313;
-  --moto-steel: #2a2a2a;
-  --moto-red: #e53935;
-  --moto-red-dark: #a82420;
-  --moto-amber: #f2a900;
-  --moto-chrome: #c9ccd1;
-  --moto-white: #f5f5f5;
-  --moto-dim: #8a8d92;
-  font-family: 'Inter', system-ui, sans-serif;
-}
-
-.loginPage {
+  position: relative;
+  min-height: 100vh;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-}
-
-/* ===== Panel de imagen ===== */
-.imageLogin {
-  object-fit: contain;
-  position: relative;
-}
-
-.imageloginimg {
-  object-fit: cover;
+  justify-content: center;
   overflow: hidden;
-  height: 100vh;
-  filter: saturate(1.05) contrast(1.03);
+  background: var(--carbon);
+  padding: 24px;
+  box-sizing: border-box;
+  font-family: 'Inter', system-ui, sans-serif;
+  isolation: isolate;
 }
 
-/* ===== Fondo del formulario ===== */
-.form-page-bg {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  position: relative;
-  background:
-    radial-gradient(ellipse 900px 600px at 15% 20%, rgba(229, 57, 53, 0.07), transparent 60%),
-    var(--moto-carbon);
-}
-
-.form-page {
-  width: 80%;
-  margin-bottom: 100px;
-}
-
-/* ===== Encabezado ===== */
-.form-header {
-  position: relative;
-  overflow: visible;
-}
-
-.gauge-mark {
+/* ===== Ambiente: glow rojo sobre carbon, sin foto ===== */
+.login-page::before,
+.login-page::after {
+  content: '';
   position: absolute;
-  top: -34px;
-  right: -6px;
-  width: 168px;
-  height: 168px;
+  z-index: 0;
+  border-radius: 50%;
+  filter: blur(10px);
   pointer-events: none;
 }
 
-.gauge-mark .gauge-ticks {
-  color: var(--moto-chrome);
-  opacity: 0.1;
+.login-page::before {
+  top: -18%;
+  left: 4%;
+  width: 780px;
+  height: 780px;
+  background: radial-gradient(circle, rgba(229, 56, 59, 0.34) 0%, transparent 70%);
 }
 
-.gauge-mark .gauge-needle {
-  color: var(--moto-red);
-  opacity: 0.4;
+.login-page::after {
+  bottom: -22%;
+  right: 0%;
+  width: 640px;
+  height: 640px;
+  background: radial-gradient(circle, rgba(229, 56, 59, 0.16) 0%, transparent 70%);
 }
 
-.omg {
-  font-family: 'Rajdhani', 'Inter', sans-serif;
-  font-weight: 700;
-  font-size: 50px;
-  letter-spacing: 0.01em;
-  text-transform: uppercase;
-  color: var(--moto-white);
-  line-height: 1.05;
+/* ===== Panel de vidrio ===== */
+.login-stage {
   position: relative;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
-.form-header p {
-  font-family: 'Inter', sans-serif;
-  color: var(--moto-dim);
+.login-card {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  padding: 64px 56px 52px;
+  border-radius: 8px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(229, 56, 59, 0.09),
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 0 70px rgba(229, 56, 59, 0.06);
+  animation: rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-.ignition-bar {
-  height: 3px;
-  width: 64px;
-  margin-top: 18px;
+/* Filo superior "iluminado" — el vidrio atrapando un poco de luz roja */
+.login-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 12%;
+  right: 12%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(229, 56, 59, 0.55), transparent);
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Encabezado ===== */
+.login-head {
+  margin-bottom: 32px;
+}
+
+.login-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 44px;
+  letter-spacing: -0.015em;
+  line-height: 1.05;
+  color: var(--ink);
+  margin: 0 0 10px;
+}
+
+.login-sub {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--dim);
+  margin: 0;
+}
+
+.login-bar {
+  display: block;
+  height: 2px;
+  width: 46px;
+  margin-top: 16px;
   border-radius: 2px;
-  background: linear-gradient(90deg, var(--moto-red), var(--moto-amber));
+  background: linear-gradient(90deg, var(--red), transparent);
   transform-origin: left;
-  animation: ignite 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation: ignite 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.15s both;
 }
 
 @keyframes ignite {
@@ -140,153 +137,119 @@
   to { transform: scaleX(1); }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .ignition-bar { animation: none; }
-}
-
-/* ===== Panel "Datos de acceso" ===== */
-.loginPage .form-section {
-  position: relative;
-  background: #17181a;
-  border-color: var(--moto-steel);
-}
-
-.loginPage .form-section::before,
-.loginPage .form-section::after {
-  content: '';
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  pointer-events: none;
-}
-
-.loginPage .form-section::before {
-  top: -1px;
-  left: -1px;
-  border-top: 2px solid var(--moto-red);
-  border-left: 2px solid var(--moto-red);
-}
-
-.loginPage .form-section::after {
-  bottom: -1px;
-  right: -1px;
-  border-bottom: 2px solid var(--moto-red);
-  border-right: 2px solid var(--moto-red);
-}
-
-.loginPage .form-section-title {
-  font-family: 'Rajdhani', sans-serif;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-}
-
-/* ===== Campos con icono tipo tablero ===== */
-.loginPage .input-wrap {
-  position: relative;
+/* ===== Campos ===== */
+.login-fields {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 22px;
+  margin-bottom: 30px;
 }
 
-.loginPage .input-wrap svg {
-  position: absolute;
-  left: 13px;
-  width: 16px;
-  height: 16px;
-  color: var(--moto-dim);
-  transition: color 0.15s ease;
-  pointer-events: none;
-}
-
-.loginPage .input-wrap:focus-within svg {
-  color: var(--moto-amber);
-}
-
-.loginPage .form-section-body input {
-  padding-left: 40px;
-  background: #1d1e20;
-  letter-spacing: 0.01em;
-}
-
-.loginPage .form-section-body input:focus {
-  border-color: var(--moto-amber);
-  box-shadow: 0 0 0 3px rgba(242, 169, 0, 0.16), 0 0 18px rgba(242, 169, 0, 0.12);
-}
-
-.loginPage .form-section-body input.ng-valid.ng-touched {
-  border-color: #43a047;
-}
-
-/* ===== Boton ignicion ===== */
-.loginPage .form-submit {
+.field {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  background: linear-gradient(100deg, var(--moto-red-dark), var(--moto-red));
-  position: relative;
-  overflow: hidden;
-  letter-spacing: 0.14em;
+  flex-direction: column;
 }
 
-.loginPage .form-submit svg {
-  width: 16px;
-  height: 16px;
+.field label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 9px;
+  transition: color 0.2s ease;
 }
 
-.loginPage .form-submit::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(115deg, transparent 0%, rgba(255, 255, 255, 0.22) 45%, transparent 62%);
-  transform: translateX(-130%);
-  transition: transform 0.55s ease;
+.field:focus-within label {
+  color: var(--ink);
 }
 
-.loginPage .form-submit:hover:not(:disabled)::after {
-  transform: translateX(130%);
+.field input {
+  width: 100%;
+  box-sizing: border-box;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--glass-border);
+  padding: 8px 2px 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-.loginPage .form-submit:hover:not(:disabled) {
-  background: linear-gradient(100deg, var(--moto-red), #ff5147);
+.field input::placeholder {
+  color: rgba(141, 141, 146, 0.5);
 }
 
-.loginPage .form-submit:disabled {
-  border-color: var(--moto-steel);
-}
-/* ===== Efecto Fade (Transición Formulario -> Imagen) ===== */
-.imageLogin::after {
-  content: '';
-  position: absolute;
-  inset: 0; /* Es un atajo para top:0, left:0, right:0, bottom:0 */
-  pointer-events: none; /* Evita que el degradado bloquee clics si luego agregas botones ahí */
-  
-  /* En PC (lado a lado): El degradado va de izquierda a derecha. 
-     Usamos tu variable --moto-carbon para que se fusione perfecto con el fondo */
-  background: linear-gradient(to right, var(--moto-carbon) 10%, transparent 80%);
+.field input:focus {
+  border-bottom-color: var(--red);
+  box-shadow: 0 1px 0 0 var(--red);
 }
 
-/* ===== Ajuste del Fade para la vista móvil ===== */
-@media (max-width: 900px) {
-  .imageLogin{
-    display: none;
+.field.is-invalid input {
+  border-bottom-color: var(--error);
+}
 
+.field.is-invalid input:focus {
+  box-shadow: 0 1px 0 0 var(--error);
+}
+
+.field-error {
+  margin-top: 7px;
+  font-size: 12px;
+  color: var(--error);
+}
+
+/* ===== Botón ===== */
+.login-submit {
+  width: 100%;
+  padding: 13px 20px;
+  border-radius: 4px;
+  border: 1px solid #e5383baa;
+  background: #e5383b40;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s, border-color 0.2s ease, opacity 0.2s ease;
+}
+
+.login-submit:hover:not(:disabled) {
+  background: #b52c2f;
+}
+
+.login-submit:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.login-submit:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 3px;
+}
+
+.login-submit:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+  border-color: var(--glass-border);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 40px 28px 32px;
   }
-  
+  .login-title {
+    font-size: 32px;
+  }
 }
 
+/* ===== Accesibilidad de movimiento ===== */
 @media (prefers-reduced-motion: reduce) {
-  .loginPage .form-submit::after { transition: none; }
-}
-
-@media (max-width: 900px) {
-  .loginPage {
-    flex-direction: column-reverse;
-  }
-  .imageloginimg {
-    height: 40vh;
-    width: 100%;
-  }
-  .gauge-mark {
-    display: none;
-  }
+  .login-card { animation: none; }
+  .login-bar { animation: none; transform: scaleX(1); }
 }

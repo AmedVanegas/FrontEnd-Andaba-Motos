@@ -38,8 +38,8 @@ import { MongoDatePipe } from '../../../core/pipes/mongo-date-pipe';
       <div class="card-cell">{{user.createdAt | mongoDate}}</div>
 
       <div class="card-cell actions">
-        <a class="btn-edit"  (click)="onClickEdit()" [routerLink]="['/users/edit', user._id]" >Editar</a>
-        <a class="btn-edit" (click)="onClick()">Eliminar</a>
+        <a class="btn-edit" (click)="onClickEdit()" [routerLink]="['/users/edit', user._id]" >Editar</a>
+        <a class="btn-delete" (click)="onClick()">Eliminar</a>
       </div>
     </div>
   `,
