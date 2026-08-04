@@ -10,10 +10,11 @@ import { debounceTime, distinctUntilChanged, EMPTY, filter, switchMap } from 'rx
 import { HttpMotorcycles } from '../../../core/services/http-motorcycles';
 import { AlertService } from '../../../core/services/alert';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BackButton } from '../../../shared/components/back-button/back-button';
 
 @Component({
   selector: 'app-motorcycle-form',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, BackButton],
   templateUrl: './motorcycle-form.html',
   styleUrl: './motorcycle-form.css',
 })

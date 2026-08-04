@@ -1,4 +1,5 @@
 <div class="form-page-bg">
+  <app-back-button fallback="/users" />
   <form class="form-page" (ngSubmit)="onSubmit()" [formGroup]="userFormData">
     <div class="form-header">
       <h1>{{ pageTitle }}</h1>

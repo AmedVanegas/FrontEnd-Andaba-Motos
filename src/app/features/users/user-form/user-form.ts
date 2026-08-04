@@ -18,6 +18,7 @@ import {
   type ICity,
 } from '@countrystatecity/countries-browser';
 import { HttpRoles } from '../../../core/services/http-roles';
+import { BackButton } from '../../../shared/components/back-button/back-button';
 import { HttpUsers } from '../../../core/services/http-users';
 import { AlertService } from '../../../core/services/alert';
 import { AsyncPipe, CommonModule, NgClass } from '@angular/common';
@@ -67,7 +68,7 @@ function passwordMatchValidator(group: AbstractControl): ValidationErrors | null
 
 @Component({
   selector: 'app-user-form',
-  imports: [ReactiveFormsModule, AsyncPipe, CommonModule],
+  imports: [ReactiveFormsModule, AsyncPipe, CommonModule, BackButton],
   templateUrl: './user-form.html',
   styleUrl: './user-form.css',
 })

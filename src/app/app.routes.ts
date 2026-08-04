@@ -66,21 +66,35 @@ export const routes: Routes = [
     loadComponent: () => import('./features/motorcycles/motorcycle-form/motorcycle-form'),
   },
   {
-    path:'login',
-    loadComponent:()=> import('./features/login/login')
+    path: 'login',
+    loadComponent: () => import('./features/login/login'),
   },
   {
-    path:'dashboard',
-    loadComponent:()=> import('./features/dashboard/dashboard')
+    path: 'dashboard',
+    loadComponent: () => import('./features/dashboard/dashboard'),
   },
   {
-    path:'appointment',
-    loadComponent:()=> import ('./features/appointment/appointment-form/appointment-form')
+    path: 'appointment',
+    loadComponent: () => import('./features/appointment/appointment-form/appointment-form'),
   },
   {
-    path:'register',
-    loadComponent:()=> import('./features/register/register')
+    path: 'register',
+    loadComponent: () => import('./features/register/register'),
   },
+   {
+    path:'categories',
+    loadComponent:()=> import('./features/categories/categories-list/categories-list')
+  },
+  {
+    path: 'categories/new',
+    loadComponent: () => import('./features/categories/category-form/category-form'),
+  },
+  {
+    path: 'categories/edit/:id',
+    loadComponent: () => import('./features/categories/category-form/category-form'),
+  },
+ 
+
 
   //Redirecciones
   { path: '', redirectTo: 'home', pathMatch: 'full' },

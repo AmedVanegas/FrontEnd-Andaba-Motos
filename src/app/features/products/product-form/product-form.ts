@@ -6,10 +6,11 @@ import { AsyncPipe, JsonPipe } from '@angular/common';
 import { HttpProducts } from '../../../core/services/http-products';
 import { AlertService } from '../../../core/services/alert';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BackButton } from '../../../shared/components/back-button/back-button';
 
 @Component({
   selector: 'app-product-form',
-  imports: [ReactiveFormsModule, AsyncPipe],
+  imports: [ReactiveFormsModule, AsyncPipe, BackButton],
   templateUrl: './product-form.html',
   styleUrl: './product-form.css',
 })

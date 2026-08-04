@@ -1,4 +1,5 @@
 <div class="form-page-bg">
+  <app-back-button fallback="/products" />
   <form class="form-page" [formGroup]="formData" (ngSubmit)="onSubmit()">
     <div class="form-header">
       <h1>{{formTitle}}</h1>

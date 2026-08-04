@@ -30,7 +30,7 @@ export class HttpAuth {
         if (res?.token && res?.data) {
           this.setAuthData(res.token, res.data);
 
-          this.router.navigateByUrl('/dashboard');
+          this.router.navigateByUrl(this.isStaffRole(res.data.rol) ? '/dashboard' : '/home');
         }
       }),
       map((res) => res.msg),
@@ -85,6 +85,9 @@ export class HttpAuth {
 
   isLogged(): boolean {
     return !!this.token && !!this.user;
+  }
+  isStaffRole(rol: string): boolean {
+    return rol === 'admin' || rol === 'owner' || rol === 'employee';
   }
 
   logoutUser(): void {
