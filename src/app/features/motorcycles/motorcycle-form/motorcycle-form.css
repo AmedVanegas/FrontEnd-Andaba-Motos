@@ -4,6 +4,7 @@
 
 .client-search {
   position: relative;
+  z-index: 10;
 }
 
 .client-search-hint {
@@ -51,4 +52,12 @@
 .client-results-empty:hover {
   background: transparent;
   color: var(--faint);
+}
+
+.form-section {
+  z-index: 1;
+}
+
+.form-section.is-elevated {
+  z-index: 2;
 }

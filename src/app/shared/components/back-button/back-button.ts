@@ -11,10 +11,6 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
   styleUrl: './back-button.css',
 })
 export class BackButton {
-  // A dónde mandar si NO hay historial dentro de la app (ej. alguien
-  // entra directo por URL o refresca el form). Cada form que use el
-  // componente puede pisar este valor con el destino que le haga
-  // sentido (ej. category-form -> "/categories").
   @Input() fallback = '/dashboard';
 
   faArrowLeft = faArrowLeft;

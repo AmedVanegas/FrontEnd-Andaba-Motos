@@ -1,16 +1,20 @@
-import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { Component, inject, OnInit, ChangeDetectorRef, INJECTOR } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpUsers } from '../../../core/services/http-users';
-import { debounceTime, distinctUntilChanged, EMPTY, filter, switchMap } from 'rxjs';
+import {
+  BehaviorSubject,
+  debounceTime,
+  distinctUntilChanged,
+  EMPTY,
+  filter,
+  switchMap,
+} from 'rxjs';
 import { HttpMotorcycles } from '../../../core/services/http-motorcycles';
 import { AlertService } from '../../../core/services/alert';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BackButton } from '../../../shared/components/back-button/back-button';
+import { HttpMotosApi } from '../../../core/services/http-motos-api';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-motorcycle-form',
@@ -21,17 +25,20 @@ import { BackButton } from '../../../shared/components/back-button/back-button';
 export default class MotorcycleForm implements OnInit {
   private httpUsers = inject(HttpUsers);
   private httpMotorcycles = inject(HttpMotorcycles);
+  private httpMotos = inject(HttpMotosApi);
   private alert = inject(AlertService);
   private cdr = inject(ChangeDetectorRef);
   activatedRoute = inject(ActivatedRoute);
   router = inject(Router);
+  motoslist$ = new BehaviorSubject<any[]>([]);
+  
+  brandSearchControl = new FormControl('');
+  brandResults: string[] = [];
+  showBrandResults = false;
+  private allBrands: string[] = [];
 
   formData: FormGroup;
 
-  // Buscador de cliente: reemplaza el <select> que cargaba TODOS los
-  // usuarios. Este control es independiente del formData -- solo maneja
-  // el texto que se ve en el input; el id real que se envía al backend
-  // vive en formData.get('client').
   clientSearchControl = new FormControl('');
   clientResults: any[] = [];
   searchingClient = false;
@@ -101,9 +108,10 @@ export default class MotorcycleForm implements OnInit {
     }
   }
 
-  
   ngOnInit() {
     this.motorcycleId = this.activatedRoute.snapshot.paramMap.get('id');
+
+    this.loadMotos();
 
     if (this.motorcycleId) {
       this.loadMotorcycle(this.motorcycleId);
@@ -138,6 +146,27 @@ export default class MotorcycleForm implements OnInit {
         this.searchingClient = false;
         this.clientResults = results;
         this.showClientResults = true;
+        this.cdr.markForCheck();
+      });
+
+    this.brandSearchControl.valueChanges
+      .pipe(
+        filter((term): term is string => typeof term === 'string'),
+        debounceTime(200),
+        distinctUntilChanged(),
+      )
+      .subscribe((term) => {
+        const trimmed = term.trim().toLowerCase();
+
+        if (trimmed.length < 1) {
+          this.brandResults = [];
+          this.showBrandResults = false;
+          this.cdr.markForCheck();
+          return;
+        }
+
+        this.brandResults = this.allBrands.filter((marca) => marca.toLowerCase().includes(trimmed));
+        this.showBrandResults = this.brandResults.length > 0;
         this.cdr.markForCheck();
       });
   }
@@ -179,6 +208,34 @@ export default class MotorcycleForm implements OnInit {
       error: () => {},
       complete: () => {},
     });
+  }
+
+  loadMotos() {
+    this.httpMotos.getMotos().subscribe({
+      next: (d) => {
+        this.allBrands = d
+        this.motoslist$.next(d);
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
+  }
+  selectBrand(marca: string) {
+    this.formData.get('brand')?.setValue(marca);
+    this.brandSearchControl.setValue(marca, { emitEvent: false });
+    this.brandResults = [];
+    this.showBrandResults = false;
+  }
+
+  onBrandSearchFocus() {
+    this.showBrandResults = this.brandResults.length > 0;
+  }
+
+  onBrandSearchBlur() {
+    setTimeout(() => {
+      this.showBrandResults = false;
+    }, 150);
   }
 
   get licensePlate() {

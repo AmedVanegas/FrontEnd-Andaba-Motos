@@ -2,11 +2,11 @@
   <app-back-button fallback="/motorcycles" />
   <form class="form-page" [formGroup]="formData" (ngSubmit)="onSubmit()">
     <div class="form-header">
-      <h1>{{formTitle}}</h1>
+      <h1>{{ formTitle }}</h1>
       <p>Completa los datos de la motocicleta</p>
     </div>
 
-    <div class="form-section">
+    <div class="form-section" [class.is-elevated]="showBrandResults">
       <div class="form-section-title">Información de la motocicleta</div>
       <div class="form-section-body">
         <div>
@@ -27,14 +27,24 @@
           }
         </div>
 
-        <div>
+        <div class="client-search">
           <label for="brand">Marca</label>
           <input
             type="text"
             id="brand"
-            formControlName="brand"
-            placeholder="Marca de la motocicleta"
+            [formControl]="brandSearchControl"
+            (focus)="onBrandSearchFocus()"
+            (blur)="onBrandSearchBlur()"
+            placeholder="Busca una marca..."
+            autocomplete="off"
           />
+          @if (showBrandResults) {
+            <ul class="client-results">
+              @for (marca of brandResults; track marca) {
+                <li (click)="selectBrand(marca)">{{ marca }}</li>
+              }
+            </ul>
+          }
           @if (brand?.invalid && (brand?.dirty || brand?.touched)) {
             @if (brand?.errors?.['required']) {
               <small class="form-error">La marca es obligatoria</small>
@@ -59,12 +69,7 @@
 
         <div>
           <label for="color">Color</label>
-          <input
-            type="text"
-            id="color"
-            formControlName="color"
-            placeholder="Color"
-          />
+          <input type="text" id="color" formControlName="color" placeholder="Color" />
           @if (color?.invalid && (color?.dirty || color?.touched)) {
             @if (color?.errors?.['required']) {
               <small class="form-error">El color es obligatorio</small>
@@ -120,12 +125,8 @@
       </div>
     </div>
 
-    <button
-      class="form-submit"
-      type="submit"
-      [disabled]="formData.invalid"
-    >
-      {{formButton}}
+    <button class="form-submit" type="submit" [disabled]="formData.invalid">
+      {{ formButton }}
     </button>
   </form>
 </div>
