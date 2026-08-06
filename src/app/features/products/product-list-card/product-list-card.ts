@@ -9,7 +9,7 @@ import { MongoDatePipe } from '../../../core/pipes/mongo-date-pipe';
   template: `
   <div class="user-card">
       <div class="card-cell user-cell">
-        <div class="avatar avatar-JC"><img [src]="product.productImage" alt=""></div>
+        <div class="avatar avatar-JC"><img [src]="product.productImages?.[0]" alt=""></div>
         <span>{{product.name}}</span>
       </div>
 

@@ -29,6 +29,10 @@ export default class ProductForm {
   formButton: string = 'Crear producto';
   productId: string | null = null;
 
+  existingImages: string[] = []; // URLs que ya tenía el producto (mutable: el usuario puede quitar)
+  newImages: File[] = []; // archivos nuevos elegidos en este form
+  newImagePreviews: string[] = [];
+
   constructor() {
     // Define la estructura equivalente del formulario en HTML
     this.formData = new FormGroup({
@@ -40,8 +44,7 @@ export default class ProductForm {
       nr: new FormControl('', [
         Validators.required,
         Validators.minLength(4),
-        Validators.maxLength(17),
-        Validators.pattern(/^[0-9]+$/),
+        Validators.maxLength(17)
       ]),
       category: new FormControl('', Validators.required),
       productImage: new FormControl('', Validators.minLength(3)),
@@ -70,8 +73,16 @@ export default class ProductForm {
       if (!confirmed) {
         return;
       }
+      const formData = new FormData();
 
-      this.httpProducts.editProduct(this.productId, formValue).subscribe({
+      Object.entries(formValue).forEach(([key, value]) => {
+        formData.append(key, value as string);
+      });
+
+      formData.append('existingImages', JSON.stringify(this.existingImages));
+      this.newImages.forEach((file) => formData.append('images', file));
+
+      this.httpProducts.editProduct(this.productId, formData).subscribe({
         next: (data) => {
           console.log(data);
         },
@@ -89,10 +100,19 @@ export default class ProductForm {
         delete formValue.productImage;
       }
 
-      this.httpProducts.createProducts(this.formData.value).subscribe({
+      const formData = new FormData();
+      Object.entries(formValue).forEach(([key, value]) => {
+        formData.append(key, value as string);
+      });
+      this.newImages.forEach((file) => formData.append('images', file));
+
+      this.httpProducts.createProducts(formData).subscribe({
         next: (res) => {
           console.log(res);
           this.formData.reset();
+          this.newImages = [];
+          this.newImagePreviews.forEach((url) => URL.revokeObjectURL(url));
+          this.newImagePreviews = [];
         },
 
         error: (error) => {
@@ -123,8 +143,6 @@ export default class ProductForm {
     }
   }
 
-  //getters
-
   loadCategories() {
     this.httpcategory.getCategory().subscribe({
       next: (data) => {
@@ -149,11 +167,42 @@ export default class ProductForm {
       next: (data) => {
         const { product } = data;
         this.formData.patchValue(product);
+        this.existingImages = [...(data.product.productImages ?? [])];
       },
       error: () => {},
       complete: () => {},
     });
   }
+
+  removeExistingImage(index: number) {
+    this.existingImages.splice(index, 1);
+  }
+
+  onFilesSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files) return;
+
+    const espacioDisponible = 6 - this.totalImages;
+    const archivosElegidos = Array.from(input.files).slice(0, espacioDisponible);
+
+    archivosElegidos.forEach((file) => {
+      this.newImages.push(file);
+      this.newImagePreviews.push(URL.createObjectURL(file));
+    });
+
+    input.value = ''; // permite volver a elegir el mismo archivo si lo quita y lo vuelve a añadir
+  }
+
+  removeNewImage(index: number) {
+    URL.revokeObjectURL(this.newImagePreviews[index]); // libera memoria
+    this.newImages.splice(index, 1);
+    this.newImagePreviews.splice(index, 1);
+  }
+
+  ngOnDestroy() {
+    this.newImagePreviews.forEach((url) => URL.revokeObjectURL(url));
+  }
+
   get name() {
     return this.formData.get('name');
   }
@@ -188,5 +237,9 @@ export default class ProductForm {
 
   get roi() {
     return this.formData.get('roi');
+  }
+
+  get totalImages() {
+    return this.existingImages.length + this.newImages.length;
   }
 }

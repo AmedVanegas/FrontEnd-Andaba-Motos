@@ -9,7 +9,6 @@
     <span></span>
     <span></span>
   </button>
-
   <nav [class.open]="menuOpen">
     <ul class="header-nav">
       <li><a routerLink="/">Inicio</a></li>
@@ -17,12 +16,6 @@
       <li><a routerLink="/services" routerLinkActive="active">Servicios</a></li>
       <li><a routerLink="/about-us" routerLinkActive="active">Nosotros</a></li>
       <li><a routerLink="/contact" routerLinkActive="active">Contacto</a></li>
-      @if (httpAuth.user$ | async; as user) {
-        @if (user.rol == 'admin' || user.rol == 'owner') {
-          <li><a routerLink="/users" routerLinkActive="active">Usuarios</a></li>
-          <li><a routerLink="/products" routerLinkActive="active">Productos</a></li>
-        }
-      }
     </ul>
     <div class="nav-actions-mobile">
       <button routerLink="/login" class="btn-outline">Iniciar sesión</button>
@@ -32,7 +25,10 @@
 
   <div class="header-actions">
     @if (httpAuth.user$ | async; as user) {
-      <p class="lol">{{ user.username }}</p>
+      <p class="lol">¡Hola {{ user.username }}!</p>
+      @if (user.rol == 'admin' || user.rol == 'owner') {
+        <button routerLink="/dashboard" class="btn-admin">Admin</button>
+      }
       <button (click)="logOut()" class="btn-outline">Cerrar sesión</button>
     } @else {
       <button routerLink="/login" routerLinkActive="active" class="btn-outline">

@@ -211,6 +211,34 @@ nav {
   display: none;
 }
 
+.btn-admin {
+  background: rgba(242, 169, 0, 0.14);
+  border: 1px solid rgba(242, 169, 0, 0.5);
+  color: #f2a900;
+  padding: 9px 18px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  /* backdrop-filter: blur(8px); */
+  /* -webkit-backdrop-filter: blur(8px); */
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.15s;
+  white-space: nowrap;
+}
+
+.btn-admin:hover {
+  background: rgba(242, 169, 0, 0.28);
+  border-color: rgba(242, 169, 0, 0.8);
+  color: #fff4d9;
+}
+
+.btn-admin:active {
+  transform: scale(0.96);
+}
+
 
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {

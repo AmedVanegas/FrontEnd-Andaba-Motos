@@ -2,21 +2,16 @@
   <app-back-button fallback="/products" />
   <form class="form-page" [formGroup]="formData" (ngSubmit)="onSubmit()">
     <div class="form-header">
-      <h1>{{formTitle}}</h1>
+      <h1>{{ formTitle }}</h1>
       <p>Completa los datos del producto</p>
     </div>
 
     <div class="form-section">
       <div class="form-section-title">Información general</div>
       <div class="form-section-body">
-        <div>
+        <div class="form-field-full">
           <label for="name">Nombre</label>
-          <input
-            type="text"
-            id="name"
-            formControlName="name"
-            placeholder="Nombre del producto"
-          />
+          <input type="text" id="name" formControlName="name" placeholder="Nombre del producto" />
           @if (name?.invalid && (name?.dirty || name?.touched)) {
             @if (name?.errors?.['required']) {
               <small class="form-error">El nombre es obligatorio</small>
@@ -32,24 +27,16 @@
 
         <div>
           <label for="nr">Número de referencia</label>
-          <input
-            type="text"
-            id="nr"
-            formControlName="nr"
-            placeholder="Número de referencia"
-          />
+          <input type="text" id="nr" formControlName="nr" placeholder="Número de referencia" />
           @if (nr?.invalid && (nr?.dirty || nr?.touched)) {
             @if (nr?.errors?.['required']) {
               <small class="form-error">Este campo es obligatorio</small>
             }
             @if (nr?.errors?.['minlength']) {
-              <small class="form-error">Este campo debe tener mínimo 4 números</small>
+              <small class="form-error">Este campo debe tener mínimo 4 dígitos</small>
             }
             @if (nr?.errors?.['maxlength']) {
-              <small class="form-error">Este campo debe tener máximo 17 números</small>
-            }
-            @if (nr?.errors?.['pattern']) {
-              <small class="form-error">Este campo solo debe contener números</small>
+              <small class="form-error">Este campo debe tener máximo 17 dígitos</small>
             }
           }
         </div>
@@ -69,20 +56,6 @@
           }
         </div>
 
-        <div>
-          <label for="pImage">Link imagen de producto</label>
-          <input
-            type="text"
-            id="pImage"
-            formControlName="productImage"
-            placeholder="image.img"
-          />
-          @if (productImage?.invalid && (productImage?.dirty || productImage?.touched)) {
-            @if (productImage?.errors?.['minlength']) {
-              <small class="form-error">El link debe tener mínimo 3 caracteres</small>
-            }
-          }
-        </div>
       </div>
     </div>
 
@@ -116,12 +89,7 @@
       <div class="form-section-body">
         <div>
           <label for="price">Precio</label>
-          <input
-            type="number"
-            id="price"
-            formControlName="price"
-            placeholder="Precio"
-          />
+          <input type="number" id="price" formControlName="price" placeholder="Precio" />
           @if (price?.invalid && (price?.dirty || price?.touched)) {
             @if (price?.errors?.['required']) {
               <small class="form-error">Este campo es obligatorio</small>
@@ -149,14 +117,9 @@
           }
         </div>
 
-        <div >
+        <div>
           <label for="stock">Stock</label>
-          <input
-            type="number"
-            id="stock"
-            formControlName="stock"
-            placeholder="Stock disponible"
-          />
+          <input type="number" id="stock" formControlName="stock" placeholder="Stock disponible" />
           @if (stock?.invalid && (stock?.dirty || stock?.touched)) {
             @if (stock?.errors?.['required']) {
               <small class="form-error">Este campo es obligatorio</small>
@@ -168,27 +131,51 @@
         </div>
         <div>
           <label for="roi">Retorno inversión</label>
-          <input
-            type="number"
-            id="roi"
-            formControlName="roi"
-            placeholder="0.3"
-          />
+          <input type="number" id="roi" formControlName="roi" placeholder="0.3" />
           @if (roi?.invalid && (roi?.dirty || roi?.touched)) {
             @if (roi?.errors?.['min']) {
               <small class="form-error">El ROI mínimo es 0.1</small>
             }
           }
         </div>
+        <div class="image-manager form-field-full">
+          <div class="image-row">
+            @for (img of existingImages; track img; let i = $index) {
+              <div class="image-thumb">
+                <img [src]="img" alt="Imagen del producto" />
+                <button type="button" (click)="removeExistingImage(i)">✕</button>
+              </div>
+            }
+            @for (preview of newImagePreviews; track preview; let i = $index) {
+              <div class="image-thumb image-thumb--new">
+                <img [src]="preview" alt="Imagen nueva" />
+                <button type="button" (click)="removeNewImage(i)">✕</button>
+              </div>
+            }
+          </div>
+
+          @if (totalImages < 6) {
+            <div class="file-upload">
+              <input
+                type="file"
+                id="productImagesInput"
+                multiple
+                accept="image/*"
+                (change)="onFilesSelected($event)"
+                hidden
+              />
+              <label for="productImagesInput" class="file-upload-btn">Seleccionar imágenes</label>
+              <span class="file-upload-hint">{{ totalImages }}/6 imágenes</span>
+            </div>
+          } @else {
+            <small>Máximo 6 imágenes por producto</small>
+          }
+        </div>
       </div>
     </div>
 
-    <button
-      class="form-submit"
-      type="submit"
-      [disabled]="formData.invalid"
-    >
-      {{formButton}}
+    <button class="form-submit" type="submit" [disabled]="formData.invalid">
+      {{ formButton }}
     </button>
   </form>
 </div>

@@ -1,45 +1,7 @@
-<!-- <div class="product-card">
-        <div class="card-image">
-          <img
-            [src]="product.productImage"
-            [alt]="product.name"
-          />
-        </div>
-        <div class="card-info">
-          <h2 class="card-name">{{product.name}}</h2>
-          <div class="card-meta">
-            <div class="meta-row">
-              <span class="meta-label">Estatus</span>
-              @if (product.status == 'disponible'){
-
-              <span class="meta-value stock">{{product.status | uppercase}}</span>
-
-              }@else{
-                <span class="meta-value out">{{product.status | uppercase}}</span>
-              }
-              
-            </div>
-            <div class="meta-row">
-              <span class="meta-label">Stock</span>
-              <span class="meta-value">{{product.stock}}</span>
-            </div>
-          </div>
-          <div class="card-footer">
-            <div class="card-price">
-              <span class="price-label">Precio base</span>
-              <span class="price-value">{{product.price + (product.price * product.roi) | currency:'COP ':'symbol':'1.0'}}</span>
-            </div>
-            <button class="btn-agregar">Agregar +</button>
-          </div>
-        </div>
-      </div> -->
-      <div class="product-card">
+<div class="product-card" (click)="onCardClick()">
 
   <div class="card-image">
-    <img
-      [src]="product.productImage"
-      [alt]="product.name"
-    />
+    <img [src]="product.productImages?.[0]" [alt]="product.name" />
     <span class="card-status" [class.out]="product.status !== 'disponible'">
       <span class="status-dot"></span>
       {{product.status | uppercase}}
@@ -55,11 +17,12 @@
     <div class="card-glass-bottom">
       <div class="card-price">
         <span class="price-label">Precio</span>
-        <span class="price-value">{{product.price + (product.price * product.roi) | currency:'COP ':'symbol':'1.0'}}</span>
+        <span class="price-value">{{product.price + (product.price * product.roi) | currency:'COP
+          ':'symbol':'1.0'}}</span>
       </div>
-      <button class="btn-agregar" aria-label="Agregar al carrito">
+      <button class="btn-agregar" aria-label="Agregar al carrito" (click)="$event.stopPropagation()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <path d="M12 5v14M5 12h14"/>
+          <path d="M12 5v14M5 12h14" />
         </svg>
       </button>
     </div>

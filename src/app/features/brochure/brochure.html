@@ -16,11 +16,19 @@
     @for (product of products$ | async; track $index) {
       
       @if(product.status !== 'no disponible' && product.status !== 'agotado'){
-         <product-brochure-card [product] = 'product'></product-brochure-card>
+         <product-brochure-card [product]="product" (open)="onOpenDetail($event)"></product-brochure-card>
         
       }@else{
        
       }
     }
   </div>
+
+  @if (selectedProduct) {
+    <product-brochure-detail
+      [product]="selectedProduct"
+      [originRect]="originRect"
+      (close)="onCloseDetail()"
+    ></product-brochure-detail>
+  }
 </div>
