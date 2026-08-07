@@ -16,9 +16,17 @@
         <div class="cart-items">
           @for (item of cart.products; track item.product._id) {
             <div class="cart-item">
+              <img
+                class="cart-item-img"
+                [src]="item.product.productImages?.[0] | imageUrl"
+                [alt]="item.product.name"
+                referrerpolicy="no-referrer"
+              />
               <div class="cart-item-info">
                 <p class="cart-item-name">{{ item.product.name }}</p>
-                <p class="cart-item-price">{{ item.unitPrice | currency:'COP':'symbol':'1.0-0' }}</p>
+                <p class="cart-item-price">
+                  {{ item.unitPrice | currency: 'COP' : 'symbol' : '1.0-0' }}
+                </p>
               </div>
               <div class="cart-item-qty">
                 <button class="qty-btn" (click)="decrease(item.product._id, item.quantity)">
@@ -39,7 +47,7 @@
         <div class="cart-footer">
           <div class="cart-total">
             <span>Total</span>
-            <span>{{ cart.price | currency:'COP ':'symbol':'1.0-0' }}</span>
+            <span>{{ cart.price | currency: 'COP ' : 'symbol' : '1.0-0' }}</span>
           </div>
           <button class="cart-checkout-btn">Finalizar compra</button>
         </div>

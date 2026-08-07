@@ -15,25 +15,25 @@ import { CartService } from '../../../core/services/http-cart';
 })
 export class Header {
   menuOpen = false;
-  public httpAuth = inject(HttpAuth)
-  faUser = faUser
-  faCartShopping = faCartShopping
+  public httpAuth = inject(HttpAuth);
+  faUser = faUser;
+  faCartShopping = faCartShopping;
   cartService = inject(CartService);
-  
 
-toggleMenu() {
-  this.menuOpen = !this.menuOpen;
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
+
+  closeMenu() {
+    this.menuOpen = false;
+  }
+
+  logOut() {
+    this.httpAuth.logoutUser();
+    this.closeMenu();
+  }
+
+  logged() {
+    return this.httpAuth.isLogged();
+  }
 }
-
-logOut(){
-  this.httpAuth.logoutUser()
-}
-
-logged(){
-  console.log(this.httpAuth.isLogged())
-  return this.httpAuth.isLogged()
- 
-}
-}
-
-

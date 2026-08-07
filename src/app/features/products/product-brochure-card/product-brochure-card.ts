@@ -2,10 +2,11 @@ import { CurrencyPipe, UpperCasePipe } from '@angular/common';
 import { Component, ElementRef, EventEmitter, inject, Input, Output } from '@angular/core';
 import { CartService } from '../../../core/services/http-cart';
 import { AlertService } from '../../../core/services/alert';
+import { ImageUrlPipe } from '../../../core/pipes/image-url.pipe';
 
 @Component({
   selector: 'product-brochure-card',
-  imports: [UpperCasePipe, CurrencyPipe],
+  imports: [UpperCasePipe, CurrencyPipe, ImageUrlPipe],
   templateUrl: './product-brochure-card.html',
   styleUrl: './product-brochure-card.css',
 })

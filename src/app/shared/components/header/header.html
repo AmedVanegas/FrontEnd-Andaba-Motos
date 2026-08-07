@@ -1,36 +1,38 @@
 <header class="app-header">
-  <a class="header-logo" routerLink="/">
+  <a class="header-logo" routerLink="/" (click)="closeMenu()">
     <img src="assets/images/logo.png" alt="AndubaMotos Logo" class="logo-img" />
     <span class="logo-text">Anduba<span>Motos</span></span>
   </a>
 
-  <button class="hamburger" (click)="toggleMenu()">
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
   <nav [class.open]="menuOpen">
     <ul class="header-nav">
-      <li><a routerLink="/">Inicio</a></li>
-      <li><a routerLink="/brochure" routerLinkActive="active">Productos</a></li>
-      <li><a routerLink="/services" routerLinkActive="active">Servicios</a></li>
-      <li><a routerLink="/about-us" routerLinkActive="active">Nosotros</a></li>
-      <li><a routerLink="/contact" routerLinkActive="active">Contacto</a></li>
+      <li><a routerLink="/" (click)="closeMenu()">Inicio</a></li>
+      <li><a routerLink="/brochure" routerLinkActive="active" (click)="closeMenu()">Productos</a></li>
+      <li><a routerLink="/services" routerLinkActive="active" (click)="closeMenu()">Servicios</a></li>
+      <li><a routerLink="/about-us" routerLinkActive="active" (click)="closeMenu()">Nosotros</a></li>
+      <li><a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">Contacto</a></li>
     </ul>
+
     <div class="nav-actions-mobile">
-      <button routerLink="/login" class="btn-outline">Iniciar sesión</button>
-      <button class="btn-primary">Registrarse</button>
+      @if (httpAuth.user$ | async; as user) {
+        <a routerLink="/my-account" class="btn-outline" (click)="closeMenu()">Mi cuenta</a>
+        <button (click)="logOut()" class="btn-primary">Cerrar sesión</button>
+      } @else {
+        <a routerLink="/login" class="btn-outline" (click)="closeMenu()">Iniciar sesión</a>
+        <a routerLink="/register" class="btn-primary" (click)="closeMenu()">Registrarse</a>
+      }
     </div>
   </nav>
 
   <div class="header-actions">
     @if (httpAuth.user$ | async; as user) {
       @if (user.rol == 'admin' || user.rol == 'owner') {
-        <button routerLink="/dashboard" class="btn-admin">Admin</button>
+        <button routerLink="/dashboard" class="btn-admin desktop-only">Admin</button>
       }
     }
 
-    <app-account-menu></app-account-menu>
+    <app-account-menu class="desktop-only"></app-account-menu>
+
     <button class="icon-glass" aria-label="Carrito" (click)="cartService.toggle()">
       <fa-icon [icon]="faCartShopping"></fa-icon>
       @if (cartService.cart$ | async; as cart) {
@@ -39,14 +41,12 @@
         }
       }
     </button>
-    <!-- @if (httpAuth.user$ | async; as user) {
-      <button (click)="logOut()" class="btn-outline">Cerrar sesión</button>
-    } @else {
-      <button routerLink="/login" routerLinkActive="active" class="btn-outline">
-        Inicia sesión
-      </button>
-      <button routerLink="/register" class="btn-primary">Regístrate</button>
-    } -->
+
+    <button class="hamburger" (click)="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </div>
 </header>
 <div class="header-spacer" aria-hidden="true"></div>

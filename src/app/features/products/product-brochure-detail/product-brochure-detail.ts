@@ -14,10 +14,11 @@ import {
 } from '@angular/core';
 import { CartService } from '../../../core/services/http-cart';
 import { AlertService } from '../../../core/services/alert';
+import { ImageUrlPipe } from '../../../core/pipes/image-url.pipe';
 
 @Component({
   selector: 'product-brochure-detail',
-  imports: [CurrencyPipe, UpperCasePipe],
+  imports: [CurrencyPipe, UpperCasePipe, ImageUrlPipe],
   templateUrl: './product-brochure-detail.html',
   styleUrl: './product-brochure-detail.css',
 })

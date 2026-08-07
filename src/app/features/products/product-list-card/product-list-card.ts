@@ -2,14 +2,15 @@ import { CurrencyPipe, TitleCasePipe } from '@angular/common';
 import { Component, EventEmitter, Input, input, Output, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MongoDatePipe } from '../../../core/pipes/mongo-date-pipe';
+import { ImageUrlPipe } from '../../../core/pipes/image-url.pipe';
 
 @Component({
   selector: 'product-list-card',
-  imports: [CurrencyPipe, TitleCasePipe, RouterLink],
+  imports: [CurrencyPipe, TitleCasePipe, RouterLink, ImageUrlPipe],
   template: `
   <div class="user-card">
       <div class="card-cell user-cell">
-        <div class="avatar avatar-JC"><img [src]="product.productImages?.[0]" alt=""></div>
+        <div class="avatar avatar-JC"><img [src]="product.productImages?.[0] | imageUrl" alt=""></div>
         <span>{{product.name}}</span>
       </div>
 

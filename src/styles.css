@@ -44,7 +44,8 @@ body {
   flex-direction: column;
   background-color: var(--carbon);
 }
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -58,11 +59,7 @@ app-root {
 
 router-outlet + * {
   flex: 1;
-
-
 }
-
-
 
 /* ============================================================
    FORMULARIOS COMPARTIDOS (user-form, product-form, motorcycle-form...)
@@ -178,7 +175,10 @@ router-outlet + * {
   font-size: 14px;
   font-family: 'Inter', sans-serif;
   outline: none;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.15s ease;
 }
 
 .form-section-body input::placeholder,
@@ -197,10 +197,15 @@ router-outlet + * {
 .form-section-body select {
   appearance: none;
   cursor: pointer;
-  background-image: linear-gradient(45deg, transparent 50%, var(--dim) 50%),
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--dim) 50%),
     linear-gradient(135deg, var(--dim) 50%, transparent 50%);
-  background-position: calc(100% - 20px) calc(1.2em), calc(100% - 15px) calc(1.2em);
-  background-size: 5px 5px, 5px 5px;
+  background-position:
+    calc(100% - 20px) calc(1.2em),
+    calc(100% - 15px) calc(1.2em);
+  background-size:
+    5px 5px,
+    5px 5px;
   background-repeat: no-repeat;
 }
 
@@ -228,7 +233,10 @@ router-outlet + * {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: background 0.2s, transform 0.15s, opacity 0.2s;
+  transition:
+    background 0.2s,
+    transform 0.15s,
+    opacity 0.2s;
 }
 
 .form-submit:hover:not(:disabled) {
@@ -344,7 +352,9 @@ router-outlet + * {
   border-radius: var(--radius-sm);
   color: var(--ink);
   outline: none;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 .search-box input::placeholder {
   color: rgba(141, 141, 146, 0.55);
@@ -375,7 +385,9 @@ router-outlet + * {
   text-transform: uppercase;
   cursor: pointer;
   white-space: nowrap;
-  transition: background 0.2s, transform 0.15s;
+  transition:
+    background 0.2s,
+    transform 0.15s;
 }
 .btn-new:hover {
   background: var(--red-solid);
@@ -758,7 +770,10 @@ router-outlet + * {
   padding: 10px 22px !important;
   border-radius: var(--radius-sm) !important;
   box-shadow: none !important;
-  transition: background 0.2s, transform 0.15s, border-color 0.2s;
+  transition:
+    background 0.2s,
+    transform 0.15s,
+    border-color 0.2s;
 }
 .glass-btn:hover {
   transform: none;
@@ -810,7 +825,10 @@ router-outlet + * {
   color: var(--ink);
   font-size: 16px;
   cursor: pointer;
-  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    transform 0.15s;
 }
 
 .icon-glass:hover {
@@ -822,4 +840,29 @@ router-outlet + * {
   transform: scale(0.97);
 }
 
-
+.app-footer {
+  position: relative;
+  background: rgba(17, 17, 17, 0.5);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 3.5rem 2rem calc(1.5rem + env(safe-area-inset-bottom, 0px));
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  overflow: hidden;
+}
+.icon-glass__badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: var(--red);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--carbon);
+}

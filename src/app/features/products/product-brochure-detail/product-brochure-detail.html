@@ -25,7 +25,7 @@
         >
           @for (img of images; track img) {
             <div class="detail-image-slide">
-              <img [src]="img" [alt]="product.name" />
+              <img [src]="img |imageUrl" [alt]="product.name" />
             </div>
           }
         </div>

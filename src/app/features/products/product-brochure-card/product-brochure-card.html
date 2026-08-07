@@ -1,6 +1,6 @@
 <div class="product-card" (click)="onCardClick()">
   <div class="card-image">
-    <img [src]="product.productImages?.[0]" [alt]="product.name" />
+    <img [src]="product.productImages?.[0] | imageUrl" [alt]="product.name" />
     <span class="card-status" [class.out]="product.status !== 'disponible'">
       <span class="status-dot"></span>
       {{ product.status | uppercase }}

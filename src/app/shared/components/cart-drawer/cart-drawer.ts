@@ -5,10 +5,11 @@ import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { faXmark, faTrash, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { CartService } from '../../../core/services/http-cart';
+import { ImageUrlPipe } from '../../../core/pipes/image-url.pipe';
 
 @Component({
   selector: 'app-cart-drawer',
-  imports: [AsyncPipe, CurrencyPipe, FaIconComponent],
+  imports: [AsyncPipe, CurrencyPipe, FaIconComponent, ImageUrlPipe],
   templateUrl: './cart-drawer.html',
   styleUrl: './cart-drawer.css',
 })

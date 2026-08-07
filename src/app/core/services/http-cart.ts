@@ -52,7 +52,7 @@ export class CartService {
   addItem(productId: string, quantity = 1) {
     return this.http
       .post<{ data: ShoppingCart }>(`${this.apiUrl}/items`, { product: productId, quantity })
-      .pipe(tap((res) => { this.cartSubject.next(res.data); this.open(); }));
+      .pipe(tap((res) => { this.cartSubject.next(res.data); }));
   }
 
   updateQuantity(productId: string, quantity: number) {
