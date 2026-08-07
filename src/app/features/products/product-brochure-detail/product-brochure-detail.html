@@ -1,15 +1,28 @@
 <div class="detail-backdrop" [class.is-open]="isOpen" (click)="onBackdropClick()">
-  <div class="detail-panel" #panel [class.show-content]="showContent" (click)="$event.stopPropagation()">
-
+  <div
+    class="detail-panel"
+    #panel
+    [class.show-content]="showContent"
+    (click)="$event.stopPropagation()"
+  >
     <button class="detail-close" (click)="requestClose()" aria-label="Cerrar">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+      >
         <path d="M18 6 6 18M6 6l12 12" />
       </svg>
     </button>
 
     <div class="detail-media">
       @if (images.length) {
-        <div class="detail-image-track" [style.transform]="'translateX(-' + (currentImage * 100) + '%)'">
+        <div
+          class="detail-image-track"
+          [style.transform]="'translateX(-' + currentImage * 100 + '%)'"
+        >
           @for (img of images; track img) {
             <div class="detail-image-slide">
               <img [src]="img" [alt]="product.name" />
@@ -19,12 +32,24 @@
 
         @if (hasMultipleImages) {
           <button class="detail-nav prev" (click)="prevImage()" aria-label="Imagen anterior">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            >
               <path d="M15 18l-6-6 6-6" />
             </svg>
           </button>
           <button class="detail-nav next" (click)="nextImage()" aria-label="Siguiente imagen">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            >
               <path d="M9 18l6-6-6-6" />
             </svg>
           </button>
@@ -74,16 +99,23 @@
       <div class="detail-footer">
         <div class="detail-price">
           <span class="price-label">Precio</span>
-          <span class="price-value">{{ displayPrice() | currency:'COP ':'symbol':'1.0' }}</span>
+          <span class="price-value">{{
+            displayPrice() | currency: 'COP ' : 'symbol' : '1.0'
+          }}</span>
         </div>
-        <button class="btn-agregar-lg">
+        <button class="btn-agregar-lg" (click)="addToCart()">
           Agregar al carrito
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <path d="M12 5v14M5 12h14"/>
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          >
+            <path d="M12 5v14M5 12h14" />
           </svg>
         </button>
       </div>
     </div>
-
   </div>
 </div>

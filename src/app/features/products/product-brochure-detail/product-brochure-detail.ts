@@ -12,6 +12,8 @@ import {
   ChangeDetectorRef,
   inject
 } from '@angular/core';
+import { CartService } from '../../../core/services/http-cart';
+import { AlertService } from '../../../core/services/alert';
 
 @Component({
   selector: 'product-brochure-detail',
@@ -21,6 +23,8 @@ import {
 })
 export class ProductBrochureDetail implements AfterViewInit, OnDestroy {
   private cdr = inject(ChangeDetectorRef);
+  cartService = inject(CartService)
+  alert = inject(AlertService)
   @Input() product: any;
   // Rect de la card que se clickeó: punto de partida de la animación.
   // Si es null, se hace un fade+scale genérico desde el centro.
@@ -34,6 +38,15 @@ export class ProductBrochureDetail implements AfterViewInit, OnDestroy {
   isAnimating = false;
   showContent = false;
   private isClosing = false;
+
+    addToCart() {
+    this.cartService.addItem(this.product._id, 1).subscribe({
+      error: (err) => {
+        console.error(err.error?.msg);
+        this.alert.error('No se pudo añadir al carrito', err.error?.msg)
+      },
+    });
+  }
 
   get images(): string[] {
     return this.product?.productImages?.length ? this.product.productImages : [];

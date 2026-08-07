@@ -12,7 +12,7 @@
 
 
 .app-header {
-  position:fixed;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -21,16 +21,36 @@
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
   padding: 0 2rem;
   height: 64px;
   gap: 20px;
   box-sizing: border-box;
   padding-top: env(safe-area-inset-top, 20px);
   height: calc(64px + env(safe-area-inset-top, 0px));
-  transition: all 0.4s;
+  transition: background 0.4s;
+}
+
+.header-logo {
+  grid-column: 1;
+  justify-self: start;
+}
+
+nav {
+  grid-column: 2;
+  justify-self: center;
+}
+
+.header-actions {
+  grid-column: 3;
+  justify-self: end;
+}
+
+.hamburger {
+  grid-column: 3;
+  justify-self: end;
 }
 
 .app-header:hover{
@@ -238,6 +258,13 @@ nav {
 .btn-admin:active {
   transform: scale(0.96);
 }
+/* ============================================================
+   ICON GLASS — botones de icono (header: cuenta, carrito)
+   Mismo sistema glass que .form-section / .stat-card / .glass-btn,
+   solo que cuadrado en vez de con texto.
+   ============================================================ */
+
+
 
 
 /* ── RESPONSIVE ── */

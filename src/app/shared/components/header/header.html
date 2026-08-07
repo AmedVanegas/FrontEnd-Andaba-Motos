@@ -25,17 +25,28 @@
 
   <div class="header-actions">
     @if (httpAuth.user$ | async; as user) {
-      <p class="lol">¡Hola {{ user.username }}!</p>
       @if (user.rol == 'admin' || user.rol == 'owner') {
         <button routerLink="/dashboard" class="btn-admin">Admin</button>
       }
+    }
+
+    <app-account-menu></app-account-menu>
+    <button class="icon-glass" aria-label="Carrito" (click)="cartService.toggle()">
+      <fa-icon [icon]="faCartShopping"></fa-icon>
+      @if (cartService.cart$ | async; as cart) {
+        @if (cart.products.length > 0) {
+          <span class="icon-glass__badge">{{ cart.products.length }}</span>
+        }
+      }
+    </button>
+    <!-- @if (httpAuth.user$ | async; as user) {
       <button (click)="logOut()" class="btn-outline">Cerrar sesión</button>
     } @else {
       <button routerLink="/login" routerLinkActive="active" class="btn-outline">
         Inicia sesión
       </button>
       <button routerLink="/register" class="btn-primary">Regístrate</button>
-    }
+    } -->
   </div>
 </header>
 <div class="header-spacer" aria-hidden="true"></div>

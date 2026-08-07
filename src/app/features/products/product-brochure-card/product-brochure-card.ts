@@ -1,5 +1,7 @@
 import { CurrencyPipe, UpperCasePipe } from '@angular/common';
-import { Component, ElementRef, EventEmitter, Input, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Input, Output } from '@angular/core';
+import { CartService } from '../../../core/services/http-cart';
+import { AlertService } from '../../../core/services/alert';
 
 @Component({
   selector: 'product-brochure-card',
@@ -8,6 +10,8 @@ import { Component, ElementRef, EventEmitter, Input, Output } from '@angular/cor
   styleUrl: './product-brochure-card.css',
 })
 export class ProductBrochureCard {
+  cartService = inject(CartService);
+  alert = inject(AlertService)
   @Input() product: any;
 
   // Emite el producto + el rect de la card en pantalla, para que el
@@ -19,5 +23,15 @@ export class ProductBrochureCard {
   onCardClick() {
     const rect = this.elRef.nativeElement.getBoundingClientRect();
     this.open.emit({ product: this.product, rect });
+
+  }
+  addToCart(event: Event) {
+    event.stopPropagation(); // evita que dispare onCardClick
+    this.cartService.addItem(this.product._id, 1).subscribe({
+      error: (err) => {
+        console.error(err.error?.msg);
+        this.alert.error('No se pudo añadir al carrito', err.error?.msg)
+      },
+    });
   }
 }
