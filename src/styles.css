@@ -629,6 +629,8 @@ router-outlet + * {
 }
 
 @media (max-width: 768px) {
+
+  
   .users-container {
     padding: 1.25rem 1rem;
   }
@@ -654,13 +656,48 @@ router-outlet + * {
     display: none;
   }
 
+  /* El wrapper deja de ser una sola caja continua: pasa a ser
+     solo un contenedor de layout, transparente, con gap entre cards. */
+  .users-list-wrapper {
+    background: transparent;
+    border: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  /* Cada user-card ahora es su propia card: fondo, borde y
+     radio completo en las 4 esquinas. */
   .user-card {
-    grid-template-columns: 1fr !important;
-    gap: 10px;
+    position: relative;
+    display: flex !important;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 16px 116px 16px 18px;
+    background: var(--glass-fill);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+  }
+
+  .user-card:last-child {
+    border-bottom: 1px solid var(--glass-border);
   }
 
   .card-cell {
-    justify-content: space-between;
+    justify-content: flex-start;
+    text-align: left;
+    font-size: 13.5px;
+  }
+
+  .user-cell {
+    justify-content: flex-start;
   }
 
   .avatar {
@@ -669,14 +706,36 @@ router-outlet + * {
     font-size: 10px;
   }
 
-  .btn-edit,
-  .btn-delete {
-    font-size: 10px;
-    padding: 4px 8px;
+  /* Pill -> rectángulo, un poco más ancho */
+  .role-badge {
+    border-radius: var(--radius-sm);
+    padding: 5px 18px;
+    min-width: 84px;
+    text-align: center;
   }
 
+  /* Sacado del flujo normal y centrado verticalmente contra
+     el alto real de la card, sin depender de cómo se acomode
+     el contenido de la izquierda. */
   .actions {
-    justify-content: flex-start;
+    position: absolute;
+    top: 50%;
+    right: 18px;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 96px;
+    white-space: nowrap;
+  }
+
+  .btn-edit,
+  .btn-delete {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 12.5px;
+    padding: 11px 12px;
+    text-align: center;
   }
 
   .pagination {
@@ -689,15 +748,11 @@ router-outlet + * {
     flex-wrap: wrap;
   }
 }
-
-/* ============================================================
-   ALERTAS (SweetAlert2)
-   Los modales de SweetAlert2 se inyectan directo en <body>, fuera
-   del árbol de Angular, así que no hay componente que los pueda
-   estilar por scope: tienen que vivir en el global. alert.ts les
-   pasa customClass: 'glass-swal' / 'glass-btn ...' y buttonsStyling:
-   false para que sea este CSS, y no swal2, el que mande.
-   ============================================================ */
+@media(max-width:930px){
+   .form-page{
+    margin-top: 20px;
+  }
+}
 .swal2-container {
   background: rgba(10, 10, 10, 0.55) !important;
 }

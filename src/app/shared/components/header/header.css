@@ -34,8 +34,6 @@
   background: rgba(10, 10, 11, 0.94);
 }
 
-
-
 .header-logo {
   grid-column: 1;
   justify-self: start;
@@ -132,8 +130,6 @@ nav {
   color: #f2f1ee;
 }
 
-
-
 .btn-outline:hover {
   color: #f2f1ee;
   background-color: #8d8d9280;
@@ -163,7 +159,9 @@ nav {
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s, transform 0.15s;
+  transition:
+    background 0.2s,
+    transform 0.15s;
   white-space: nowrap;
   text-decoration: none;
 }
@@ -216,7 +214,11 @@ nav {
   text-transform: uppercase;
   border-radius: 4px;
   cursor: pointer;
-  transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.15s;
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    color 0.2s,
+    transform 0.15s;
   white-space: nowrap;
 }
 
@@ -231,86 +233,33 @@ nav {
 }
 
 /* ── RESPONSIVE ── */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .hamburger {
     display: flex;
+  }
+
+  .app-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem;
   }
 
   .desktop-only {
     display: none;
   }
 
-  nav {
-    display: none;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: rgba(10, 10, 11, 0.96);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 1rem 2rem 1.5rem;
-    z-index: 100;
-    max-height: calc(100vh - 64px - env(safe-area-inset-top, 0px));
-    overflow-y: auto;
-  }
-
-  nav.open {
-    display: flex;
-  }
-
-  .header-nav {
-    flex-direction: column;
-    align-items: flex-start;
-    height: auto;
-    width: 100%;
-  }
-
-  .header-nav li {
-    width: 100%;
-  }
-
-  .header-nav li a {
-    height: auto;
-    padding: 0.75rem 0;
-    font-size: 15px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-  }
-
-  .header-nav li a::after {
-    display: none;
-  }
-
-  .header-nav li:first-child a {
-    border-top: none;
-  }
-
   .header-actions {
     gap: 12px;
   }
+}
 
-  .nav-actions-mobile {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    width: 100%;
-    margin-top: 1rem;
+@media (max-width: 410px) {
+  .app-header .logo-text,
+  .logo-text span {
+    display: none;
   }
+  .logo-img{
+    height: 70px;
 
-  .nav-actions-mobile .btn-outline,
-  .nav-actions-mobile .btn-primary {
-    width: 100%;
-    padding: 10px;
-    font-size: 14px;
-    text-align: center;
-    border-radius: 4px;
-  }
-
-  .nav-actions-mobile .btn-outline {
-    border: 1px solid rgba(255, 255, 255, 0.18);
   }
 }

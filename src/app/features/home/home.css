@@ -554,10 +554,14 @@
 .btn-cta:hover { background: #e02929; }
 .btn-cta:active { transform: scale(0.97); }
 
+
+@media(max-width:845px){
+   .hero-badge { display: none; }
+}
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
   .hero-content { padding: 1 1.5rem 3rem; background: rgba(10, 10, 11, 0.5); }
-  .hero-badge { display: none; }
+ 
 
   .stats-bar {
     flex-wrap: wrap;

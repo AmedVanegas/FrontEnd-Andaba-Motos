@@ -6,10 +6,11 @@ import { faUser, faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { AccountMenu } from '../account-menu/account-menu';
 import { CartService } from '../../../core/services/http-cart';
+import { MobileMenu } from '../mobile-menu/mobile-menu';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, RouterLinkActive, AsyncPipe, FaIconComponent, AccountMenu],
+  imports: [RouterLink, RouterLinkActive, AsyncPipe, FaIconComponent, AccountMenu, MobileMenu],
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
