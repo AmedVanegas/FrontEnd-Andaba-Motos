@@ -9,13 +9,14 @@
 
     <div class="toolbar">
       <div class="search-box">
-        <input type="text" placeholder="Buscar por nombre, email..." />
+        <input type="text" placeholder="Buscar por nombre, email, usuario..." [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()" />
       </div>
-      <select>
-        <option value="">Filtrar por estado</option>
-        <option value="Activo">Activo</option>
-        <option value="Inactivo">Inactivo</option>
-        <option value="Suspendido">Suspendido</option>
+      <select [(ngModel)]="statusFilter" (ngModelChange)="applyFilters()">
+        <option value="" disabled>Filtrar por estado</option>
+        <option value="">Todos</option>
+        <option value="active">Activo</option>
+        <option value="inactive">Inactivo</option>
+        <option value="banned">Baneado</option>
       </select>
       <button class="btn-new" routerLink="/users/new" routerLinkActive="active">
         + NUEVO USUARIO
@@ -53,13 +54,13 @@
       </div>
 
      
-      @for (user of users$ | async; track $index) {
+      @for (user of filteredUsers$ | async; track $index) {
         <user-list-card [user]="user" (edit)="onEdit($event)" (delete)="onDelete($event)"> </user-list-card>
       }
     </div>
 
     <div class="pagination">
-      <span>{{`Mostrando ${getAllUsers()} usuarios`}}</span>
+      <span>Mostrando {{(filteredUsers$ | async)?.length}} de {{getAllUsers()}} usuarios</span>
       <div class="pagination-controls">
         <button class="btn-pagination" disabled>← ANTERIOR</button>
         <button class="btn-pagination active">1</button>

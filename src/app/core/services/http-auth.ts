@@ -3,13 +3,14 @@ import { inject, PLATFORM_ID, Service } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { BehaviorSubject, catchError, map, of, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
-
 import { isPlatformBrowser } from '@angular/common';
+import { CartService } from './http-cart';
 
 @Service()
 export class HttpAuth {
   private http = inject(HttpClient);
   private router = inject(Router);
+  private cartService = inject(CartService);
   private BASE_URL = environment.apiUrl;
 
   private platformId = inject(PLATFORM_ID);
@@ -29,6 +30,7 @@ export class HttpAuth {
       tap((res) => {
         if (res?.token && res?.data) {
           this.setAuthData(res.token, res.data);
+          this.cartService.loadCart(); // carga el carrito del usuario recién autenticado
 
           this.router.navigateByUrl(this.isStaffRole(res.data.rol) ? '/dashboard' : '/home');
         }
@@ -91,6 +93,7 @@ export class HttpAuth {
   }
 
   logoutUser(): void {
+    this.cartService.clearLocal(); // vacia el carrito antes de limpiar el token
     this.clearAuthData();
     this.router.navigateByUrl('/home');
   }

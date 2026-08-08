@@ -6,10 +6,11 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { faXmark, faTrash, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { CartService } from '../../../core/services/http-cart';
 import { ImageUrlPipe } from '../../../core/pipes/image-url.pipe';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-cart-drawer',
-  imports: [AsyncPipe, CurrencyPipe, FaIconComponent, ImageUrlPipe],
+  imports: [AsyncPipe, CurrencyPipe, FaIconComponent, ImageUrlPipe, RouterLink],
   templateUrl: './cart-drawer.html',
   styleUrl: './cart-drawer.css',
 })

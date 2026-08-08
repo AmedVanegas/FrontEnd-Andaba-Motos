@@ -1,44 +1,66 @@
-import { Component, inject, NgZone } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { HttpProducts } from '../../../core/services/http-products';
 import { AlertService } from '../../../core/services/alert';
-import { AsyncPipe, CurrencyPipe, JsonPipe, TitleCasePipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import ProductListCard from '../product-list-card/product-list-card';
 import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
-  imports: [AsyncPipe, ProductListCard, RouterLink],
+  imports: [AsyncPipe, FormsModule, ProductListCard, RouterLink],
   templateUrl: './product-list.html',
   styleUrl: './product-list.css',
 })
 export default class ProductList {
-  products$ = new BehaviorSubject<any[]>([])
-  // Se injecta la dependecia de el servicio
+  // Datos originales (todos)
+  products$ = new BehaviorSubject<any[]>([]);
+  // Datos filtrados que usa el template con async
+  filteredProducts$ = new BehaviorSubject<any[]>([]);
+
+  searchTerm: string = '';
+  statusFilter: string = '';
+
   private httpProducts = inject(HttpProducts);
   private alert = inject(AlertService);
-  
 
   ngOnInit() {
     this.httpProducts.getProducts().subscribe({
       next: (data) => {
         console.log(data);
-        this.products$.next(data)
+        this.products$.next(data);
+        this.applyFilters(); // actualiza la vista con todos los datos al inicio
       },
-      error: (error) => {
-        console.error(error);
-      },
-      complete: () => {
-        console.log('Se traen los productos');
-      },
+      error: (error) => console.error(error),
+      complete: () => console.log('Se traen los productos'),
     });
+  }
+
+  // Llamado desde (ngModelChange) en el HTML cuando cambia el input o el select
+  applyFilters() {
+    const term = this.searchTerm.toLowerCase().trim();
+    const result = this.products$.value.filter((p) => {
+      const matchesSearch =
+        !term ||
+        p.name?.toLowerCase().includes(term) ||
+        p.serialNumber?.toLowerCase().includes(term) ||
+        p.code?.toLowerCase().includes(term) ||
+        p.category?.toLowerCase().includes(term) ||
+        p.description?.toLowerCase().includes(term);
+
+      const matchesStatus =
+        this.statusFilter === '' ||
+        p.status?.toLowerCase() === this.statusFilter.toLowerCase();
+
+      return matchesSearch && matchesStatus;
+    });
+    this.filteredProducts$.next(result);
   }
 
   async onDelete(product: any) {
     const confirmed = await this.alert.confirmDelete('el producto', product.name);
-    if (!confirmed) {
-      return;
-    }
+    if (!confirmed) return;
 
     this.httpProducts.deleteProduct(product._id).subscribe({
       next: (data) => {
@@ -50,46 +72,27 @@ export default class ProductList {
         this.alert.error('No se pudo eliminar el producto', error.error?.msg);
         console.log(error);
       },
-      complete: () => {
-        console.log('se elimino el producto');
-      },
+      complete: () => console.log('se elimino el producto'),
     });
   }
 
-  getAllProducts(){
-    return this.products$.value.length
+  getAllProducts() {
+    return this.products$.value.length;
   }
-  getAvailableProducts(){
-    let number = 0
-    this.products$.value.forEach(function(product){
-      if(product.status == 'disponible'){
-        number ++
-      }
-      
-    })
-    return number
 
+  getAvailableProducts() {
+    return this.products$.value.filter((p) => p.status == 'disponible').length;
   }
-  getUnavailableProducts(){
-    let number = 0
-    this.products$.value.forEach(function(product){
-      if(product.status == 'no disponible'){
-        number ++
-      }
-      
-    })
-    return number
+
+  getUnavailableProducts() {
+    return this.products$.value.filter((p) => p.status == 'no disponible').length;
   }
-  getPendingProducts(){
-    let number = 0
-    this.products$.value.forEach(function(product){
-      if(product.status == 'pendiente'){
-        number ++
-      }
-     
-    })
 
-    return number
+  getPendingProducts() {
+    return this.products$.value.filter((p) => p.status == 'pendiente').length;
+  }
 
+  getOutOfStockProducts() {
+    return this.products$.value.filter((p) => p.status == 'agotado').length;
   }
 }

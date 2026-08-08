@@ -7,10 +7,11 @@
 
     <div class="toolbar">
       <div class="search-box">
-        <input type="text" placeholder="Buscar por placa, marca...">
+        <input type="text" placeholder="Buscar por placa, número de serie, marca..." [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()">
       </div>
-      <select>
-        <option value="">Filtrar por estado</option>
+      <select [(ngModel)]="statusFilter" (ngModelChange)="applyFilters()">
+        <option value="" disabled>Filtrar por estado</option>
+        <option value="">Todos</option>
         <option value="true">Activa</option>
         <option value="false">Inactiva</option>
       </select>
@@ -42,7 +43,7 @@
         <div class="header-cell">REGISTRO</div>
         <div class="header-cell">ACCIONES</div>
       </div>
-            @for (motorcycle of motorcycles$ | async; track $index) {
+            @for (motorcycle of filteredMotorcycles$ | async; track $index) {
 
               <motorcycle-list-card [motorcycle]="motorcycle" (delete)="onDelete($event)">
               </motorcycle-list-card>
@@ -50,7 +51,7 @@
     </div>
 
     <div class="pagination">
-      <span>Mostrando 1-5 de {{getAllMotorcycles()}} motocicletas</span>
+      <span>Mostrando {{(filteredMotorcycles$ | async)?.length}} de {{getAllMotorcycles()}} motocicletas</span>
       <div class="pagination-controls">
         <button class="btn-pagination" disabled>← ANTERIOR</button>
         <button class="btn-pagination active">1</button>

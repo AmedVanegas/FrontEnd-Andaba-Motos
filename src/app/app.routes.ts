@@ -81,10 +81,6 @@ export const routes: Routes = [
     path: 'register',
     loadComponent: () => import('./features/register/register'),
   },
-   {
-    path:'categories',
-    loadComponent:()=> import('./features/categories/categories-list/categories-list')
-  },
   {
     path: 'categories/new',
     loadComponent: () => import('./features/categories/category-form/category-form'),
@@ -92,6 +88,15 @@ export const routes: Routes = [
   {
     path: 'categories/edit/:id',
     loadComponent: () => import('./features/categories/category-form/category-form'),
+  },
+  {
+    path:'checkout',
+    loadComponent:()=>import('./features/checkout/checkout')
+
+  },
+  {
+    path:'my-account',
+    loadComponent:()=>import('./features/my-account/my-account')
   },
  
 

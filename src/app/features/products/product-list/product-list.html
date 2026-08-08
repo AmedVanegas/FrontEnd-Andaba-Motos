@@ -7,13 +7,15 @@
 
     <div class="toolbar">
       <div class="search-box">
-        <input type="text" placeholder="Buscar por nombre, email...">
+        <input type="text" placeholder="Buscar por nombre, código, número de serie..." [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()">
       </div>
-      <select>
-        <option value="">Filtrar por estado</option>
+      <select [(ngModel)]="statusFilter" (ngModelChange)="applyFilters()">
+        <option value="" disabled>Filtrar por estado</option>
+        <option value="">Todos</option>
         <option value="disponible">Disponible</option>
         <option value="no disponible">No disponible</option>
         <option value="pendiente">Pendiente</option>
+        <option value="agotado">Agotado</option>
       </select>
       <button class="btn-new" routerLink="/products/new" routerLinkActive="active">+ NUEVO PRODUCTO</button>
     </div>
@@ -35,6 +37,10 @@
         <p class="stat-label">Pendientes</p>
         <p class="stat-value warn">{{getPendingProducts()}}</p>
       </div>
+      <div class="stat-card">
+        <p class="stat-label">Agotados</p>
+        <p class="stat-value suspended">{{getOutOfStockProducts()}}</p>
+      </div>
     </div>
 
 <div class="users-list-wrapper">
@@ -47,7 +53,7 @@
         <div class="header-cell">REGISTRO</div>
         <div class="header-cell">ACCIONES</div>
       </div>
-            @for (product of products$ | async; track $index) {
+            @for (product of filteredProducts$ | async; track $index) {
                 
               <product-list-card [product]="product" (delete)="onDelete($event)">
               </product-list-card>
@@ -56,7 +62,7 @@
     </div>
 
     <div class="pagination">
-      <span>Mostrando 1-5 de 12 usuarios</span>
+      <span>Mostrando {{(filteredProducts$ | async)?.length}} de {{getAllProducts()}} productos</span>
       <div class="pagination-controls">
         <button class="btn-pagination" disabled>← ANTERIOR</button>
         <button class="btn-pagination active">1</button>

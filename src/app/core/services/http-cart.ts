@@ -82,4 +82,10 @@ export class CartService {
   open() { this.openSubject.next(true); }
   close() { this.openSubject.next(false); }
   toggle() { this.openSubject.next(!this.openSubject.value); }
+
+  /** Limpia el carrito solo en memoria (sin llamar al backend). Usar al cerrar sesión. */
+  clearLocal() {
+    this.cartSubject.next(EMPTY_CART);
+    this.openSubject.next(false);
+  }
 }
