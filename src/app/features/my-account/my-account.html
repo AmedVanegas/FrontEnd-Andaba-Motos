@@ -2,28 +2,31 @@
   <div class="account-page__glow" aria-hidden="true"></div>
 
   <div class="account-wrapper">
-    @if (loading) {
-      <div class="account-skeleton">
-        <div class="skeleton skeleton--avatar"></div>
-        <div class="skeleton skeleton--line" style="width: 45%"></div>
-        <div class="skeleton skeleton--line" style="width: 30%"></div>
-      </div>
+    @if (!userId()) {
+      <div class="account-feedback" [attr.data-type]="feedback()?.type">{{ feedback()?.message }}</div>
     } @else {
+      @if (loading()) {
+        <div class="account-loading-pill">
+          <span class="account-loading-dot"></span>
+          Actualizando tu información…
+        </div>
+      }
+
       <header class="account-hero">
         <div class="account-avatar"><span>{{ initials }}</span></div>
         <div class="account-hero__info">
-          <h1>{{ perfil.value.firstName }} {{ perfil.value.lastName }}</h1>
-          <p class="account-hero__username">&#64;{{ perfil.value.username }}</p>
+          <h1>{{ form.value.firstName }} {{ form.value.lastName }}</h1>
+          <p class="account-hero__username">&#64;{{ form.value.username }}</p>
           <div class="account-hero__meta">
-            <span class="account-role-badge" [attr.data-role]="roleLabel">{{ roleLabel }}</span>
-            @if (memberSince) {
-              <span class="account-hero__since">Miembro desde {{ memberSince }}</span>
+            <span class="account-role-badge" [attr.data-role]="roleLabel()">{{ roleLabel() }}</span>
+            @if (memberSince()) {
+              <span class="account-hero__since">Miembro desde {{ memberSince() }}</span>
             }
           </div>
         </div>
       </header>
 
-      @if (feedback; as fb) {
+      @if (feedback(); as fb) {
         <div class="account-feedback" [attr.data-type]="fb.type">{{ fb.message }}</div>
       }
 
@@ -33,7 +36,7 @@
           <button
             type="button"
             class="account-tabs__btn"
-            [class.active]="activeTab === tab.id"
+            [class.active]="activeTab() === tab.id"
             (click)="selectTab(tab.id)"
           >
             {{ tab.label }}
@@ -41,9 +44,10 @@
         }
       </nav>
 
-      <form [formGroup]="form" (ngSubmit)="save()" class="account-form">
-        @if (activeTab === 'perfil') {
-          <div class="account-panel" formGroupName="perfil">
+      <form [formGroup]="form" (ngSubmit)="save()" class="account-form" [class.account-form--loading]="loading()">
+        @if (activeTab() === 'perfil') {
+          <p class="account-section-label">Datos personales</p>
+          <div class="account-panel">
             <div class="field-row">
               <label for="firstName">Nombres</label>
               <input id="firstName" type="text" formControlName="firstName" placeholder="Tu nombre" />
@@ -61,6 +65,18 @@
               <input id="secondLastName" type="text" formControlName="secondLastName" placeholder="Opcional" />
             </div>
             <div class="field-row">
+              <label for="document">Documento</label>
+              <input id="document" type="text" inputmode="numeric" formControlName="document" placeholder="Número de documento" />
+            </div>
+            <div class="field-row">
+              <label for="birthDate">Fecha de nacimiento</label>
+              <input id="birthDate" type="date" formControlName="birthDate" [attr.max]="maxBirthDate" />
+            </div>
+          </div>
+
+          <p class="account-section-label">Cuenta y contacto</p>
+          <div class="account-panel">
+            <div class="field-row">
               <label for="username">Usuario</label>
               <input id="username" type="text" formControlName="username" placeholder="Nombre de usuario" />
             </div>
@@ -72,30 +88,21 @@
               <label for="email">Correo</label>
               <input id="email" type="email" formControlName="email" placeholder="tucorreo@ejemplo.com" />
             </div>
-
-            <div class="field-row field-row--readonly">
-              <label>Documento</label>
-              <span class="field-readonly">{{ documentNumber }}</span>
-            </div>
-            <div class="field-row field-row--readonly">
-              <label>Fecha de nacimiento</label>
-              <span class="field-readonly">{{ birthDateDisplay }}</span>
-            </div>
-            <p class="field-hint">El documento y la fecha de nacimiento no se pueden editar aquí. Si necesitas corregirlos, contáctanos.</p>
           </div>
         }
 
-        @if (activeTab === 'direccion') {
-          <div class="account-panel" formGroupName="direccion">
+        @if (activeTab() === 'direccion') {
+          <p class="account-section-label">Dirección de envío</p>
+          <div class="account-panel" formGroupName="address">
             <div class="field-row">
               <label for="country">País</label>
-              <select 
-                id="country" 
-                formControlName="country" 
+              <select
+                id="country"
+                formControlName="country"
                 (change)="onCountryChange($any($event.target).value)"
               >
                 <option value="" disabled>Selecciona un país</option>
-                @for (c of countriesList; track c.iso2) {
+                @for (c of countriesList$ | async; track c.iso2) {
                   <option [value]="c.name">{{ c.name }}</option>
                 }
               </select>
@@ -105,25 +112,20 @@
               <select
                 id="department"
                 formControlName="department"
-                [disabled]="!statesList.length"
-                (change)="onStateChange($any($event.target).value)"
+                [disabled]="!(departmentsList$ | async)?.length"
+                (change)="onDepartmentChange($any($event.target).value)"
               >
                 <option value="" disabled>Selecciona un departamento</option>
-                @for (s of statesList; track s.iso2) {
+                @for (s of departmentsList$ | async; track s.iso2) {
                   <option [value]="s.name">{{ s.name }}</option>
                 }
               </select>
             </div>
             <div class="field-row">
               <label for="city">Ciudad</label>
-              <select
-                id="city"
-                formControlName="city"
-                [disabled]="!citiesList.length"
-                (change)="onCityChange($any($event.target).value)"
-              >
+              <select id="city" formControlName="city" [disabled]="!(citiesList$ | async)?.length">
                 <option value="" disabled>Selecciona una ciudad</option>
-                @for (city of citiesList; track city.name) {
+                @for (city of citiesList$ | async; track city.name) {
                   <option [value]="city.name">{{ city.name }}</option>
                 }
               </select>
@@ -143,20 +145,14 @@
           </div>
         }
 
-        @if (activeTab === 'seguridad') {
-          <div class="account-panel" formGroupName="seguridad">
+        @if (activeTab() === 'seguridad') {
+          <p class="account-section-label">Seguridad</p>
+          <div class="account-panel">
             <div class="field-row">
-              <label for="newPassword">Nueva contraseña</label>
-              <input id="newPassword" type="password" formControlName="newPassword" placeholder="Mínimo 8 caracteres" />
+              <label>Contraseña</label>
+              <button type="button" class="btn-ghost" (click)="requestPasswordReset()">Cambiar contraseña</button>
             </div>
-            <div class="field-row">
-              <label for="confirmPassword">Confirmar contraseña</label>
-              <input id="confirmPassword" type="password" formControlName="confirmPassword" placeholder="Repite la contraseña" />
-            </div>
-            @if (seguridad.errors?.['mismatch'] && (seguridad.get('confirmPassword')?.dirty || seguridad.get('confirmPassword')?.touched)) {
-              <p class="field-hint field-hint--error">Las contraseñas no coinciden.</p>
-            }
-            <p class="field-hint">Déjalo en blanco si no quieres cambiar tu contraseña.</p>
+            <p class="field-hint">Te enviaremos un enlace a tu correo para restablecerla.</p>
           </div>
         }
 
@@ -164,8 +160,8 @@
           <span class="save-bar__text">Tienes cambios sin guardar</span>
           <div class="save-bar__actions">
             <button type="button" class="btn-ghost" (click)="discardChanges()">Descartar</button>
-            <button type="submit" class="btn-save" [disabled]="form.invalid || saving">
-              {{ saving ? 'Guardando…' : 'Guardar cambios' }}
+            <button type="submit" class="btn-save" [disabled]="form.invalid || saving()">
+              {{ saving() ? 'Guardando…' : 'Guardar cambios' }}
             </button>
           </div>
         </div>

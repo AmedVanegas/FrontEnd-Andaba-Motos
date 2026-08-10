@@ -40,32 +40,43 @@
   margin: 0 auto;
 }
 
-/* ===== Skeleton (carga) ===== */
-.account-skeleton {
-  display: flex;
-  flex-direction: column;
+/* ===== Indicador de carga (no bloqueante) ===== */
+.account-loading-pill {
+  display: inline-flex;
   align-items: center;
-  gap: 14px;
-  padding: 3rem 0;
-}
-.skeleton {
-  border-radius: var(--radius-md);
-  background: linear-gradient(90deg, var(--glass-fill) 25%, var(--glass-fill-strong) 50%, var(--glass-fill) 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.6s ease-in-out infinite;
-}
-.skeleton--avatar {
-  width: 84px;
-  height: 84px;
-  border-radius: 50%;
-}
-.skeleton--line {
-  height: 14px;
+  gap: 8px;
+  padding: 6px 14px;
+  margin-bottom: 1rem;
   border-radius: 999px;
+  border: 1px solid var(--red-border);
+  background: var(--red-soft);
+  color: var(--red);
+  font-size: 12px;
+  font-weight: 600;
 }
-@keyframes shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+.account-loading-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--red);
+  animation: loading-pulse 1.1s ease-in-out infinite;
+}
+@keyframes loading-pulse {
+  0%, 100% { opacity: 0.35; transform: scale(0.85); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+/* ===== Etiquetas de sección ===== */
+.account-section-label {
+  margin: 0 0 10px 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+.account-panel + .account-section-label {
+  margin-top: 24px;
 }
 
 /* ===== Hero de perfil ===== */
@@ -98,12 +109,12 @@
   inset: -3px;
   border-radius: 50%;
   padding: 2.5px;
-  background: conic-gradient(from var(--ring-angle, 0deg), var(--red), transparent 35%, var(--amber), transparent 75%, var(--red));
+  background: conic-gradient(from var(--ring-angle, 0deg), var(--red), transparent 45%, transparent 55%, var(--red));
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  animation: ring-spin 7s linear infinite;
+  animation: ring-spin 12s linear infinite;
 }
 
 @keyframes ring-spin {
@@ -231,6 +242,25 @@
 .account-panel {
   display: flex;
   flex-direction: column;
+  padding: 6px 20px;
+  background: var(--glass-fill);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  animation: panel-in 0.25s ease;
+}
+
+@keyframes panel-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.account-form--loading .account-panel {
+  opacity: 0.5;
+  pointer-events: none;
+  filter: saturate(0.7);
+  transition: opacity 0.2s ease, filter 0.2s ease;
 }
 
 .field-row {
@@ -239,7 +269,13 @@
   justify-content: space-between;
   gap: 16px;
   padding: 14px 4px;
+  margin: 0 -4px;
+  border-radius: 8px;
   border-bottom: 1px solid var(--glass-border);
+  transition: background 0.15s ease;
+}
+.field-row:hover {
+  background: rgba(255, 255, 255, 0.02);
 }
 .field-row:last-of-type {
   border-bottom: none;
@@ -273,6 +309,16 @@
   text-align-last: right;
 }
 
+/* text-align no es confiable en los segmentos internos de <input type="date">
+   en todos los navegadores (Safari en particular). En vez de forzarlo por texto,
+   se le quita el flex:1 y se deja con su ancho natural: el justify-content:
+   space-between de .field-row ya lo empuja al borde derecho. */
+.field-row input[type='date'] {
+  flex: 0 0 auto;
+  width: auto;
+  max-width: none;
+}
+
 .field-row input::placeholder {
   color: rgba(141, 141, 146, 0.5);
 }
@@ -286,11 +332,6 @@
   border-bottom-color: var(--red);
 }
 
-.field-row--readonly .field-readonly {
-  color: var(--faint);
-  font-size: 13.5px;
-}
-
 .field-hint {
   margin: 10px 4px 0;
   font-size: 12px;
@@ -301,28 +342,38 @@
 }
 
 /* ===== Barra de guardado flotante ===== */
+/* ===== Barra de guardado flotante (ahora estática bajo el form) ===== */
 .save-bar {
-  position: fixed;
-  left: 50%;
-  bottom: 20px;
-  transform: translate(-50%, 140%);
-  display: flex;
+  position: relative;
+  margin-top: 24px;
+  display: none; /* Lo ocultamos hasta que esté dirty */
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  width: min(560px, calc(100% - 2.5rem));
+  width: 100%; /* Ahora ocupará el ancho disponible del contenedor */
   padding: 12px 12px 12px 20px;
   background: rgba(17, 17, 17, 0.7);
   border: 1px solid var(--glass-border-strong);
   border-radius: var(--radius-lg);
   backdrop-filter: blur(26px) saturate(150%);
   -webkit-backdrop-filter: blur(26px) saturate(150%);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-  transition: transform 0.3s cubic-bezier(0.65, 0, 0.35, 1);
-  z-index: 5;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Sombra un poco más suave */
 }
+
 .save-bar.visible {
-  transform: translate(-50%, 0);
+  display: flex;
+  animation: bar-slide-up 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@keyframes bar-slide-up {
+  from { 
+    opacity: 0; 
+    transform: translateY(15px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
 }
 
 .save-bar__text {
@@ -347,18 +398,18 @@
 }
 
 .btn-ghost {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--glass-border-strong);
   color: var(--dim);
 }
 .btn-ghost:hover {
   color: var(--ink);
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .btn-save {
-  background: var(--red);
-  border: 1px solid var(--red);
+  background: #e5383b40;
+  border: 1px solid #e5383baa;
   color: #fff;
 }
 .btn-save:hover:not(:disabled) {
@@ -401,6 +452,9 @@
     max-width: 100%;
     width: 100%;
     text-align: left;
+  }
+  .field-row input[type='date'] {
+    flex: 1;
   }
   .field-row select {
     text-align-last: left;

@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { HttpAuth } from '../../../core/services/http-auth';
 import { AsyncPipe } from '@angular/common';
-import { faUser, faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faCartShopping, faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { AccountMenu } from '../account-menu/account-menu';
 import { CartService } from '../../../core/services/http-cart';
@@ -19,6 +19,8 @@ export class Header {
   public httpAuth = inject(HttpAuth);
   faUser = faUser;
   faCartShopping = faCartShopping;
+  faBars = faBars;
+  faXmark = faXmark;
   cartService = inject(CartService);
 
   toggleMenu() {

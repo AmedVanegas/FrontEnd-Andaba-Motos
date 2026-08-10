@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, Output, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
 import { HttpAuth } from '../../../core/services/http-auth';
@@ -14,6 +14,8 @@ export class MobileMenu {
   @Input() open = false;
   @Output() closeMenu = new EventEmitter<void>();
 
+  elementRef = inject(ElementRef)
+
   public httpAuth = inject(HttpAuth);
 
   onLinkClick() {
@@ -23,5 +25,12 @@ export class MobileMenu {
   logOut() {
     this.httpAuth.logoutUser();
     this.closeMenu.emit();
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event) {
+    if (!this.elementRef.nativeElement.contains(event.target)) {
+      this.closeMenu.emit();
+    }
   }
 }

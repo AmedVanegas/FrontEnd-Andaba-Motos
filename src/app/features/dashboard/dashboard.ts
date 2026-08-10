@@ -9,6 +9,7 @@ import {
   faTags,
   faMotorcycle,
   faArrowRight,
+  faChartLine,
 } from '@fortawesome/free-solid-svg-icons';
 
 interface DashboardSection {
@@ -55,6 +56,12 @@ export default class Dashboard {
       description: 'Motos registradas y su cliente asociado.',
       route: '/motorcycles',
       icon: faMotorcycle,
+    },
+    {
+      label: 'Ventas y ganancias',
+      description: 'Estado de ventas, ganancias y artículos vendidos.',
+      route: '/reports',
+      icon: faChartLine,
     },
   ];
 }

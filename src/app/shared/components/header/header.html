@@ -32,10 +32,8 @@
       }
     </button>
 
-    <button class="hamburger" (click)="toggleMenu()">
-      <span></span>
-      <span></span>
-      <span></span>
+    <button class="icon-glass hamburger" aria-label="Menú" (click)="$event.stopPropagation(); toggleMenu()">
+      <fa-icon [icon]="menuOpen ? faXmark : faBars"></fa-icon>
     </button>
   </div>
 </header>

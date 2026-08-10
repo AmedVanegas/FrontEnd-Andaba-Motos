@@ -74,13 +74,21 @@ export const routes: Routes = [
     loadComponent: () => import('./features/dashboard/dashboard'),
   },
   {
+    path: 'reports',
+    loadComponent: () => import('./features/reports/sales-report/sales-report'),
+  },
+  {
     path: 'appointment',
     loadComponent: () => import('./features/appointment/appointment-form/appointment-form'),
   },
   {
     path: 'register',
     loadComponent: () => import('./features/register/register'),
+  },{
+    path:'categories',
+    loadComponent:()=>import('./features/categories/categories-list/categories-list')
   },
+
   {
     path: 'categories/new',
     loadComponent: () => import('./features/categories/category-form/category-form'),
