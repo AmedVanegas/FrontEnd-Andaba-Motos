@@ -3,6 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpCategories } from '../../../core/services/http-categories';
 import { BackButton } from '../../../shared/components/back-button/back-button';
+import { AlertService } from '../../../core/services/alert';
 
 @Component({
   selector: 'app-category-form',
@@ -14,6 +15,7 @@ export default class CategoryForm {
   private httpCategory = inject(HttpCategories);
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
+  alert = inject(AlertService)
 
   categoryID: string | null = this.activatedRoute.snapshot.paramMap.get('id');
   isEditMode = !!this.categoryID;
@@ -36,6 +38,7 @@ export default class CategoryForm {
   ngOnInit() {
     if (this.isEditMode) {
       this.loadCategory(this.categoryID);
+      
     }
   }
 
@@ -53,13 +56,17 @@ export default class CategoryForm {
     });
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.formData.invalid) {
       console.log('formulario invalido');
       return;
     }
 
     if (this.isEditMode) {
+     const confirmed = await this.alert.confirmSave('la categoria', true);
+      if (!confirmed) {
+        return;
+      }
       this.httpCategory.updateCategory(this.categoryID, this.formData.value).subscribe({
         next: (res) => {
           console.log(res);
@@ -67,9 +74,12 @@ export default class CategoryForm {
         },
         error: (error) => {
           console.log(error);
+          this.alert.error('No se pudo editar la categoria', error.error?.msg);
         },
         complete: () => {
           console.log('complete execute');
+          this.alert.success('Guardado!', 'Categoria actualizada');
+          this.router.navigate(['/categories']);
         },
       });
     } else {
@@ -81,9 +91,13 @@ export default class CategoryForm {
         },
         error: (error) => {
           console.log(error);
+          this.alert.error('No se pudo crear la categoria', error.error?.msg);
+
         },
         complete: () => {
           console.log('complete execute');
+          this.alert.success('Creada!', 'Categoria creada');
+          this.router.navigate(['/categories']);
         },
       });
     }

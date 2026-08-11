@@ -23,12 +23,12 @@
       }
     }
   </div>
-
-  @if (selectedProduct) {
-    <product-brochure-detail
-      [product]="selectedProduct"
-      [originRect]="originRect"
-      (close)="onCloseDetail()"
-    ></product-brochure-detail>
-  }
 </div>
+
+@if (selectedProduct) {
+  <product-brochure-detail
+    [product]="selectedProduct"
+    [originRect]="originRect"
+    (close)="onCloseDetail()"
+  ></product-brochure-detail>
+}

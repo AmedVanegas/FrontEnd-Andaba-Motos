@@ -25,7 +25,7 @@
   background: var(--glass-fill);
   border: 1px solid var(--glass-border);
   border-left: 3px solid var(--red-border);
-  border-radius: var(--radius-md);
+  border-radius: 0px 0px var(--radius-md) ;
   backdrop-filter: blur(16px) saturate(140%);
   -webkit-backdrop-filter: blur(16px) saturate(140%);
   padding: 14px 16px;
