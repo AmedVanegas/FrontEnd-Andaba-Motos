@@ -8,8 +8,8 @@ import { ImageUrlPipe } from '../../../core/pipes/image-url.pipe';
   selector: 'product-list-card',
   imports: [CurrencyPipe, TitleCasePipe, RouterLink, ImageUrlPipe],
   template: `
-  <div class="user-card">
-      <div class="card-cell user-cell">
+  <div class="user-card" [class.outOfStock]="product.stock < 5">
+      <div class="card-cell user-cell  ">
         <div class="avatar avatar-JC"><img [src]="product.productImages?.[0] | imageUrl" alt=""></div>
         <span>{{product.name}}</span>
       </div>
@@ -18,6 +18,7 @@ import { ImageUrlPipe } from '../../../core/pipes/image-url.pipe';
       
       <div class="card-cell">
         <span class="role-badge">{{product.stock}}</span>
+        <span class="role-badge off" [class.alertStock]="product.stock < 5 && product.stock > 0 " >Bajo stock</span>
       </div>
 
       @if (product.status == 'disponible'){

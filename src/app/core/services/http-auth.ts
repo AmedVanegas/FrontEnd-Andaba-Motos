@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, PLATFORM_ID, Service } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { BehaviorSubject, catchError, map, of, tap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 import { CartService } from './http-cart';
@@ -97,13 +97,34 @@ export class HttpAuth {
     this.clearAuthData();
     this.router.navigateByUrl('/home');
   }
+  checkAuthStatus(): Observable<boolean> {
+    const token = this.token;
+    if (!token) {
+      this.clearAuthData();
+      return of(false);
+    }
+
+    return this.http.get<any>(`${this.BASE_URL}/auth/renew-token`).pipe(
+      tap((res) => {
+        if (res?.token && res?.data) {
+          this.setAuthData(res.token, res.data);
+        }
+      }),
+      map((res) => !!res?.token),
+      catchError((err: HttpErrorResponse) => {
+        console.error('💥 Error al renovar token en Backend:', err);
+        this.clearAuthData();
+        return of(false);
+      }),
+    );
+  }
 
   set token(token: string | null) {
     if (this.isBrowser) {
       if (token) {
         localStorage.setItem(this.TOKEN_KEY, token);
       } else {
-        localStorage.removeItem(this.USER_KEY);
+        localStorage.removeItem(this.TOKEN_KEY);
       }
     }
     this.token$.next(token);

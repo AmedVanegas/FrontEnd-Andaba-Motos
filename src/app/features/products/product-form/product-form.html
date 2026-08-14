@@ -142,7 +142,7 @@
           <div class="image-row">
             @for (img of existingImages; track img; let i = $index) {
               <div class="image-thumb">
-                <img [src]="img" alt="Imagen del producto" />
+                <img [src]="img | imageUrl" alt="Imagen del producto" />
                 <button type="button" (click)="removeExistingImage(i)">✕</button>
               </div>
             }

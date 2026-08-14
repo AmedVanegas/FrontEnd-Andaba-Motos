@@ -84,12 +84,37 @@
         </div>
       </div>
 
-      <div class="report-panel">
-        <p class="report-panel-title">Productos más vendidos</p>
-        @for (product of summary.topProducts; track product.productId) {
-          <div class="report-panel-row">
-            <span>{{ product.name }}</span>
-            <span>{{ product.unitsSold }} und. · {{ product.revenue | currency: 'COP ' : 'symbol' : '1.0' }}</span>
+      <div class="header">
+        <h1>Detalle por producto</h1>
+        <p>Costo, ventas y ganancia de cada producto vendido.</p>
+      </div>
+
+      <div class="users-list-wrapper report-table">
+        <div class="users-header">
+          <div class="header-cell">PRODUCTO</div>
+          <div class="header-cell">VENDIDOS</div>
+          <div class="header-cell">COSTO TOTAL</div>
+          <div class="header-cell">VENTAS TOTALES</div>
+          <div class="header-cell">GANANCIA</div>
+          <div class="header-cell">% GANANCIA</div>
+        </div>
+
+        @for (product of summary.productBreakdown; track product.productId) {
+          <div class="user-card">
+            <div class="card-cell">{{ product.name }}</div>
+            <div class="card-cell">{{ product.unitsSold }}</div>
+            <div class="card-cell">{{ product.cost | currency: 'COP ' : 'symbol' : '1.0' }}</div>
+            <div class="card-cell">{{ product.revenue | currency: 'COP ' : 'symbol' : '1.0' }}</div>
+            <div class="card-cell report-positive">
+              {{ product.profit | currency: 'COP ' : 'symbol' : '1.0' }}
+            </div>
+            <div class="card-cell">
+              @if (product.profitPercentage !== null) {
+                {{ product.profitPercentage | number: '1.0-1' }}%
+              } @else {
+                —
+              }
+            </div>
           </div>
         } @empty {
           <p class="report-empty">Todavía no hay ventas registradas.</p>

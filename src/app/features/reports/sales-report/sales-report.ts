@@ -1,11 +1,11 @@
 import { Component, inject, OnInit, OnDestroy } from '@angular/core';
-import { AsyncPipe, CurrencyPipe } from '@angular/common';
+import { AsyncPipe, CurrencyPipe, DecimalPipe } from '@angular/common';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { HttpReports } from '../../../core/services/http-reports';
 
 @Component({
   selector: 'app-sales-report',
-  imports: [AsyncPipe, CurrencyPipe],
+  imports: [AsyncPipe, CurrencyPipe, DecimalPipe],
   templateUrl: './sales-report.html',
   styleUrl: './sales-report.css',
 })

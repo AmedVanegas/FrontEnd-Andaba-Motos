@@ -7,10 +7,11 @@ import { HttpProducts } from '../../../core/services/http-products';
 import { AlertService } from '../../../core/services/alert';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BackButton } from '../../../shared/components/back-button/back-button';
+import { ImageUrlPipe } from '../../../core/pipes/image-url.pipe';
 
 @Component({
   selector: 'app-product-form',
-  imports: [ReactiveFormsModule, AsyncPipe, BackButton],
+  imports: [ReactiveFormsModule, AsyncPipe, BackButton, ImageUrlPipe],
   templateUrl: './product-form.html',
   styleUrl: './product-form.css',
 })
