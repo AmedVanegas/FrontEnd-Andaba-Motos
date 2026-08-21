@@ -70,7 +70,7 @@ export default class CategoryForm {
       this.httpCategory.updateCategory(this.categoryID, this.formData.value).subscribe({
         next: (res) => {
           console.log(res);
-          this.router.navigateByUrl('/categories');
+          this.router.navigateByUrl('/dashboard//categories');
         },
         error: (error) => {
           console.log(error);
@@ -79,7 +79,7 @@ export default class CategoryForm {
         complete: () => {
           console.log('complete execute');
           this.alert.success('Guardado!', 'Categoria actualizada');
-          this.router.navigate(['/categories']);
+          this.router.navigate(['/dashboard/categories']);
         },
       });
     } else {
@@ -87,7 +87,7 @@ export default class CategoryForm {
         next: (res) => {
           console.log(res);
           this.formData.reset();
-          this.router.navigateByUrl('/categories');
+          this.router.navigateByUrl('/dashboard/categories');
         },
         error: (error) => {
           console.log(error);
@@ -97,7 +97,7 @@ export default class CategoryForm {
         complete: () => {
           console.log('complete execute');
           this.alert.success('Creada!', 'Categoria creada');
-          this.router.navigate(['/categories']);
+          this.router.navigate(['/dashboard/categories']);
         },
       });
     }

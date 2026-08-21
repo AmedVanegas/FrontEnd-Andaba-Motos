@@ -84,7 +84,7 @@ export default class MotorcycleForm implements OnInit {
         },
         complete: () => {
           this.alert.success('Guardado!', 'Motocicleta actualizada');
-          this.router.navigate(['/motorcycles']);
+          this.router.navigate(['/dashboard/motorcycles']);
         },
       });
     } else {
@@ -102,7 +102,7 @@ export default class MotorcycleForm implements OnInit {
         complete: () => {
           console.log('complete execute');
           this.alert.success('Creada!', 'Motocicleta creada');
-          this.router.navigate(['/motorcycles']);
+          this.router.navigate(['/dashboard/motorcycles']);
         },
       });
     }

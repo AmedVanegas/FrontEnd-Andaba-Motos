@@ -15,8 +15,6 @@ export class ProductBrochureCard {
   alert = inject(AlertService)
   @Input() product: any;
 
-  // Emite el producto + el rect de la card en pantalla, para que el
-  // detalle sepa desde dónde "nacer" en la animación.
   @Output() open = new EventEmitter<{ product: any; rect: DOMRect }>();
 
   constructor(private elRef: ElementRef<HTMLElement>) { }
@@ -27,7 +25,7 @@ export class ProductBrochureCard {
 
   }
   addToCart(event: Event) {
-    event.stopPropagation(); // evita que dispare onCardClick
+    event.stopPropagation(); 
     this.cartService.addItem(this.product._id, 1).subscribe({
       error: (err) => {
         console.error(err.error?.msg);

@@ -33,7 +33,7 @@ export default class CategoriesList {
   }
 
   onEdit(id: string) {
-    this.router.navigateByUrl(`/categories/edit/${id}`);
+    this.router.navigateByUrl(`dashboard/categories/edit/${id}`);
   }
 
    async onDelete(id: string) {

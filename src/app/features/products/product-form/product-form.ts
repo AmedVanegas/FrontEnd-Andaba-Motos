@@ -93,7 +93,7 @@ export default class ProductForm {
         },
         complete: () => {
           this.alert.success('Guardado!', 'Producto actualizado');
-          this.router.navigate(['/products']);
+          this.router.navigate(['/dashboard/products']);
         },
       });
     } else {
@@ -124,7 +124,7 @@ export default class ProductForm {
         complete: () => {
           console.log('complete execute');
           this.alert.success('Creado!', 'Producto creado');
-          this.router.navigate(['/products']);
+          this.router.navigate(['/dashboard/products']);
         },
       });
     }

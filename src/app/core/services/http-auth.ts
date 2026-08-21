@@ -30,7 +30,7 @@ export class HttpAuth {
       tap((res) => {
         if (res?.token && res?.data) {
           this.setAuthData(res.token, res.data);
-          this.cartService.loadCart(); // carga el carrito del usuario recién autenticado
+          this.cartService.loadCart(); 
 
           this.router.navigateByUrl(this.isStaffRole(res.data.rol) ? '/dashboard' : '/home');
         }
@@ -93,7 +93,7 @@ export class HttpAuth {
   }
 
   logoutUser(): void {
-    this.cartService.clearLocal(); // vacia el carrito antes de limpiar el token
+    this.cartService.clearLocal(); 
     this.clearAuthData();
     this.router.navigateByUrl('/home');
   }

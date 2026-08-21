@@ -30,7 +30,7 @@ export class CartService {
   private http = inject(HttpClient);
 
   BASE_URL: string = environment.apiUrl
-  private apiUrl = `${this.BASE_URL}/shoppingcar`; // ajusta si usas environment.apiUrl como base
+  private apiUrl = `${this.BASE_URL}/shoppingcar`; 
 
   private cartSubject = new BehaviorSubject<ShoppingCart>(EMPTY_CART);
   cart$ = this.cartSubject.asObservable();
@@ -45,7 +45,7 @@ export class CartService {
   loadCart() {
     this.http.get<{ data: ShoppingCart }>(this.apiUrl).subscribe({
       next: (res) => this.cartSubject.next(res.data),
-      error: () => {}, // sin sesion todavia, el carrito se queda vacio
+      error: () => {}, 
     });
   }
 
@@ -83,7 +83,6 @@ export class CartService {
   close() { this.openSubject.next(false); }
   toggle() { this.openSubject.next(!this.openSubject.value); }
 
-  /** Limpia el carrito solo en memoria (sin llamar al backend). Usar al cerrar sesión. */
   clearLocal() {
     this.cartSubject.next(EMPTY_CART);
     this.openSubject.next(false);

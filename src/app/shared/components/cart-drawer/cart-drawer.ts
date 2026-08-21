@@ -21,6 +21,15 @@ export class CartDrawer {
   faMinus = faMinus;
   faPlus = faPlus;
 
+
+  ngOnInit(){
+    this.cartService.loadCart()
+
+  }
+
+  ngOnDestroy(){
+    this.cartService.clearCart
+  }
   close() {
     this.cartService.close();
   }
@@ -32,7 +41,7 @@ export class CartDrawer {
 
   increase(productId: string, quantity: number) {
     this.cartService.updateQuantity(productId, quantity + 1).subscribe({
-      error: (err) => console.error(err.error?.msg), // cambialo por tu alert.ts
+      error: (err) => console.error(err.error?.msg),
     });
   }
 

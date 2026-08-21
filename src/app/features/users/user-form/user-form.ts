@@ -217,7 +217,7 @@ export default class UserForm implements OnInit {
         complete: () => {
           console.log('Usuario actualizado');
           this.alert.success('Guardado!', 'Usuario actualizado');
-          this.router.navigate(['/users']);
+          this.router.navigate(['/dashboard/users']);
         },
       });
     } else {
@@ -234,7 +234,7 @@ export default class UserForm implements OnInit {
         complete: () => {
           console.log('Usuario creado');
           this.alert.success('Creado!', 'Usuario creado');
-          this.router.navigate(['/users']);
+          this.router.navigate(['/dashboard/users']);
         },
       });
     }

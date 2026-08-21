@@ -33,7 +33,7 @@ import { MongoDatePipe } from '../../../core/pipes/mongo-date-pipe';
       <div class="card-cell">{{motorcycle.createdAt | mongoDate}}</div>
 
       <div class="card-cell actions">
-        <a class="btn-edit" (click)="onEditCLick()" [routerLink]="['/motorcycles/edit', motorcycle._id]">Editar</a>
+        <a class="btn-edit" (click)="onEditCLick()" [routerLink]="['/dashboard/motorcycles/edit', motorcycle._id]">Editar</a>
         <a class="btn-delete" (click)="onDeleteClick()">Eliminar</a>
       </div>
     </div>`,

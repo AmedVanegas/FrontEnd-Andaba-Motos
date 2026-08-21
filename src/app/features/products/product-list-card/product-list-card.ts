@@ -40,7 +40,7 @@ import { ImageUrlPipe } from '../../../core/pipes/image-url.pipe';
       <div class="card-cell">{{product.nr}}</div>
 
       <div class="card-cell actions">
-        <a class="btn-edit"  (click)="onEditCLick()" [routerLink]="['/products/edit', product._id]">Editar</a>
+        <a class="btn-edit"  (click)="onEditCLick()" [routerLink]="['/dashboard/products/edit', product._id]">Editar</a>
         <a class="btn-delete" (click)="onDeleteClick()">Eliminar</a>
       </div>
     </div>`,
