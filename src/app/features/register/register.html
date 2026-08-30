@@ -14,7 +14,7 @@
         <span class="register-bar" aria-hidden="true"></span>
       </div>
 
-      <!-- Indicador de pasos -->
+
       <div class="steps-track" aria-hidden="true">
         @for (step of steps; track step) {
           <div
@@ -35,7 +35,7 @@
         }
       </div>
 
-      <!-- PASO 1: Cuenta -->
+
       @if (currentStep === 1) {
         <div class="register-fields step-panel">
           <div class="field-row">
@@ -134,7 +134,7 @@
         </div>
       }
 
-      <!-- PASO 2: Datos personales -->
+     
       @if (currentStep === 2) {
         <div class="register-fields step-panel">
           <div class="field-row">
@@ -250,7 +250,7 @@
         </div>
       }
 
-      <!-- PASO 3: Dirección de envío -->
+    
       @if (currentStep === 3) {
         <div class="register-fields step-panel" formGroupName="address">
           <div class="field-row">
@@ -340,7 +340,7 @@
         </div>
       }
 
-      <!-- Navegación -->
+
       <div class="step-actions">
         @if (currentStep > 1) {
           <button type="button" class="step-back" (click)="prevStep()">← Atrás</button>

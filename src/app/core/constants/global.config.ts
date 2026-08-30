@@ -8,8 +8,6 @@ export const ROLES = {
 
 export const ALLOWED_ROLES = Object.values(ROLES);
 
-// Estados de orden que cuentan como venta ya confirmada (para el panel
-// de ventas). "pending" no entra acá porque todavía no se ha pagado.
 export const CONFIRMED_ORDER_STATUSES = ["paid", "shipped", "delivered"];
 
 export const ROLE_LABELS = {

@@ -16,7 +16,7 @@
   transform: translateY(-3px);
 }
 
-/* ── IMAGEN (protagonista) ── */
+
 .card-image {
   position: absolute;
   inset: 0;
@@ -45,7 +45,7 @@
   pointer-events: none;
 }
 
-/* ── ESTATUS (chip flotante de vidrio) ── */
+
 .card-status {
   position: absolute;
   z-index: 2;
@@ -85,7 +85,7 @@
   box-shadow: 0 0 8px #cc2222;
 }
 
-/* ── PANEL DE VIDRIO (datos mínimos) ── */
+
 .card-glass {
   position: absolute;
   z-index: 1;
@@ -189,7 +189,7 @@
   transform: scale(0.94);
 }
 
-/* ── RESPONSIVE ── */
+
 @media (max-width: 768px) {
   .product-card {
     width: 100%;

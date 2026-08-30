@@ -27,8 +27,7 @@ export class ProductBrochureDetail implements AfterViewInit, OnDestroy {
   cartService = inject(CartService)
   alert = inject(AlertService)
   @Input() product: any;
-  // Rect de la card que se clickeó: punto de partida de la animación.
-  // Si es null, se hace un fade+scale genérico desde el centro.
+
   @Input() originRect: DOMRect | null = null;
   @Output() close = new EventEmitter<void>();
 
@@ -71,15 +70,14 @@ export class ProductBrochureDetail implements AfterViewInit, OnDestroy {
       return;
     }
 
-    // Set opening state
+  
     this.isOpen = true;
     this.isAnimating = true;
-    this.cdr.detectChanges(); // Trigger blur immediately
+    this.cdr.detectChanges(); 
 
     const finalRect = panel.getBoundingClientRect();
 
-    // Initial state: same size/position as origin card.
-    // Also, isAnimating class makes the grid 1fr 0px so the image fills the card.
+    
     panel.style.transition = 'none';
     panel.style.position = 'fixed';
     panel.style.margin = '0';
@@ -89,10 +87,10 @@ export class ProductBrochureDetail implements AfterViewInit, OnDestroy {
     panel.style.height = `${this.originRect.height}px`;
     panel.style.borderRadius = '14px';
 
-    // Force reflow
+
     void panel.offsetWidth;
 
-    // Start transition
+
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         const bezier = 'cubic-bezier(0.16, 1, 0.3, 1)';
@@ -105,7 +103,6 @@ export class ProductBrochureDetail implements AfterViewInit, OnDestroy {
         panel.style.height = `${finalRect.height}px`;
         panel.style.borderRadius = '20px';
 
-        // Remove the animation class to let the grid transition to its normal columns
         panel.classList.remove('is-animating');
         this.showContent = true;
         this.cdr.detectChanges();
@@ -123,7 +120,7 @@ export class ProductBrochureDetail implements AfterViewInit, OnDestroy {
 
             this.isAnimating = false;
           }
-        }, 500); // 50ms buffer to ensure transition finishes cleanly
+        }, 500);
       });
     });
   }
@@ -141,7 +138,6 @@ export class ProductBrochureDetail implements AfterViewInit, OnDestroy {
     if (panel && this.originRect) {
       const currentRect = panel.getBoundingClientRect();
 
-      // Lock into fixed position at current size
       panel.style.transition = 'none';
       panel.style.position = 'fixed';
       panel.style.margin = '0';
@@ -152,14 +148,14 @@ export class ProductBrochureDetail implements AfterViewInit, OnDestroy {
 
       void panel.offsetWidth;
 
-      // Animate back to origin card
+
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           this.isOpen = false;
           this.showContent = false;
-          this.cdr.detectChanges(); // Trigger blur removal and text hide
+          this.cdr.detectChanges(); 
 
-          panel.classList.add('is-animating'); // collapse grid
+          panel.classList.add('is-animating'); 
 
           const bezier = 'cubic-bezier(0.16, 1, 0.3, 1)';
           const duration = '0.4s';

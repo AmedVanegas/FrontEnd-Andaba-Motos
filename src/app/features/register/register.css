@@ -4,7 +4,7 @@
   display: block;
 }
 
-/* ===== Tokens (mismos que login) ===== */
+
 .register-page {
   --carbon: #0a0a0b;
   --ink: #f2f1ee;
@@ -29,7 +29,7 @@
   isolation: isolate;
 }
 
-/* ===== Ambiente: glow rojo sobre carbon ===== */
+
 .register-page::before,
 .register-page::after {
   content: '';
@@ -56,7 +56,7 @@
   background: radial-gradient(circle, rgba(229, 56, 59, 0.15) 0%, transparent 70%);
 }
 
-/* ===== Formas de vidrio flotando ===== */
+
 .float-shape {
   position: absolute;
   z-index: 0;
@@ -128,7 +128,7 @@
   }
 }
 
-/* ===== Panel de vidrio ===== */
+
 .register-stage {
   position: relative;
   z-index: 1;
@@ -170,7 +170,7 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ===== Encabezado ===== */
+
 .register-head {
   margin-bottom: 26px;
 }
@@ -208,7 +208,7 @@
   to { transform: scaleX(1); }
 }
 
-/* ===== Indicador de pasos ===== */
+
 .steps-track {
   display: flex;
   align-items: center;
@@ -256,7 +256,7 @@
   background: rgba(229, 56, 59, 0.5);
 }
 
-/* ===== Transición entre pasos ===== */
+
 @keyframes stepIn {
   from { opacity: 0; transform: translateX(14px); }
   to { opacity: 1; transform: translateX(0); }
@@ -270,7 +270,6 @@
   .step-panel { animation: none; }
 }
 
-/* ===== Campos ===== */
 .register-fields {
   display: flex;
   flex-direction: column;
@@ -349,7 +348,7 @@
   color: var(--error);
 }
 
-/* Select: quitamos la flecha nativa y ponemos una propia, consistente con el resto del sitio */
+
 .field select {
   appearance: none;
   -webkit-appearance: none;
@@ -368,12 +367,12 @@
   color: var(--ink);
 }
 
-/* El ícono nativo del datepicker es negro y se pierde en fondo oscuro */
+
 .field input[type='date'] {
   color-scheme: dark;
 }
 
-/* ===== Términos (checkbox glass) ===== */
+
 .register-terms {
   display: flex;
   align-items: center;
@@ -426,7 +425,6 @@
   color: var(--red);
 }
 
-/* ===== Navegación del wizard ===== */
 .step-actions {
   display: flex;
   gap: 12px;
@@ -462,7 +460,7 @@
   transform: scale(0.97);
 }
 
-/* ===== Botón ===== */
+
 .register-submit {
   width: 100%;
   padding: 13px 20px;
@@ -499,7 +497,7 @@
   background: rgba(255, 255, 255, 0.06);
 }
 
-/* ===== Pie ===== */
+
 .register-footer {
   margin-top: 22px;
   text-align: center;
@@ -517,7 +515,7 @@
   text-decoration: underline;
 }
 
-/* ===== Responsive ===== */
+
 @media (max-width: 560px) {
   .register-card {
     padding: 36px 24px 28px;
@@ -534,7 +532,7 @@
   }
 }
 
-/* ===== Accesibilidad de movimiento ===== */
+
 @media (prefers-reduced-motion: reduce) {
   .register-card { animation: none; }
   .register-bar { animation: none; transform: scaleX(1); }

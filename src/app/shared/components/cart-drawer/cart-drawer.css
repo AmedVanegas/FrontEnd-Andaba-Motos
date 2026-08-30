@@ -15,8 +15,8 @@
   top: 0;
   right: 0;
   bottom: 0;
-  height: 100vh; /* fallback para navegadores sin soporte de dvh */
-  height: 100dvh; /* alto realmente visible en mobile (sin la barra de Safari) */
+  height: 100vh; 
+  height: 100dvh; 
   width: 380px;
   max-width: 100%;
   background: rgba(17, 17, 17, 0.85);

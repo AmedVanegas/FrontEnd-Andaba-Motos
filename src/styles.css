@@ -7,7 +7,7 @@
   font-family: 'Inter', system-ui, sans-serif;
 }
 
-/* ===== Paleta / tokens compartidos (mismos valores que header + home + login) ===== */
+
 :root {
   --carbon: #0a0a0a;
   --glass: rgba(17, 17, 17, 0.4);
@@ -33,10 +33,7 @@
   --radius-sm: 4px;
 }
 
-/* .active{
-  border-bottom: 1px  #CC2222 solid;
-  transition: all 2s;
-} */
+
 
 body {
   min-height: 100vh;
@@ -62,11 +59,7 @@ router-outlet + * {
   flex: 1;
 }
 
-/* ============================================================
-   FORMULARIOS COMPARTIDOS (user-form, product-form, motorcycle-form...)
-   Un solo sistema Liquid Glass — cada *-form.css solo agrega
-   lo que sea realmente propio de ese formulario.
-   ============================================================ */
+
 .form-page-bg {
   position: relative;
   min-height: 100vh;
@@ -75,9 +68,7 @@ router-outlet + * {
   isolation: isolate;
 }
 
-/* Fijo al viewport (no al scroll): así el blur de los paneles glass
-   se nota de verdad — el glow se queda quieto mientras el contenido
-   pasa por encima, en vez de desaparecer al bajar la página. */
+
 .form-page-bg::before {
   content: '';
   position: fixed;
@@ -274,12 +265,7 @@ router-outlet + * {
   }
 }
 
-/* ============================================================
-   LISTADOS / TABLAS COMPARTIDOS (user-list, product-list, motorcycle-list...)
-   Igual que arriba: un solo sistema Liquid Glass en styles.css.
-   Cada *-list.css / *-list-card.css solo define el ancho de sus
-   columnas (grid-template-columns) cuando difiere del default.
-   ============================================================ */
+
 .users-container {
   position: relative;
   min-height: 100vh;
@@ -289,9 +275,7 @@ router-outlet + * {
   isolation: isolate;
 }
 
-/* Fijo al viewport: en listas largas, antes el glow desaparecía a los
-   pocos scrolls y los paneles glass quedaban planos (blur sobre un
-   fondo uniforme no se nota). Ahora se queda quieto detrás de todo. */
+
 .users-container::before {
   content: '';
   position: fixed;
@@ -313,7 +297,7 @@ router-outlet + * {
   margin: 0 auto;
 }
 
-/* Header de página */
+
 .header {
   margin-bottom: 2rem;
   padding-bottom: 1rem;
@@ -333,7 +317,7 @@ router-outlet + * {
   font-size: 13.5px;
 }
 
-/* Toolbar */
+
 .toolbar {
   display: flex;
   gap: 12px;
@@ -397,7 +381,7 @@ router-outlet + * {
   transform: scale(0.97);
 }
 
-/* Stats */
+
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -429,7 +413,7 @@ router-outlet + * {
   padding: 0;
   text-decoration: none;
 }
-/* Semántica de color: verde = positivo, ámbar = requiere atención, rojo = crítico */
+
 .stat-value.active {
   color: var(--green);
 }
@@ -440,7 +424,7 @@ router-outlet + * {
   color: var(--red);
 }
 
-/* Tabla como grid de filas */
+
 .users-list-wrapper {
   background: var(--glass-fill);
   border: 1px solid var(--glass-border);
@@ -469,7 +453,7 @@ router-outlet + * {
   align-items: center;
 }
 
-/* Fila (usada por *-list-card) */
+
 .user-card {
   display: grid;
   grid-template-columns: 1.3fr 0.7fr 0.5fr 0.5fr 0.7fr 1fr;
@@ -556,7 +540,7 @@ router-outlet + * {
   white-space: nowrap;
 }
 
-/* Editar = acción neutra (glass) · Eliminar = acción destructiva (rojo) */
+
 .btn-edit,
 .btn-delete {
   text-decoration: none;
@@ -591,7 +575,7 @@ router-outlet + * {
   border-color: var(--red);
 }
 
-/* Paginación */
+
 .pagination {
   display: flex;
   justify-content: space-between;
@@ -657,8 +641,7 @@ router-outlet + * {
     display: none;
   }
 
-  /* El wrapper deja de ser una sola caja continua: pasa a ser
-     solo un contenedor de layout, transparente, con gap entre cards. */
+  
   .users-list-wrapper {
     background: transparent;
     border: none;
@@ -671,8 +654,7 @@ router-outlet + * {
     margin-bottom: 2rem;
   }
 
-  /* Cada user-card ahora es su propia card: fondo, borde y
-     radio completo en las 4 esquinas. */
+
   .user-card {
     position: relative;
     display: flex !important;
@@ -707,7 +689,6 @@ router-outlet + * {
     font-size: 10px;
   }
 
-  /* Pill -> rectángulo, un poco más ancho */
   .role-badge {
     border-radius: var(--radius-sm);
     padding: 5px 18px;
@@ -715,9 +696,7 @@ router-outlet + * {
     text-align: center;
   }
 
-  /* Sacado del flujo normal y centrado verticalmente contra
-     el alto real de la card, sin depender de cómo se acomode
-     el contenido de la izquierda. */
+
   .actions {
     position: absolute;
     top: 50%;
@@ -792,7 +771,6 @@ router-outlet + * {
   gap: 10px;
 }
 
-/* Iconos recoloreados a la paleta del proyecto (nada de azul/verde/rojo genéricos) */
 .glass-swal .swal2-icon.swal2-warning {
   border-color: var(--red-border) !important;
   color: var(--red) !important;
@@ -816,7 +794,7 @@ router-outlet + * {
   background-color: var(--red) !important;
 }
 
-/* Botones — mismos glass buttons que el resto del sitio */
+
 .glass-btn {
   font-family: 'Inter', sans-serif !important;
   font-size: 13px !important;

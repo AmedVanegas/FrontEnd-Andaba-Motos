@@ -14,9 +14,9 @@ import { RouterLink } from '@angular/router';
   styleUrl: './product-list.css',
 })
 export default class ProductList {
-  // Datos originales (todos)
+
   products$ = new BehaviorSubject<any[]>([]);
-  // Datos filtrados que usa el template con async
+
   filteredProducts$ = new BehaviorSubject<any[]>([]);
 
   searchTerm: string = '';
@@ -30,14 +30,14 @@ export default class ProductList {
       next: (data) => {
         console.log(data);
         this.products$.next(data);
-        this.applyFilters(); // actualiza la vista con todos los datos al inicio
+        this.applyFilters(); 
       },
       error: (error) => console.error(error),
       complete: () => console.log('Se traen los productos'),
     });
   }
 
-  // Llamado desde (ngModelChange) en el HTML cuando cambia el input o el select
+  
   applyFilters() {
     const term = this.searchTerm.toLowerCase().trim();
     const result = this.products$.value.filter((p) => {

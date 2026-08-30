@@ -8,7 +8,7 @@ export const guestGuard: CanActivateFn = (route, state) => {
   const router = inject(Router)
 
 return authService.checkAuthStatus().pipe(
-    map((isAuthenticated) => !isAuthenticated), // Invertimos la condición: solo permite paso si NO está autenticado
+    map((isAuthenticated) => !isAuthenticated), 
     tap((isGuest) => {
       if (!isGuest) {
         console.info('ℹ️ [GuestGuard] El usuario ya cuenta con una sesión activa. Redirigiendo a /dashboard...');

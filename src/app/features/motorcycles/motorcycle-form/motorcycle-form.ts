@@ -68,7 +68,7 @@ export default class MotorcycleForm implements OnInit {
     const formValue = this.formData.value;
 
     if (this.isEditMode && this.motorcycleId) {
-      // Confirmación antes de guardar los cambios (modo edición)
+     
       const confirmed = await this.alert.confirmSave('la motocicleta', true);
       if (!confirmed) {
         return;
@@ -128,8 +128,7 @@ export default class MotorcycleForm implements OnInit {
         switchMap((term) => {
           const trimmed = term.trim();
 
-          // si el término quedó muy corto (incluido vacío, al borrar todo)
-          // limpiamos la lista en vez de dejarla con el último resultado
+       
           if (trimmed.length < 2) {
             this.clientResults = [];
             this.showClientResults = false;
@@ -183,8 +182,7 @@ export default class MotorcycleForm implements OnInit {
   }
 
   onClientSearchBlur() {
-    // pequeño delay: si no, el blur cierra la lista antes de que el click
-    // en un resultado alcance a dispararse
+  
     setTimeout(() => {
       this.showClientResults = false;
     }, 150);
@@ -196,9 +194,7 @@ export default class MotorcycleForm implements OnInit {
         const { motorcycle } = data;
         this.formData.patchValue(motorcycle);
 
-        // motorcycle.client viene poblado ({_id, username}), no es el id
-        // plano que espera el form -- se corrige aparte y se pinta el
-        // nombre en el buscador
+ 
         if (motorcycle.client?._id) {
           this.formData.get('client')?.setValue(motorcycle.client._id);
           this.clientSearchControl.setValue(motorcycle.client.username, { emitEvent: false });

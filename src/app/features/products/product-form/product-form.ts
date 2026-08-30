@@ -30,12 +30,12 @@ export default class ProductForm {
   formButton: string = 'Crear producto';
   productId: string | null = null;
 
-  existingImages: string[] = []; // URLs que ya tenía el producto (mutable: el usuario puede quitar)
-  newImages: File[] = []; // archivos nuevos elegidos en este form
+  existingImages: string[] = []; 
+  newImages: File[] = []; 
   newImagePreviews: string[] = [];
 
   constructor() {
-    // Define la estructura equivalente del formulario en HTML
+
     this.formData = new FormGroup({
       name: new FormControl('', [
         Validators.required,
@@ -69,7 +69,7 @@ export default class ProductForm {
     const formValue = this.formData.value;
 
     if (this.isEditMode && this.productId) {
-      // Confirmación antes de guardar los cambios (modo edición)
+    
       const confirmed = await this.alert.confirmSave('el producto', true);
       if (!confirmed) {
         return;
@@ -130,7 +130,7 @@ export default class ProductForm {
     }
   }
 
-  // Hook: ciclo de vida que se ejecuta al inicializar el componente
+ 
   ngOnInit() {
     this.loadCategories();
 
@@ -149,7 +149,7 @@ export default class ProductForm {
       next: (data) => {
         console.log(data);
 
-        // Guarda las categorías obtenidas
+
         this.categoryList$.next(data.data);
       },
 
@@ -158,7 +158,7 @@ export default class ProductForm {
       },
 
       complete: () => {
-        // No hay acciones al completar
+
       },
     });
   }
@@ -191,11 +191,11 @@ export default class ProductForm {
       this.newImagePreviews.push(URL.createObjectURL(file));
     });
 
-    input.value = ''; // permite volver a elegir el mismo archivo si lo quita y lo vuelve a añadir
+    input.value = ''; 
   }
 
   removeNewImage(index: number) {
-    URL.revokeObjectURL(this.newImagePreviews[index]); // libera memoria
+    URL.revokeObjectURL(this.newImagePreviews[index]); 
     this.newImages.splice(index, 1);
     this.newImagePreviews.splice(index, 1);
   }

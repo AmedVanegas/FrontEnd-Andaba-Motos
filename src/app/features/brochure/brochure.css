@@ -8,7 +8,7 @@
   isolation: isolate;
 }
 
-/* ── AMBIENT GLOW ── */
+
 .brochure-page::before,
 .brochure-page::after {
   content: '';
@@ -34,7 +34,7 @@
   background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
 }
 
-/* ── HEADER (vidrio, sticky) ── */
+
 .brochure-header {
   position: sticky;
   top: 1rem;
@@ -99,7 +99,7 @@
   background: #cc2222;
 }
 
-/* ── GRID (tamaño fijo de card, se acomoda solo) ── */
+
 .products-grid {
   position: relative;
   z-index: 1;

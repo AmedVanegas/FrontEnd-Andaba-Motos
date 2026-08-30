@@ -10,6 +10,8 @@ import {
   faMotorcycle,
   faArrowRight,
   faChartLine,
+  faClipboardList,
+  faWrench,
 } from '@fortawesome/free-solid-svg-icons';
 
 interface DashboardSection {
@@ -32,8 +34,7 @@ export default class Dashboard {
 
   mainRoute = '/dashboard'
 
-  // Agregar una sección nueva acá es lo único que hay que tocar
-  // cuando se agregue otra lista de admin (citas, ordenes, etc.)
+
   sections: DashboardSection[] = [
     {
       label: 'Usuarios',
@@ -58,6 +59,18 @@ export default class Dashboard {
       description: 'Motos registradas y su cliente asociado.',
       route: this.mainRoute +'/motorcycles',
       icon: faMotorcycle,
+    },
+    {
+      label: 'Órdenes',
+      description: 'Órdenes de compra de productos.',
+      route: this.mainRoute +'/orders',
+      icon: faClipboardList,
+    },
+    {
+      label: 'Registros de servicio',
+      description: 'Trabajos realizados en el taller.',
+      route: this.mainRoute +'/service-records',
+      icon: faWrench,
     },
     {
       label: 'Ventas y ganancias',

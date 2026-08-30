@@ -7,7 +7,7 @@ export class ImageUrlPipe implements PipeTransform {
   transform(path?: string | null): string {
     if (!path) return '';
     if (path.startsWith('http://') || path.startsWith('https://')) {
-      return path; // ya es una URL absoluta (Reddit, Unsplash, etc.)
+      return path; 
     }
     return `${environment.filesUrl}${path.startsWith('/') ? '' : '/'}${path}`;
   }

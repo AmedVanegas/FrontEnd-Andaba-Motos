@@ -78,8 +78,7 @@ export default class Checkout implements OnInit {
       if (!raw) return;
 
       const user = JSON.parse(raw);
-      // Si tu AuthService guarda el usuario envuelto (ej: { data: {...} } o
-      // el token junto al usuario), ajusta esta línea para llegar al objeto real.
+
       const address: UserAddress | undefined = user?.address;
 
       if (address?.city && address?.country) {
@@ -123,8 +122,7 @@ export default class Checkout implements OnInit {
     this.cartService.checkout(direccionEnvio, this.metodoPago).subscribe({
       next: () => {
         this.loading = false;
-        this.alert.success?.('Pedido confirmado', 'Tu compra se procesó correctamente'); // ajusta al método real de tu alert.ts
-        this.router.navigate(['/']);
+        this.alert.success?.('Pedido confirmado', 'Tu compra se procesó correctamente'); 
       },
       error: (err) => {
         this.loading = false;

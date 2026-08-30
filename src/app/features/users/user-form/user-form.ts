@@ -128,12 +128,10 @@ export default class UserForm implements OnInit {
           city: new FormControl('', [Validators.required]),
           street: new FormControl('', [Validators.required]),
           carrera: new FormControl('', [Validators.required]),
-          // El modelo NO marca "neighborhood" como obligatorio, así que no lleva Validators.required
+      
           neighborhood: new FormControl('',[Validators.required] ),
         }),
-        // Antes tenía como valor inicial 'client' (que nunca calza con los IDs reales
-        // que llegan del backend), por eso el botón quedaba habilitado sin que se
-        // eligiera un rol real. Ahora arranca vacío y es obligatorio.
+        
         rol: new FormControl('', [Validators.required]),
         status: new FormControl('active'),
       },
@@ -145,7 +143,6 @@ export default class UserForm implements OnInit {
     this.getRoles();
     this.loadCountries();
 
-    // Toma el id de la ruta si existe
     this.userId = this.activatedRoute.snapshot.paramMap.get('id');
 
     if (this.userId) {

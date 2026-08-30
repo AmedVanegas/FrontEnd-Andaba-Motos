@@ -146,7 +146,7 @@ export default class Register implements OnInit {
     this.loadCountries();
   }
 
-  /* ===== Navegación del wizard ===== */
+
 
   private getStepControls(step: number): AbstractControl[] {
     switch (step) {
@@ -194,7 +194,7 @@ export default class Register implements OnInit {
   }
 
   goToStep(step: number) {
-    // Solo deja saltar hacia adelante si los pasos previos ya son válidos.
+
     for (let s = 1; s < step; s++) {
       if (!this.isStepValid(s)) {
         this.markStepTouched(s);
@@ -205,7 +205,6 @@ export default class Register implements OnInit {
     this.currentStep = step;
   }
 
-  /* ===== Envío ===== */
 
   onSubmit() {
     if (this.formData.invalid) {
@@ -223,7 +222,6 @@ export default class Register implements OnInit {
     })
   }
 
-  /* ===== País / Departamento / Ciudad ===== */
 
   async loadCountries() {
     const countries = await getCountries();
@@ -263,7 +261,7 @@ export default class Register implements OnInit {
     this.citiesList$.next(cities);
   }
 
-  /* ===== Getters ===== */
+
 
   get username() {
     return this.formData.get('username');

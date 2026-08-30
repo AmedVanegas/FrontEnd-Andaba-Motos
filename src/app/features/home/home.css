@@ -209,7 +209,7 @@
   margin-top: 4px;
 }
 
-/* ── STATS ── */
+
 .stats-bar {
   position: relative;
   z-index: 1;
@@ -258,7 +258,6 @@
   background: rgba(255, 255, 255, 0.08);
 }
 
-/* ── SECTION HEADER ── */
 .section-header {
   position: relative;
   z-index: 1;
@@ -296,7 +295,7 @@
 
 .section-link:hover { color: #ff5a5d; }
 
-/* ── SERVICIOS ── */
+
 .services-section {
   position: relative;
   z-index: 1;
@@ -381,7 +380,7 @@
   padding: 4px 10px;
 }
 
-/* ── FEATURED ── */
+
 .featured-section {
   position: relative;
   z-index: 1;
@@ -558,7 +557,7 @@
 @media(max-width:845px){
    .hero-badge { display: none; }
 }
-/* ── RESPONSIVE ── */
+
 @media (max-width: 768px) {
   .hero-content { padding: 1 1.5rem 3rem; background: rgba(10, 10, 11, 0.5); }
  

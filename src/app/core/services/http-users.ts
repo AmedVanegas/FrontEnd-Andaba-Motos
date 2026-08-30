@@ -5,7 +5,7 @@ import { environment } from '../../../environments/environment';
 
 @Service()
 export class HttpUsers {
-  // constructor(private http: HttpClient ){} version antigua
+
 
   private http = inject(HttpClient);
   BASE_URL: string = environment.apiUrl

@@ -1,8 +1,4 @@
-/* ============================================================
-   BACKDROP — fondo oscuro + blur, centra el panel con flexbox
-   (así el panel no necesita transform propio para centrarse y
-   ese transform queda 100% libre para la animación FLIP)
-   ============================================================ */
+
 .detail-backdrop {
   position: fixed;
   inset: 0;
@@ -23,10 +19,6 @@
   backdrop-filter: blur(8px);
 }
 
-/* ============================================================
-   PANEL — ~3/4 de pantalla, centrado. El transform lo maneja
-   el componente por JS (animación FLIP desde la card de origen).
-   ============================================================ */
 .detail-panel {
   position: relative;
   width: 76vw;
@@ -49,7 +41,7 @@
   grid-template-columns: 1fr 0px !important;
 }
 
-/* Hide text entirely if showContent is false */
+
 .detail-panel:not(.show-content) .detail-info {
   opacity: 0;
 }
@@ -58,14 +50,13 @@
   opacity: 0;
 }
 
-/* During the initial animation frame, padding is 0 to avoid squishing */
+
 .detail-panel.is-animating .detail-info {
   padding-left: 0;
   padding-right: 0;
   overflow: hidden;
 }
 
-/* ── BOTÓN CERRAR ── */
 .detail-close {
   position: absolute;
   z-index: 5;
@@ -97,9 +88,7 @@
   transform: rotate(90deg);
 }
 
-/* ============================================================
-   INFO (izquierda) — mismo lenguaje del card-glass
-   ============================================================ */
+
 .detail-info {
   position: relative;
   z-index: 1;
@@ -272,9 +261,7 @@
   transform: scale(0.97);
 }
 
-/* ============================================================
-   MEDIA (derecha) — carrusel de imágenes
-   ============================================================ */
+
 .detail-media {
   position: relative;
   overflow: hidden;
@@ -318,7 +305,7 @@
   text-transform: uppercase;
 }
 
-/* ── FLECHAS ── */
+
 .detail-nav {
   position: absolute;
   z-index: 3;
@@ -361,7 +348,7 @@
   right: 14px;
 }
 
-/* ── PUNTOS ── */
+
 .detail-dots {
   position: absolute;
   z-index: 3;
@@ -408,10 +395,7 @@
   backdrop-filter: blur(10px);
 }
 
-/* ============================================================
-   RESPONSIVE — en pantallas chicas no entran 3/4 lado a lado:
-   se apila imagen arriba / info abajo, y se agranda un poco.
-   ============================================================ */
+
 @media (max-width: 860px) {
   .detail-panel {
     width: 94vw;

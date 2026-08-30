@@ -14,9 +14,9 @@ import { RouterLink } from '@angular/router';
   styleUrl: './motorcycle-list.css',
 })
 export default class MotorcycleList {
-  // Datos originales (todos)
+
   motorcycles$ = new BehaviorSubject<any[]>([]);
-  // Datos filtrados que usa el template con async
+  
   filteredMotorcycles$ = new BehaviorSubject<any[]>([]);
 
   searchTerm: string = '';
@@ -30,14 +30,14 @@ export default class MotorcycleList {
       next: (data) => {
         console.log(data);
         this.motorcycles$.next(data);
-        this.applyFilters(); // actualiza la vista con todos los datos al inicio
+        this.applyFilters(); 
       },
       error: (error) => console.error(error),
       complete: () => console.log('Se traen las motocicletas'),
     });
   }
 
-  // Llamado desde (ngModelChange) en el HTML cuando cambia el input o el select
+ 
   applyFilters() {
     const term = this.searchTerm.toLowerCase().trim();
     const result = this.motorcycles$.value.filter((m) => {

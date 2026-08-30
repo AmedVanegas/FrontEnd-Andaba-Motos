@@ -51,7 +51,7 @@ export default class MyAccount implements OnInit {
   memberSince = signal('');
   maxBirthDate = new Date().toISOString().slice(0, 10);
 
-  // Mismo patrón que user-form.ts / register.ts para las listas de ubicación
+
   countriesList$ = new BehaviorSubject<ICountry[]>([]);
   departmentsList$ = new BehaviorSubject<IState[]>([]);
   citiesList$ = new BehaviorSubject<ICity[]>([]);
@@ -91,8 +91,7 @@ export default class MyAccount implements OnInit {
   ngOnInit(): void {
     this.loadCountries();
 
-    // Snapshot directo, igual que hace dashboard.html con "httpAuth.user$ | async"
-    // pero acá solo necesitamos el valor una vez al entrar a la página.
+   
     const user = this.httpAuth.user;
     if (!user?._id) {
       this.loading.set(false);
@@ -117,7 +116,7 @@ export default class MyAccount implements OnInit {
     this.loading.set(true);
     this.httpUsers.getUserById(userId).subscribe({
       next: (res: any) => {
-        // igual que en user-form.ts (loadUserData), la respuesta trae el usuario en "user"
+        
         const userData = res?.user ?? res?.data ?? res;
         this.populateForm(userData);
         this.loading.set(false);
@@ -155,11 +154,11 @@ export default class MyAccount implements OnInit {
     });
     this.form.markAsPristine();
 
-    // No se espera esta promesa: si falla, no debe bloquear el "loading = false" de arriba
+
     this.syncAddressLocation(userData?.address);
   }
 
-  // Mismo método que user-form.ts, solo que aquí alimenta los BehaviorSubject
+
   async syncAddressLocation(address: any) {
     if (!address) return;
 
@@ -238,7 +237,7 @@ export default class MyAccount implements OnInit {
   }
 
   requestPasswordReset(): void {
-    // TODO: conectar con el endpoint de recuperar contraseña cuando exista
+    
     console.log('[my-account] pidió cambiar la contraseña');
   }
 

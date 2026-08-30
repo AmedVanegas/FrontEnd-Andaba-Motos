@@ -4,7 +4,7 @@
   display: block;
 }
 
-/* ===== Tokens (heredados del header/carbon theme) ===== */
+
 .login-page {
   --carbon: #0a0a0b;
   --ink: #f2f1ee;
@@ -29,7 +29,7 @@
   isolation: isolate;
 }
 
-/* ===== Ambiente: glow rojo sobre carbon, sin foto ===== */
+
 .login-page::before,
 .login-page::after {
   content: '';
@@ -56,7 +56,7 @@
   background: radial-gradient(circle, rgba(229, 56, 59, 0.16) 0%, transparent 70%);
 }
 
-/* ===== Panel de vidrio ===== */
+
 .login-stage {
   position: relative;
   z-index: 1;
@@ -83,7 +83,7 @@
   animation: rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* Filo superior "iluminado" — el vidrio atrapando un poco de luz roja */
+
 .login-card::before {
   content: '';
   position: absolute;
@@ -99,7 +99,6 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ===== Encabezado ===== */
 .login-head {
   margin-bottom: 32px;
 }
@@ -137,7 +136,6 @@
   to { transform: scaleX(1); }
 }
 
-/* ===== Campos ===== */
 .login-fields {
   display: flex;
   flex-direction: column;
@@ -201,7 +199,6 @@
   color: var(--error);
 }
 
-/* ===== Botón ===== */
 .login-submit {
   width: 100%;
   padding: 13px 20px;
@@ -238,7 +235,7 @@
   background: rgba(255, 255, 255, 0.06);
 }
 
-/* ===== Responsive ===== */
+
 @media (max-width: 480px) {
   .login-card {
     padding: 40px 28px 32px;
@@ -248,7 +245,6 @@
   }
 }
 
-/* ===== Accesibilidad de movimiento ===== */
 @media (prefers-reduced-motion: reduce) {
   .login-card { animation: none; }
   .login-bar { animation: none; transform: scaleX(1); }

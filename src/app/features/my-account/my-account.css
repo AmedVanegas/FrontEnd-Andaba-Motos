@@ -1,8 +1,4 @@
-/* ============================================================
-   MI CUENTA — sistema visual propio (no reutiliza .form-* de admin)
-   Reutiliza únicamente los tokens globales de styles.css
-   (--carbon, --glass-fill, --ink, --dim, --red, --amber, --green...)
-   ============================================================ */
+
 
 @property --ring-angle {
   syntax: '<angle>';
@@ -40,7 +36,7 @@
   margin: 0 auto;
 }
 
-/* ===== Indicador de carga (no bloqueante) ===== */
+
 .account-loading-pill {
   display: inline-flex;
   align-items: center;
@@ -66,7 +62,6 @@
   50% { opacity: 1; transform: scale(1.1); }
 }
 
-/* ===== Etiquetas de sección ===== */
 .account-section-label {
   margin: 0 0 10px 4px;
   font-size: 11px;
@@ -79,7 +74,7 @@
   margin-top: 24px;
 }
 
-/* ===== Hero de perfil ===== */
+
 .account-hero {
   display: flex;
   align-items: center;
@@ -172,7 +167,6 @@
   color: var(--faint);
 }
 
-/* ===== Feedback ===== */
 .account-feedback {
   padding: 11px 16px;
   border-radius: var(--radius-sm);
@@ -192,7 +186,6 @@
   background: var(--red-soft);
 }
 
-/* ===== Tabs con indicador deslizante ===== */
 .account-tabs {
   position: relative;
   display: flex;
@@ -238,7 +231,7 @@
   color: var(--ink);
 }
 
-/* ===== Panel / filas de campo ===== */
+
 .account-panel {
   display: flex;
   flex-direction: column;
@@ -309,10 +302,7 @@
   text-align-last: right;
 }
 
-/* text-align no es confiable en los segmentos internos de <input type="date">
-   en todos los navegadores (Safari en particular). En vez de forzarlo por texto,
-   se le quita el flex:1 y se deja con su ancho natural: el justify-content:
-   space-between de .field-row ya lo empuja al borde derecho. */
+
 .field-row input[type='date'] {
   flex: 0 0 auto;
   width: auto;
@@ -341,23 +331,22 @@
   color: var(--red);
 }
 
-/* ===== Barra de guardado flotante ===== */
-/* ===== Barra de guardado flotante (ahora estática bajo el form) ===== */
+
 .save-bar {
   position: relative;
   margin-top: 24px;
-  display: none; /* Lo ocultamos hasta que esté dirty */
+  display: none; 
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  width: 100%; /* Ahora ocupará el ancho disponible del contenedor */
+  width: 100%; 
   padding: 12px 12px 12px 20px;
   background: rgba(17, 17, 17, 0.7);
   border: 1px solid var(--glass-border-strong);
   border-radius: var(--radius-lg);
   backdrop-filter: blur(26px) saturate(150%);
   -webkit-backdrop-filter: blur(26px) saturate(150%);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Sombra un poco más suave */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); 
 }
 
 .save-bar.visible {
@@ -420,7 +409,7 @@
   cursor: not-allowed;
 }
 
-/* ===== Responsive ===== */
+
 @media (max-width: 640px) {
   .account-page {
     padding: 2rem 1.25rem calc(7rem + env(safe-area-inset-bottom, 0px));

@@ -1,8 +1,3 @@
-/* pages/checkout/checkout.css */
-/* Diseño propio para el usuario final: mismo lenguaje visual que
-   brochure.css / cart-drawer.css / product-brochure-card.css
-   (glass, glows ambientales, acentos rojos), NO el sistema
-   .form-section de administración. */
 
 .checkout-page {
   position: relative;
@@ -108,7 +103,7 @@
   margin: 0 0 2rem;
 }
 
-/* ── Grid principal ── */
+
 .checkout-grid {
   display: grid;
   grid-template-columns: 1fr 380px;
@@ -116,7 +111,7 @@
   align-items: start;
 }
 
-/* ── Tarjetas glass (dirección / pago) ── */
+
 .glass-card {
   background: var(--glass-fill);
   border: 1px solid var(--glass-border);
@@ -177,7 +172,7 @@
   grid-column: 1 / -1;
 }
 
-/* ── Toggle: dirección registrada vs otra dirección ── */
+
 .address-toggle {
   display: flex;
   gap: 8px;
@@ -277,7 +272,7 @@
   box-shadow: 0 0 0 4px var(--red-soft);
 }
 
-/* ── Método de pago (chips grandes con ícono circular) ── */
+
 .payment-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -354,7 +349,6 @@
   padding-left: 4px;
 }
 
-/* ── Columna resumen (sticky) ── */
 .checkout-summary-col {
   position: sticky;
   top: 1.5rem;
@@ -391,7 +385,7 @@
   max-height: 320px;
   overflow-y: auto;
   margin-bottom: 18px;
-  padding: 8px 4px 0 0; /* padding-top: deja espacio para el badge del primer item, si no, overflow-y lo corta */
+  padding: 8px 4px 0 0; 
 }
 
 .summary-item {
@@ -518,7 +512,6 @@
   text-align: center;
 }
 
-/* ── Responsive ── */
 @media (max-width: 900px) {
   .checkout-grid {
     grid-template-columns: 1fr;

@@ -12,12 +12,12 @@ export class HttpCategories {
     return this.http.post(`${this.BASE_URL}/category`, newCategory);
   }
 
-  //metodo para obtener todas las categorias
+
   getCategory() {
-    //http siempre devuelve los datos dentro de un observable
+
     return this.http.get<any>(`${this.BASE_URL}/category`);
   }
-   // http siempre nos devuelve los datos dentro de un observable
+  
   deleteCategory (id: string | null){
     return this.http.delete(`${this.BASE_URL}/category/${id}`);
   }

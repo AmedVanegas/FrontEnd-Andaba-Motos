@@ -16,8 +16,6 @@ export  default class Brochure {
   private httpProducts = inject(HttpProducts)
   products$ = new BehaviorSubject<any[]>([])
 
-  // Producto seleccionado para el panel de detalle + rect de la card
-  // que se clickeó (punto de partida de la animación).
   selectedProduct: any = null;
   originRect: DOMRect | null = null;
 

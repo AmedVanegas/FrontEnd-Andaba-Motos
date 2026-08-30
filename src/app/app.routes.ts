@@ -83,6 +83,33 @@ export const routes: Routes = [
         path: 'reports',
         loadComponent: () => import('./features/reports/sales-report/sales-report'),
       },
+      {
+        path: 'service-records',
+        loadComponent: () =>
+          import('./features/service-records/service-record-list/service-record-list'),
+      },
+      {
+        path: 'service-records/new',
+        loadComponent: () =>
+          import('./features/service-records/service-record-form/service-record-form'),
+      },
+      {
+        path: 'service-records/edit/:id',
+        loadComponent: () =>
+          import('./features/service-records/service-record-form/service-record-form'),
+      },
+      {
+        path: 'orders',
+        loadComponent: () => import('./features/order/order-list/order-list'),
+      },
+      {
+        path: 'orders/new',
+        loadComponent: () => import('./features/order/order-form/order-form'),
+      },
+      {
+        path: 'orders/edit/:id',
+        loadComponent: () => import('./features/order/order-form/order-form'),
+      },
     ],
   },
 

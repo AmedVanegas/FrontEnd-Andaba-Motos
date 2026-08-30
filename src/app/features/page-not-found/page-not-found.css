@@ -15,7 +15,7 @@
   isolation: isolate;
 }
 
-/* Ambient glow, igual que home/users-container/form-page-bg */
+
 .not-found-page::before,
 .not-found-page::after {
   content: '';

@@ -1,0 +1,180 @@
+<div class="form-page-bg">
+  <app-back-button fallback="/service-records" />
+  <form class="form-page" [formGroup]="formData" (ngSubmit)="onSubmit()">
+    <div class="form-header">
+      <h1>{{ formTitle }}</h1>
+      <p>
+        @if (isEditMode) {
+          Actualiza la descripción, observaciones, costo final o el mecánico responsable.
+        } @else {
+          Registra el trabajo realizado sobre la moto del cliente.
+        }
+      </p>
+    </div>
+
+    @if (!isEditMode) {
+      <div class="form-section">
+        <div class="form-section-title">Cita</div>
+        <div class="form-section-body">
+          <div class="form-field-full">
+            <label for="appointment">Cita</label>
+            <select id="appointment" formControlName="appointment">
+              <option value="" disabled>Seleccione una cita</option>
+              @for (appt of appointmentList$ | async; track appt._id) {
+                <option [value]="appt._id">
+                  {{ appt.client?.username }} - {{ appt.motorcycle?.licensePlate }} - {{ appt.status }}
+                </option>
+              }
+            </select>
+            @if (appointment?.invalid && (appointment?.dirty || appointment?.touched)) {
+              <small class="form-error">Debe seleccionar la cita de este servicio</small>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section product-list" formArrayName="usedProducts">
+        <div class="form-section-title">Productos utilizados</div>
+        <div class="form-section-body product-list-body">
+          @for (item of usedProducts.controls; track $index) {
+            <div class="product-item" [formGroupName]="$index">
+              <div>
+                <label [for]="'product-' + $index">Producto</label>
+                <select [id]="'product-' + $index" formControlName="product">
+                  <option value="" disabled>Seleccione un producto</option>
+                  @for (p of productList$ | async; track p._id) {
+                    <option [value]="p._id">{{ p.name }}</option>
+                  }
+                </select>
+              </div>
+
+              <div>
+                <label [for]="'quantity-' + $index">Cantidad</label>
+                <input
+                  [id]="'quantity-' + $index"
+                  type="number"
+                  formControlName="quantity"
+                  min="1"
+                />
+              </div>
+
+              @if (usedProducts.length > 1) {
+                <button
+                  type="button"
+                  class="form-remove-btn"
+                  (click)="removeProduct($index)"
+                  aria-label="Quitar producto"
+                >
+                  ✕
+                </button>
+              }
+            </div>
+          }
+
+          <button type="button" class="form-add-btn" (click)="addProduct()">
+            + Agregar producto
+          </button>
+        </div>
+      </div>
+    } @else {
+      <div class="form-section">
+        <div class="form-section-title">Cita</div>
+        <div class="form-section-body">
+          <p class="form-readonly form-field-full">{{ existingAppointmentLabel }}</p>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Productos utilizados (no editables)</div>
+        <div class="form-section-body">
+          <div class="form-field-full">
+            @for (item of existingProducts; track $index) {
+              <p class="form-readonly">
+                {{ item.product?.name ?? item.product }} — {{ item.quantity }} und.
+              </p>
+            } @empty {
+              <p class="form-readonly">No se usaron productos en este servicio.</p>
+            }
+            <small class="client-search-hint">
+              Los productos usados no se pueden editar después de creado el registro (ya se descontaron del stock).
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">Mecánico responsable</div>
+        <div class="form-section-body">
+          <div class="client-search form-field-full">
+            <label for="mechanicSearch">Reasignar mecánico</label>
+            <input
+              type="text"
+              id="mechanicSearch"
+              [formControl]="mechanicSearchControl"
+              (focus)="onMechanicSearchFocus()"
+              (blur)="onMechanicSearchBlur()"
+              placeholder="Busca por nombre o usuario..."
+              autocomplete="off"
+            />
+            @if (showMechanicResults) {
+              <ul class="client-results">
+                @for (u of mechanicResults; track u._id) {
+                  <li (mousedown)="selectMechanic(u)">{{ u.username }}</li>
+                } @empty {
+                  <li class="client-results-empty">No se encontraron usuarios</li>
+                }
+              </ul>
+            }
+            <small class="client-search-hint">Dejalo vacío si no querés cambiar el mecánico.</small>
+          </div>
+        </div>
+      </div>
+    }
+
+    <div class="form-section">
+      <div class="form-section-title">Detalle del trabajo</div>
+      <div class="form-section-body">
+        <div class="form-field-full">
+          <label for="description">Descripción del trabajo</label>
+          <input
+            id="description"
+            type="text"
+            formControlName="description"
+            placeholder="Ej: Cambio de aceite y ajuste de cadena"
+          />
+        </div>
+
+        <div class="form-field-full">
+          <label for="observations">Observaciones</label>
+          <input
+            id="observations"
+            type="text"
+            formControlName="observations"
+            placeholder="Notas adicionales para el cliente (opcional)"
+          />
+        </div>
+
+        <div>
+          <label for="finalCost">Costo final</label>
+          <input
+            id="finalCost"
+            type="number"
+            formControlName="finalCost"
+            placeholder="Costo total del servicio"
+            min="0"
+          />
+          @if (finalCost?.invalid && (finalCost?.dirty || finalCost?.touched)) {
+            @if (finalCost?.errors?.['required']) {
+              <small class="form-error">El costo final es obligatorio</small>
+            }
+            @if (finalCost?.errors?.['min']) {
+              <small class="form-error">El costo final no puede ser negativo</small>
+            }
+          }
+        </div>
+      </div>
+    </div>
+
+    <button class="form-submit" type="submit">{{ formButton }}</button>
+  </form>
+</div>

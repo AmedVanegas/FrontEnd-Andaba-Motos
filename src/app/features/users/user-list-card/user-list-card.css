@@ -1,5 +1,4 @@
-/* Fila de tabla: estilos base en styles.css (.user-card, .avatar, .btn-edit,
-   .btn-delete...). Esta lista solo necesita su propio ancho de columnas. */
+
 .user-card {
   grid-template-columns: 1fr 1.5fr 0.5fr 0.5fr 1.2fr 1fr;
 }
