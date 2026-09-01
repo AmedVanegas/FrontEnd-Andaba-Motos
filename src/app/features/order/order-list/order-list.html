@@ -19,6 +19,10 @@
         <p class="stat-label">Canceladas</p>
         <p class="stat-value suspended">{{ getCanceledOrders() }}</p>
       </div>
+      <div class="stat-card">
+        <p class="stat-label">Pagadas</p>
+        <p class="stat-value active">{{ getPaidOrders() }}</p>
+      </div>
     </div>
 
     <div class="toolbar">
@@ -53,9 +57,9 @@
 
       @for (order of filteredOrders$ | async; track order._id) {
         <div class="user-card">
-          <div class="card-cell">{{ order.user?.username ?? 'Cliente no disponible' }}</div>
+          <div class="card-cell" >{{ order.user?.username ?? 'Cliente no disponible' }}</div>
           <div class="card-cell">{{ order.total | currency: 'COP ' : 'symbol' : '1.0' }}</div>
-          <div class="card-cell">{{ statusLabel(order.status) }}</div>
+          <div class="card-cell" [ngClass]="{'active':order.status == 'paid' || order.status == 'delivered', 'warn':order.status == 'shipped' || order.status == 'pending', 'suspended':order.status == 'canceled'}">{{ statusLabel(order.status) }}</div>
           <div class="card-cell">{{ order.metodoPago || '—' }}</div>
           <div class="card-cell">{{ order.createdAt | date: 'shortDate' }}</div>
           <div class="card-cell actions">

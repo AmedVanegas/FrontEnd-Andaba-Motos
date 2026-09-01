@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { AsyncPipe, CurrencyPipe, DatePipe } from '@angular/common';
+import { AsyncPipe, CurrencyPipe, DatePipe, NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
@@ -17,7 +17,7 @@ const STATUS_LABELS: Record<string, string> = {
 
 @Component({
   selector: 'app-order-list',
-  imports: [AsyncPipe, CurrencyPipe, DatePipe, RouterLink, FormsModule],
+  imports: [AsyncPipe, CurrencyPipe, DatePipe, RouterLink, FormsModule, NgClass],
   templateUrl: './order-list.html',
   styleUrl: './order-list.css',
 })
@@ -75,6 +75,10 @@ export default class OrderList implements OnInit {
 
   getCanceledOrders() {
     return this.orders$.value.filter((o) => o.status === 'canceled').length;
+  }
+
+  getPaidOrders(){
+    return this.orders$.value.filter((o)=>{ return o.status === 'paid'}).length
   }
 
   async onDelete(order: any) {

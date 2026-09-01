@@ -424,6 +424,16 @@ router-outlet + * {
   color: var(--red);
 }
 
+.active {
+  color: var(--green);
+}
+.warn {
+  color: var(--amber);
+}
+.suspended {
+  color: var(--red);
+}
+
 
 .users-list-wrapper {
   background: var(--glass-fill);
