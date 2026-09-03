@@ -1,13 +1,23 @@
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, inject, input, ViewChild } from '@angular/core';
 import { RouterLink } from "@angular/router";
+import { ProductHomeCard } from '../products/product-home-card/product-home-card';
+import { HttpProducts } from '../../core/services/http-products';
+import { BehaviorSubject } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink],
+  imports: [RouterLink, ProductHomeCard, AsyncPipe],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
 export class Home {
+
+  httpProducts = inject(HttpProducts)
+
+  products$ = new BehaviorSubject<any[]>([])
+
+
    @ViewChild('heroBg') heroBg?: ElementRef<HTMLElement>;
 
   private ticking = false;
@@ -16,6 +26,11 @@ export class Home {
 
   ngAfterViewInit() {
     this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  ngOnInit(){
+    this.httpProducts.getProducts().subscribe({next:(data)=>{ console.log(data);this.products$.next(data.slice(0,5))}})
+    
   }
 
   @HostListener('window:scroll')
@@ -30,5 +45,6 @@ export class Home {
       this.ticking = false;
     });
   }
+
 }
 

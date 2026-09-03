@@ -57,15 +57,17 @@
   font-family: 'Inter', sans-serif;
   color: var(--ink);
   cursor: pointer;
-  transition: background 0.15s ease;
+  transition: all 0.2s;
 }
 
-.account-item:hover {
-  background: rgba(255, 255, 255, 0.06);
-}
+
 
 .account-item--accent {
   color: var(--red);
+}
+
+.account-item--outline:hover {
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .account-item--danger {

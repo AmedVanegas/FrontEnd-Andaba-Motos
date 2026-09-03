@@ -13,7 +13,7 @@
     </div>
 
     @if (!isEditMode) {
-      <div class="form-section">
+      <div class="form-section" [class.is-elevated]="showClientResults">
         <div class="form-section-title">Cliente</div>
         <div class="form-section-body">
           <div class="client-search form-field-full">
@@ -57,11 +57,16 @@
               <div>
                 <label [for]="'product-' + $index">Producto</label>
                 <select [id]="'product-' + $index" formControlName="product">
-                  <option value="" disabled>Seleccione un producto</option>
-                  @for (p of productList$ | async; track p._id) {
-                    <option [value]="p._id">{{ p.name }}</option>
+  <option value="" disabled>Seleccione un producto</option>
+  @for (p of availableProducts($index); track p._id) {
+    <option [value]="p._id">{{ p.name }}</option>
+  }
+</select>
+                @if (item.get('product')?.invalid && (item.get('product')?.dirty || item.get('product')?.touched)) {
+                  @if (item.get('product')?.errors?.['required']) {
+                    <small class="form-error">Selecciona un producto</small>
                   }
-                </select>
+                }
               </div>
 
               <div>
@@ -72,6 +77,14 @@
                   formControlName="quantity"
                   min="1"
                 />
+                @if (item.get('quantity')?.invalid && (item.get('quantity')?.dirty || item.get('quantity')?.touched)) {
+                  @if (item.get('quantity')?.errors?.['required']) {
+                    <small class="form-error">La cantidad es obligatoria</small>
+                  }
+                  @if (item.get('quantity')?.errors?.['min']) {
+                    <small class="form-error">La cantidad mínima es 1</small>
+                  }
+                }
               </div>
 
               <div class="product-item-price">
@@ -143,16 +156,26 @@
             <option value="delivered">Entregado</option>
             <option value="canceled">Cancelado</option>
           </select>
+          @if (status?.invalid && (status?.dirty || status?.touched)) {
+            @if (status?.errors?.['required']) {
+              <small class="form-error">Debes seleccionar un estado</small>
+            }
+          }
         </div>
 
         <div>
           <label for="metodoPago">Método de pago</label>
           <select id="metodoPago" formControlName="metodoPago">
-            <option value="">Sin especificar</option>
+            <option value="" disabled selected>Seleccione método de pago</option>
             <option value="cash">Efectivo</option>
             <option value="card">Tarjeta</option>
             <option value="transfer">Transferencia</option>
           </select>
+          @if (metodoPago?.invalid && (metodoPago?.dirty || metodoPago?.touched)) {
+            @if (metodoPago?.errors?.['required']) {
+              <small class="form-error">Debes seleccionar un método de pago</small>
+            }
+          }
         </div>
 
         <div class="form-field-full">
@@ -167,6 +190,8 @@
       </div>
     </div>
 
-    <button class="form-submit" type="submit">{{ formButton }}</button>
+    <button class="form-submit" type="submit" [disabled]="formData.invalid">
+      {{ formButton }}
+    </button>
   </form>
 </div>

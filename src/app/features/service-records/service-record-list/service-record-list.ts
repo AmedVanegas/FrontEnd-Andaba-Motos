@@ -53,6 +53,15 @@ export default class ServiceRecordList implements OnInit {
   getAllRecords() {
     return this.records$.value.length;
   }
+  getTotalRevenue() {
+  return this.records$.value.reduce((sum, r) => sum + (r.finalCost ?? 0), 0);
+}
+
+getAverageCost() {
+  const count = this.records$.value.length;
+  if (!count) return 0;
+  return this.getTotalRevenue() / count;
+}
 
   async onDelete(record: any) {
     const confirmed = await this.alert.confirmDelete(

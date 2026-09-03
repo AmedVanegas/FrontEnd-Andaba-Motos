@@ -32,3 +32,13 @@
 .back-button:active {
   transform: translateX(-2px) scale(0.94);
 }
+
+@media(max-width: 925px){
+
+  .back-button{
+    background: var(--red-soft);
+    border: 1px solid var(--red-border);
+    box-shadow: 0px 0px 30px black;
+    
+  }
+}

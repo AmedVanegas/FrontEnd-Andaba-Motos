@@ -42,10 +42,15 @@
                 <label [for]="'product-' + $index">Producto</label>
                 <select [id]="'product-' + $index" formControlName="product">
                   <option value="" disabled>Seleccione un producto</option>
-                  @for (p of productList$ | async; track p._id) {
+                  @for (p of availableProducts($index); track p._id) {
                     <option [value]="p._id">{{ p.name }}</option>
                   }
                 </select>
+                @if (item.get('product')?.invalid && (item.get('product')?.dirty || item.get('product')?.touched)) {
+                  @if (item.get('product')?.errors?.['required']) {
+                    <small class="form-error">Selecciona un producto</small>
+                  }
+                }
               </div>
 
               <div>
@@ -56,6 +61,14 @@
                   formControlName="quantity"
                   min="1"
                 />
+                @if (item.get('quantity')?.invalid && (item.get('quantity')?.dirty || item.get('quantity')?.touched)) {
+                  @if (item.get('quantity')?.errors?.['required']) {
+                    <small class="form-error">La cantidad es obligatoria</small>
+                  }
+                  @if (item.get('quantity')?.errors?.['min']) {
+                    <small class="form-error">La cantidad mínima es 1</small>
+                  }
+                }
               </div>
 
               @if (usedProducts.length > 1) {
@@ -74,6 +87,11 @@
           <button type="button" class="form-add-btn" (click)="addProduct()">
             + Agregar producto
           </button>
+
+          <div class="product-list-total">
+            <span>Costo de productos usados</span>
+            <strong>{{ getProductsCostPreview() | currency: 'COP ' : 'symbol' : '1.0' }}</strong>
+          </div>
         </div>
       </div>
     } @else {
@@ -102,7 +120,7 @@
         </div>
       </div>
 
-      <div class="form-section">
+      <div class="form-section" [class.is-elevated]="showMechanicResults">
         <div class="form-section-title">Mecánico responsable</div>
         <div class="form-section-body">
           <div class="client-search form-field-full">
@@ -116,12 +134,15 @@
               placeholder="Busca por nombre o usuario..."
               autocomplete="off"
             />
+            @if (searchingMechanic) {
+              <small class="client-search-hint">Buscando...</small>
+            }
             @if (showMechanicResults) {
               <ul class="client-results">
                 @for (u of mechanicResults; track u._id) {
                   <li (mousedown)="selectMechanic(u)">{{ u.username }}</li>
                 } @empty {
-                  <li class="client-results-empty">No se encontraron usuarios</li>
+                  <li class="client-results-empty">No se encontraron mecánicos</li>
                 }
               </ul>
             }
@@ -142,6 +163,14 @@
             formControlName="description"
             placeholder="Ej: Cambio de aceite y ajuste de cadena"
           />
+          @if (description?.invalid && (description?.dirty || description?.touched)) {
+            @if (description?.errors?.['required']) {
+              <small class="form-error">La descripción es obligatoria</small>
+            }
+            @if (description?.errors?.['minlength']) {
+              <small class="form-error">La descripción debe tener al menos 3 caracteres</small>
+            }
+          }
         </div>
 
         <div class="form-field-full">
@@ -155,26 +184,37 @@
         </div>
 
         <div>
-          <label for="finalCost">Costo final</label>
+          <label for="finalCost">{{ isEditMode ? 'Costo final' : 'Mano de obra' }}</label>
           <input
             id="finalCost"
             type="number"
             formControlName="finalCost"
-            placeholder="Costo total del servicio"
+            placeholder="Costo de la mano de obra"
             min="0"
           />
           @if (finalCost?.invalid && (finalCost?.dirty || finalCost?.touched)) {
             @if (finalCost?.errors?.['required']) {
-              <small class="form-error">El costo final es obligatorio</small>
+              <small class="form-error">El costo es obligatorio</small>
             }
             @if (finalCost?.errors?.['min']) {
-              <small class="form-error">El costo final no puede ser negativo</small>
+              <small class="form-error">El costo no puede ser negativo</small>
             }
           }
         </div>
+
+        @if (!isEditMode) {
+          <div class="form-field-full">
+            <div class="product-list-total">
+              <span>Total estimado (mano de obra + productos)</span>
+              <strong>{{ getTotalPreview() | currency: 'COP ' : 'symbol' : '1.0' }}</strong>
+            </div>
+          </div>
+        }
       </div>
     </div>
 
-    <button class="form-submit" type="submit">{{ formButton }}</button>
+    <button class="form-submit" type="submit" [disabled]="formData.invalid">
+      {{ formButton }}
+    </button>
   </form>
 </div>

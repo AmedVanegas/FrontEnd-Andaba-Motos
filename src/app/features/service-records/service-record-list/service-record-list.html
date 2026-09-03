@@ -1,9 +1,24 @@
 <div class="users-container">
   <div class="users-wrapper">
-
     <div class="header">
       <h1>Registros de servicio</h1>
       <p>Trabajos realizados en el taller.</p>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <p class="stat-label">Total registros</p>
+        <p class="stat-value">{{ getAllRecords() }}</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">Ingresos totales</p>
+        <p class="stat-value active">
+          {{ getTotalRevenue() | currency: 'COP ' : 'symbol' : '1.0' }}
+        </p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">Promedio por servicio</p>
+        <p class="stat-value">{{ getAverageCost() | currency: 'COP ' : 'symbol' : '1.0' }}</p>
+      </div>
     </div>
 
     <div class="toolbar">
@@ -37,7 +52,9 @@
           <div class="card-cell">{{ record.finalCost | currency: 'COP ' : 'symbol' : '1.0' }}</div>
           <div class="card-cell">{{ record.createdAt | date: 'shortDate' }}</div>
           <div class="card-cell actions">
-            <button class="btn-edit" [routerLink]="['/dashboard/service-records/edit', record._id]">Editar</button>
+            <button class="btn-edit" [routerLink]="['/dashboard/service-records/edit', record._id]">
+              Editar
+            </button>
             <button class="btn-delete" (click)="onDelete(record)">Eliminar</button>
           </div>
         </div>
@@ -45,6 +62,5 @@
         <p class="report-empty">No hay registros de servicio creados todavía.</p>
       }
     </div>
-
   </div>
 </div>

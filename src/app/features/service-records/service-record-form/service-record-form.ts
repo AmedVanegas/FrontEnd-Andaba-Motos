@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, EMPTY, filter, switchMap } from 'rxjs';
 
 import { HttpServiceRecord } from '../../../core/services/http-service-record';
@@ -19,7 +19,7 @@ import { BackButton } from '../../../shared/components/back-button/back-button';
 
 @Component({
   selector: 'app-service-record-form',
-  imports: [ReactiveFormsModule, AsyncPipe, BackButton],
+  imports: [ReactiveFormsModule, AsyncPipe, CurrencyPipe, BackButton],
   templateUrl: './service-record-form.html',
   styleUrl: './service-record-form.css',
 })
@@ -38,6 +38,7 @@ export default class ServiceRecordForm implements OnInit {
 
   mechanicSearchControl = new FormControl('');
   mechanicResults: any[] = [];
+  searchingMechanic = false;
   showMechanicResults = false;
 
   isEditMode = false;
@@ -51,14 +52,13 @@ export default class ServiceRecordForm implements OnInit {
   formData: FormGroup;
 
   constructor() {
-  
     this.formData = new FormGroup({
       appointment: new FormControl('', Validators.required),
-      description: new FormControl(''),
+      description: new FormControl('', [Validators.required, Validators.minLength(3)]),
       observations: new FormControl(''),
       usedProducts: new FormArray([this.createProductGroup()]),
       finalCost: new FormControl(null, [Validators.required, Validators.min(0)]),
-      mechanic: new FormControl(''), 
+      mechanic: new FormControl(''),
     });
   }
 
@@ -82,6 +82,13 @@ export default class ServiceRecordForm implements OnInit {
       this.isEditMode = true;
       this.formTitle = 'Editar registro de servicio';
       this.formButton = 'Guardar cambios';
+
+      // 'appointment' y 'usedProducts' no se editan en este modo (los productos
+      // ya se descontaron del stock), así que no deben bloquear el envío del form.
+      this.formData.get('appointment')?.clearValidators();
+      this.formData.get('appointment')?.updateValueAndValidity();
+      this.usedProducts.clear();
+
       this.loadRecord(this.recordId);
     }
 
@@ -95,13 +102,18 @@ export default class ServiceRecordForm implements OnInit {
           if (trimmed.length < 2) {
             this.mechanicResults = [];
             this.showMechanicResults = false;
+            this.searchingMechanic = false;
             this.cdr.markForCheck();
             return EMPTY;
           }
-          return this.httpUsers.searchUsers(trimmed);
+          this.searchingMechanic = true;
+          // 'mechanic' filtra por rol -- verifica que sea el string exacto
+          // que tu backend espera en searchUsers().
+          return this.httpUsers.searchUsers(trimmed, 'mechanic');
         }),
       )
       .subscribe((results) => {
+        this.searchingMechanic = false;
         this.mechanicResults = results;
         this.showMechanicResults = true;
         this.cdr.markForCheck();
@@ -130,6 +142,7 @@ export default class ServiceRecordForm implements OnInit {
       next: (res) => {
         const items = Array.isArray(res?.data) ? res.data : [];
         this.appointmentList$.next(items);
+        this.cdr.markForCheck();
       },
       error: (error) => {
         console.error(error);
@@ -140,7 +153,10 @@ export default class ServiceRecordForm implements OnInit {
 
   loadProducts() {
     this.httpProducts.getProducts().subscribe({
-      next: (data) => this.productList$.next(data),
+      next: (data) => {
+        this.productList$.next(data);
+        this.cdr.markForCheck();
+      },
       error: (error) => console.log(error),
     });
   }
@@ -183,12 +199,45 @@ export default class ServiceRecordForm implements OnInit {
     this.usedProducts.removeAt(index);
   }
 
+  availableProducts(currentIndex: number) {
+    const selectedIds = this.usedProducts.controls
+      .map((control, i) => (i !== currentIndex ? control.get('product')?.value : null))
+      .filter((id) => !!id);
+
+    return this.productList$.value.filter(
+      (p: any) => p.status !== 'agotado' && !selectedIds.includes(p._id),
+    );
+  }
+
+  private getUnitPricePreview(productId: string): number {
+    const product = this.productList$.value.find((p: any) => p._id === productId);
+    if (!product) return 0;
+    return product.price * (1 + (product.roi ?? 0));
+  }
+
+  getProductsCostPreview(): number {
+    return this.usedProducts.controls.reduce((sum, group) => {
+      const productId = group.get('product')?.value;
+      const quantity = group.get('quantity')?.value ?? 0;
+      return sum + this.getUnitPricePreview(productId) * quantity;
+    }, 0);
+  }
+
+  getTotalPreview(): number {
+    const labor = this.formData.get('finalCost')?.value ?? 0;
+    return labor + this.getProductsCostPreview();
+  }
+
   async onSubmit() {
+    if (this.formData.invalid) {
+      this.formData.markAllAsTouched();
+      return;
+    }
+
     if (this.isEditMode && this.recordId) {
       const confirmed = await this.alert.confirmSave('el registro de servicio', true);
       if (!confirmed) return;
 
- 
       const payload: any = {
         description: this.formData.get('description')?.value,
         observations: this.formData.get('observations')?.value,
@@ -213,12 +262,9 @@ export default class ServiceRecordForm implements OnInit {
       return;
     }
 
-    if (this.formData.get('appointment')?.invalid || this.usedProducts.invalid || this.formData.get('finalCost')?.invalid) {
-      this.formData.get('appointment')?.markAsTouched();
-      this.formData.get('finalCost')?.markAsTouched();
-      this.usedProducts.markAllAsTouched();
-      return;
-    }
+
+    const laborCost = this.formData.get('finalCost')?.value ?? 0;
+    const productsCost = this.getProductsCostPreview();
 
     const payload = {
       appointment: this.formData.get('appointment')?.value,
@@ -228,7 +274,7 @@ export default class ServiceRecordForm implements OnInit {
         product: item.product,
         quantity: item.quantity,
       })),
-      finalCost: this.formData.get('finalCost')?.value,
+      finalCost: laborCost + productsCost,
     };
 
     this.httpRecord.createServiceRecord(payload).subscribe({
@@ -250,6 +296,10 @@ export default class ServiceRecordForm implements OnInit {
 
   get appointment() {
     return this.formData.get('appointment');
+  }
+
+  get description() {
+    return this.formData.get('description');
   }
 
   get finalCost() {

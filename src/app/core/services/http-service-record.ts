@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http'; 
 import { inject, Service } from '@angular/core'; 
 import { environment } from '../../../environments/environment'; 
+import { tap } from 'rxjs';
 
 @Service() 
 export class HttpServiceRecord {
@@ -15,7 +16,11 @@ export class HttpServiceRecord {
   }
 
   getServiceRecords() {
-    return this.http.get<any>(`${this.BASE_URL}/serviceRecord`); 
+    return this.http.get<any>(`${this.BASE_URL}/serviceRecord`).pipe(tap((res)=>{
+
+      console.log(res)
+
+    })) 
   }
 
   getServiceRecordById(id: string | null) {

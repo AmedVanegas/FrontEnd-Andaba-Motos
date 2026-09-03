@@ -187,24 +187,27 @@ export default class MotorcycleForm implements OnInit {
       this.showClientResults = false;
     }, 150);
   }
+loadMotorcycle(motorcycleId: string) {
+  this.httpMotorcycles.getMotorcycleById(motorcycleId).subscribe({
+    next: (data: any) => {
+      const { motorcycle } = data;
+      console.log(motorcycle)
+      this.formData.patchValue(motorcycle);
 
-  loadMotorcycle(motorcycleId: string) {
-    this.httpMotorcycles.getMotorcycleById(motorcycleId).subscribe({
-      next: (data: any) => {
-        const { motorcycle } = data;
-        this.formData.patchValue(motorcycle);
+      if (motorcycle.brand) {
+        this.brandSearchControl.setValue(motorcycle.brand, { emitEvent: false });
+      }
 
- 
-        if (motorcycle.client?._id) {
-          this.formData.get('client')?.setValue(motorcycle.client._id);
-          this.clientSearchControl.setValue(motorcycle.client.username, { emitEvent: false });
-        }
-        this.cdr.markForCheck();
-      },
-      error: () => {},
-      complete: () => {},
-    });
-  }
+      if (motorcycle.client?._id) {
+        this.formData.get('client')?.setValue(motorcycle.client._id);
+        this.clientSearchControl.setValue(motorcycle.client.username, { emitEvent: false });
+      }
+      this.cdr.markForCheck();
+    },
+    error: () => {},
+    complete: () => {},
+  });
+}
 
   loadMotos() {
     this.httpMotos.getMotos().subscribe({

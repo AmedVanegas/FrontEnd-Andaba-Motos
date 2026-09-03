@@ -18,7 +18,7 @@ import { BackButton } from '../../../shared/components/back-button/back-button';
 
 @Component({
   selector: 'app-order-form',
-  imports: [ReactiveFormsModule, AsyncPipe, CurrencyPipe, BackButton],
+  imports: [ReactiveFormsModule, CurrencyPipe, BackButton],
   templateUrl: './order-form.html',
   styleUrl: './order-form.css',
 })
@@ -33,7 +33,6 @@ export default class OrderForm implements OnInit {
 
   productList$ = new BehaviorSubject<any[]>([]);
 
-  
   clientSearchControl = new FormControl('');
   clientResults: any[] = [];
   searchingClient = false;
@@ -44,7 +43,6 @@ export default class OrderForm implements OnInit {
   formButton = 'Crear orden';
   orderId: string | null = null;
 
-
   existingUserLabel = '';
   existingProducts: any[] = [];
   existingTotal = 0;
@@ -52,13 +50,12 @@ export default class OrderForm implements OnInit {
   formData: FormGroup;
 
   constructor() {
-  
     this.formData = new FormGroup({
       user: new FormControl('', Validators.required),
       products: new FormArray([this.createProductGroup()]),
       status: new FormControl('pending', Validators.required),
       direccionEnvio: new FormControl(''),
-      metodoPago: new FormControl(''),
+      metodoPago: new FormControl('', Validators.required),
     });
   }
 
@@ -81,6 +78,12 @@ export default class OrderForm implements OnInit {
       this.isEditMode = true;
       this.formTitle = 'Editar orden';
       this.formButton = 'Guardar cambios';
+
+      
+      this.formData.get('user')?.clearValidators();
+      this.formData.get('user')?.updateValueAndValidity();
+      this.products.clear();
+
       this.loadOrder(this.orderId);
     }
 
@@ -131,7 +134,9 @@ export default class OrderForm implements OnInit {
 
   loadProducts() {
     this.httpProducts.getProducts().subscribe({
-      next: (data) => this.productList$.next(data),
+      next: (data) => {this.productList$.next(data)
+        this.cdr.markForCheck()
+      },
       error: (error) => console.log(error),
     });
   }
@@ -139,7 +144,6 @@ export default class OrderForm implements OnInit {
   loadOrder(id: string) {
     this.httpOrders.getOrderById(id).subscribe({
       next: (res: any) => {
-
         const order = res.order ?? res.data ?? res;
 
         this.formData.patchValue({
@@ -186,11 +190,15 @@ export default class OrderForm implements OnInit {
   }
 
   async onSubmit() {
+    if (this.formData.invalid) {
+      this.formData.markAllAsTouched();
+      return;
+    }
+
     if (this.isEditMode && this.orderId) {
       const confirmed = await this.alert.confirmSave('la orden', true);
       if (!confirmed) return;
 
-    
       const payload = {
         status: this.formData.get('status')?.value,
         direccionEnvio: this.formData.get('direccionEnvio')?.value,
@@ -208,12 +216,6 @@ export default class OrderForm implements OnInit {
           this.router.navigateByUrl('/dashboard/orders');
         },
       });
-      return;
-    }
-
-    if (this.formData.get('user')?.invalid || this.products.invalid) {
-      this.formData.get('user')?.markAsTouched();
-      this.products.markAllAsTouched();
       return;
     }
 
@@ -244,12 +246,24 @@ export default class OrderForm implements OnInit {
       },
     });
   }
+  availableProducts(currentIndex: number) {
+  const selectedIds = this.products.controls
+    .map((control, i) => (i !== currentIndex ? control.get('product')?.value : null))
+    .filter((id) => !!id);
 
+  return this.productList$.value.filter(
+    (p: any) => p.status !== 'agotado' && !selectedIds.includes(p._id),
+  );
+}
   get user() {
     return this.formData.get('user');
   }
 
   get status() {
     return this.formData.get('status');
+  }
+
+  get metodoPago() {
+    return this.formData.get('metodoPago');
   }
 }

@@ -5,7 +5,16 @@
 
 .client-search {
   position: relative;
-  z-index: 1000;
+  z-index: 10; 
+}
+
+
+.form-section {
+  z-index: 1;
+}
+
+.form-section.is-elevated {
+  z-index: 123141;
 }
 
 .client-search-hint {

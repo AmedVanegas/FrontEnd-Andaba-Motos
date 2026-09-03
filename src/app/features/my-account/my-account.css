@@ -1,11 +1,3 @@
-
-
-@property --ring-angle {
-  syntax: '<angle>';
-  inherits: false;
-  initial-value: 0deg;
-}
-
 .account-page {
   position: relative;
   min-height: 100vh;
@@ -104,20 +96,11 @@
   inset: -3px;
   border-radius: 50%;
   padding: 2.5px;
-  background: conic-gradient(from var(--ring-angle, 0deg), var(--red), transparent 45%, transparent 55%, var(--red));
+  background: var(--red);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  animation: ring-spin 12s linear infinite;
-}
-
-@keyframes ring-spin {
-  to { --ring-angle: 360deg; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .account-avatar::before { animation: none; }
 }
 
 .account-hero__info h1 {
@@ -242,6 +225,7 @@
   backdrop-filter: blur(18px) saturate(140%);
   -webkit-backdrop-filter: blur(18px) saturate(140%);
   animation: panel-in 0.25s ease;
+  overflow: hidden;
 }
 
 @keyframes panel-in {
@@ -261,9 +245,8 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 14px 4px;
-  margin: 0 -4px;
-  border-radius: 8px;
+  padding: 14px 20px;
+  margin: 0 -20px;
   border-bottom: 1px solid var(--glass-border);
   transition: background 0.15s ease;
 }
@@ -272,6 +255,9 @@
 }
 .field-row:last-of-type {
   border-bottom: none;
+}
+.field-row--static:hover {
+  background: transparent;
 }
 
 .field-row label {
