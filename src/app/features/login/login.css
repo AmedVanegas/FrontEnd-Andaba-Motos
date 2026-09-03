@@ -3,7 +3,21 @@
   display: block;
 }
 
+.login-forgot {
+  display: block;
+  margin-top: 18px;
+  text-align: center;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--red);
+  text-decoration: none;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
 
+.login-forgot:hover {
+  color: #ff5457;
+  text-decoration: underline;
+}
 .login-page {
   --carbon: #0a0a0b;
   --ink: #f2f1ee;

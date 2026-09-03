@@ -119,6 +119,19 @@ export class HttpAuth {
     );
   }
 
+  forgotPassword(data:any){
+   return this.http.post<any>(`${this.BASE_URL}/auth/forgot-password`, data).pipe(tap((res)=>{console.log(res); console.log(data)}))
+  }
+
+  validateCode(data:any){
+    return this.http.post<any>(`${this.BASE_URL}/auth/verify-reset-code`, data).pipe(tap((res)=>{console.log(res); console.log(data)}))
+    
+  }
+   resetPassword(data:any){
+    return this.http.post<any>(`${this.BASE_URL}/auth/reset-password`, data).pipe(tap((res)=>{console.log(res); console.log(data)}))
+   }
+  
+
   set token(token: string | null) {
     if (this.isBrowser) {
       if (token) {

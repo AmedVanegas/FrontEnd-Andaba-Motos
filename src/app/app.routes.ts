@@ -145,6 +145,9 @@ export const routes: Routes = [
     path: 'my-account',
     canActivate:[authGuard],
     loadComponent: () => import('./features/my-account/my-account'),
+  },{
+    path:'forgot-password',
+    loadComponent:()=>  import('./features/reset-password/reset-password')
   },
 
   //Redirecciones
