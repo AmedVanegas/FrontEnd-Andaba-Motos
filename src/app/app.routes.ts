@@ -110,6 +110,31 @@ export const routes: Routes = [
         path: 'orders/edit/:id',
         loadComponent: () => import('./features/order/order-form/order-form'),
       },
+      {
+        path: 'appointments',
+        loadComponent: () => import('./features/appointment/appointment-list/appointment-list'),
+      },
+      {
+        path: 'appointments/edit/:id',
+        loadComponent: () =>
+          import('./features/appointment/appointment-edit-form/appointment-edit-form'),
+      },
+      {
+        path: 'services/new',
+        loadComponent: () => import('./features/services/service-form/service-form'),
+      },
+      {
+        path: 'services/edit/:id',
+        loadComponent: () => import('./features/services/service-form/service-form'),
+      },
+      {
+        path: 'history',
+        loadComponent: () => import('./features/history/history'),
+      },
+      {
+        path: 'history/:userId',
+        loadComponent: () => import('./features/history/history-detail/history-detail'),
+      },
     ],
   },
 
@@ -135,6 +160,13 @@ export const routes: Routes = [
   {
     path: 'appointment',
     loadComponent: () => import('./features/appointment/appointment-form/appointment-form'),
+  },
+
+  {
+    path: 'motorcycles/new',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/motorcycles/motorcycle-form-client/motorcycle-form-client'),
   },
 
   {

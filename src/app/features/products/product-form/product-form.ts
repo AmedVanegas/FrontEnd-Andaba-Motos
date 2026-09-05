@@ -7,15 +7,18 @@ import { HttpProducts } from '../../../core/services/http-products';
 import { AlertService } from '../../../core/services/alert';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BackButton } from '../../../shared/components/back-button/back-button';
+import { QuickCreateButton } from '../../../shared/components/quick-create-button/quick-create-button';
 import { ImageUrlPipe } from '../../../core/pipes/image-url.pipe';
+import { faTags } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-product-form',
-  imports: [ReactiveFormsModule, AsyncPipe, BackButton, ImageUrlPipe],
+  imports: [ReactiveFormsModule, AsyncPipe, BackButton, QuickCreateButton, ImageUrlPipe],
   templateUrl: './product-form.html',
   styleUrl: './product-form.css',
 })
 export default class ProductForm {
+  faTags = faTags;
   private httpcategory = inject(HttpCategories);
   categoryList$ = new BehaviorSubject<any[]>([]);
   private httpProducts = inject(HttpProducts);

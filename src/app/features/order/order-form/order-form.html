@@ -16,32 +16,37 @@
       <div class="form-section" [class.is-elevated]="showClientResults">
         <div class="form-section-title">Cliente</div>
         <div class="form-section-body">
-          <div class="client-search form-field-full">
+          <div class="form-field-full">
             <label for="clientSearch">Cliente</label>
-            <input
-              type="text"
-              id="clientSearch"
-              [formControl]="clientSearchControl"
-              (focus)="onClientSearchFocus()"
-              (blur)="onClientSearchBlur()"
-              placeholder="Busca por nombre o usuario..."
-              autocomplete="off"
-            />
-            @if (searchingClient) {
-              <small class="client-search-hint">Buscando...</small>
-            }
-            @if (showClientResults) {
-              <ul class="client-results">
-                @for (u of clientResults; track u._id) {
-                  <li (mousedown)="selectClient(u)">
-                    {{ u.firstName }} {{ u.lastName }} — {{ u.username }}
-                  </li>
-                } @empty {
-                  <li class="client-results-empty">No se encontraron clientes</li>
+            <div class="field-with-action">
+              <div class="client-search">
+                <input
+                  type="text"
+                  id="clientSearch"
+                  [formControl]="clientSearchControl"
+                  (focus)="onClientSearchFocus()"
+                  (blur)="onClientSearchBlur()"
+                  placeholder="Busca por nombre o usuario..."
+                  autocomplete="off"
+                />
+                @if (searchingClient) {
+                  <small class="client-search-hint">Buscando...</small>
                 }
-              </ul>
-            }
-            <input type="hidden" formControlName="user" />
+                @if (showClientResults) {
+                  <ul class="client-results">
+                    @for (u of clientResults; track u._id) {
+                      <li (mousedown)="selectClient(u)">
+                        {{ u.firstName }} {{ u.lastName }} — {{ u.username }}
+                      </li>
+                    } @empty {
+                      <li class="client-results-empty">No se encontraron clientes</li>
+                    }
+                  </ul>
+                }
+                <input type="hidden" formControlName="user" />
+              </div>
+              <app-quick-create-button route="/dashboard/users/new" [icon]="faUsers" label="Registrar cliente nuevo" />
+            </div>
             @if (user?.invalid && (user?.dirty || user?.touched)) {
               <small class="form-error">Debe seleccionar el cliente dueño de la orden</small>
             }
@@ -56,12 +61,16 @@
             <div class="product-item" [formGroupName]="$index">
               <div>
                 <label [for]="'product-' + $index">Producto</label>
-                <select [id]="'product-' + $index" formControlName="product">
+                <div class="field-with-action">
+                  <select [id]="'product-' + $index" formControlName="product">
   <option value="" disabled>Seleccione un producto</option>
   @for (p of availableProducts($index); track p._id) {
     <option [value]="p._id">{{ p.name }}</option>
   }
 </select>
+                  <app-quick-create-button route="/dashboard/products/new" [icon]="faBoxesStacked"
+                    label="Registrar producto nuevo" />
+                </div>
                 @if (item.get('product')?.invalid && (item.get('product')?.dirty || item.get('product')?.touched)) {
                   @if (item.get('product')?.errors?.['required']) {
                     <small class="form-error">Selecciona un producto</small>

@@ -1,7 +1,9 @@
 import { CurrencyPipe, UpperCasePipe } from '@angular/common';
 import { Component, ElementRef, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { CartService } from '../../../core/services/http-cart';
 import { AlertService } from '../../../core/services/alert';
+import { HttpAuth } from '../../../core/services/http-auth';
 import { ImageUrlPipe } from '../../../core/pipes/image-url.pipe';
 
 @Component({
@@ -13,6 +15,8 @@ import { ImageUrlPipe } from '../../../core/pipes/image-url.pipe';
 export class ProductBrochureCard {
   cartService = inject(CartService);
   alert = inject(AlertService)
+  private httpAuth = inject(HttpAuth);
+  private router = inject(Router);
   @Input() product: any;
 
   @Output() open = new EventEmitter<{ product: any; rect: DOMRect }>();
@@ -25,7 +29,13 @@ export class ProductBrochureCard {
 
   }
   addToCart(event: Event) {
-    event.stopPropagation(); 
+    event.stopPropagation();
+
+    if (!this.httpAuth.isLogged()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
     this.cartService.addItem(this.product._id, 1).subscribe({
       error: (err) => {
         console.error(err.error?.msg);

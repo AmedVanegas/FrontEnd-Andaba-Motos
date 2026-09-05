@@ -1,5 +1,5 @@
 import { Component, inject, MAX_ANIMATION_TIMEOUT } from '@angular/core';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
 import { HttpAuth } from '../../core/services/http-auth';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -12,6 +12,9 @@ import {
   faChartLine,
   faClipboardList,
   faWrench,
+  faCalendarCheck,
+  faClockRotateLeft,
+  faGear,
 } from '@fortawesome/free-solid-svg-icons';
 
 interface DashboardSection {
@@ -29,8 +32,16 @@ interface DashboardSection {
 })
 export default class Dashboard {
   httpAuth = inject(HttpAuth);
+  private route = inject(ActivatedRoute);
   faArrowRight = faArrowRight;
-  routeChange = true
+
+  // Si al entrar al Dashboard la ruta YA trae un hijo activo (ej: se navegó
+  // directo a /dashboard/services/new desde afuera del dashboard), hay que
+  // arrancar mostrando el <router-outlet> en vez del grid. Si arrancara
+  // siempre en `true`, el outlet no existiría todavía en el DOM y Angular
+  // no tendría dónde montar el componente hijo (por eso los botones de
+  // "nuevo" y "editar" en /services no hacían nada).
+  routeChange = !this.route.snapshot.firstChild;
 
   mainRoute = '/dashboard'
 
@@ -71,6 +82,24 @@ export default class Dashboard {
       description: 'Trabajos realizados en el taller.',
       route: this.mainRoute +'/service-records',
       icon: faWrench,
+    },
+    {
+      label: 'Citas',
+      description: 'Agenda y gestiona las citas de los clientes.',
+      route: this.mainRoute +'/appointments',
+      icon: faCalendarCheck,
+    },
+    {
+      label: 'Servicios',
+      description: 'Catálogo de servicios que ofrece el taller.',
+      route: '/services',
+      icon: faGear,
+    },
+    {
+      label: 'Historial de clientes',
+      description: 'Servicios y compras realizadas por cada cliente.',
+      route: this.mainRoute +'/history',
+      icon: faClockRotateLeft,
     },
     {
       label: 'Ventas y ganancias',

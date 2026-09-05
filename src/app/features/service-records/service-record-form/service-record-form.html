@@ -18,14 +18,17 @@
         <div class="form-section-body">
           <div class="form-field-full">
             <label for="appointment">Cita</label>
-            <select id="appointment" formControlName="appointment">
-              <option value="" disabled>Seleccione una cita</option>
-              @for (appt of appointmentList$ | async; track appt._id) {
-                <option [value]="appt._id">
-                  {{ appt.client?.username }} - {{ appt.motorcycle?.licensePlate }} - {{ appt.status }}
-                </option>
-              }
-            </select>
+            <div class="field-with-action">
+              <select id="appointment" formControlName="appointment">
+                <option value="" disabled>Seleccione una cita</option>
+                @for (appt of appointmentList$ | async; track appt._id) {
+                  <option [value]="appt._id">
+                    {{ appt.client?.username }} - {{ appt.motorcycle?.licensePlate }} - {{ appt.status }}
+                  </option>
+                }
+              </select>
+              <app-quick-create-button route="/appointment" [icon]="faCalendarCheck" label="Registrar cita nueva" />
+            </div>
             @if (appointment?.invalid && (appointment?.dirty || appointment?.touched)) {
               <small class="form-error">Debe seleccionar la cita de este servicio</small>
             }
@@ -40,12 +43,16 @@
             <div class="product-item" [formGroupName]="$index">
               <div>
                 <label [for]="'product-' + $index">Producto</label>
-                <select [id]="'product-' + $index" formControlName="product">
-                  <option value="" disabled>Seleccione un producto</option>
-                  @for (p of availableProducts($index); track p._id) {
-                    <option [value]="p._id">{{ p.name }}</option>
-                  }
-                </select>
+                <div class="field-with-action">
+                  <select [id]="'product-' + $index" formControlName="product">
+                    <option value="" disabled>Seleccione un producto</option>
+                    @for (p of availableProducts($index); track p._id) {
+                      <option [value]="p._id">{{ p.name }}</option>
+                    }
+                  </select>
+                  <app-quick-create-button route="/dashboard/products/new" [icon]="faBoxesStacked"
+                    label="Registrar producto nuevo" />
+                </div>
                 @if (item.get('product')?.invalid && (item.get('product')?.dirty || item.get('product')?.touched)) {
                   @if (item.get('product')?.errors?.['required']) {
                     <small class="form-error">Selecciona un producto</small>
@@ -123,29 +130,34 @@
       <div class="form-section" [class.is-elevated]="showMechanicResults">
         <div class="form-section-title">Mecánico responsable</div>
         <div class="form-section-body">
-          <div class="client-search form-field-full">
+          <div class="form-field-full">
             <label for="mechanicSearch">Reasignar mecánico</label>
-            <input
-              type="text"
-              id="mechanicSearch"
-              [formControl]="mechanicSearchControl"
-              (focus)="onMechanicSearchFocus()"
-              (blur)="onMechanicSearchBlur()"
-              placeholder="Busca por nombre o usuario..."
-              autocomplete="off"
-            />
-            @if (searchingMechanic) {
-              <small class="client-search-hint">Buscando...</small>
-            }
-            @if (showMechanicResults) {
-              <ul class="client-results">
-                @for (u of mechanicResults; track u._id) {
-                  <li (mousedown)="selectMechanic(u)">{{ u.username }}</li>
-                } @empty {
-                  <li class="client-results-empty">No se encontraron mecánicos</li>
+            <div class="field-with-action">
+              <div class="client-search">
+                <input
+                  type="text"
+                  id="mechanicSearch"
+                  [formControl]="mechanicSearchControl"
+                  (focus)="onMechanicSearchFocus()"
+                  (blur)="onMechanicSearchBlur()"
+                  placeholder="Busca por nombre o usuario..."
+                  autocomplete="off"
+                />
+                @if (searchingMechanic) {
+                  <small class="client-search-hint">Buscando...</small>
                 }
-              </ul>
-            }
+                @if (showMechanicResults) {
+                  <ul class="client-results">
+                    @for (u of mechanicResults; track u._id) {
+                      <li (mousedown)="selectMechanic(u)">{{ u.username }}</li>
+                    } @empty {
+                      <li class="client-results-empty">No se encontraron mecánicos</li>
+                    }
+                  </ul>
+                }
+              </div>
+              <app-quick-create-button route="/dashboard/users/new" [icon]="faUsers" label="Registrar mecánico nuevo" />
+            </div>
             <small class="client-search-hint">Dejalo vacío si no querés cambiar el mecánico.</small>
           </div>
         </div>

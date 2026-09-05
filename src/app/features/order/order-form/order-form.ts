@@ -15,14 +15,18 @@ import { HttpProducts } from '../../../core/services/http-products';
 import { HttpUsers } from '../../../core/services/http-users';
 import { AlertService } from '../../../core/services/alert';
 import { BackButton } from '../../../shared/components/back-button/back-button';
+import { QuickCreateButton } from '../../../shared/components/quick-create-button/quick-create-button';
+import { faUsers, faBoxesStacked } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-order-form',
-  imports: [ReactiveFormsModule, CurrencyPipe, BackButton],
+  imports: [ReactiveFormsModule, CurrencyPipe, BackButton, QuickCreateButton],
   templateUrl: './order-form.html',
   styleUrl: './order-form.css',
 })
 export default class OrderForm implements OnInit {
+  faUsers = faUsers;
+  faBoxesStacked = faBoxesStacked;
   private httpOrders = inject(HttpOrders);
   private httpProducts = inject(HttpProducts);
   private httpUsers = inject(HttpUsers);

@@ -213,6 +213,22 @@ router-outlet + * {
   margin-top: 6px;
 }
 
+/* Fila que envuelve un campo (input, select o autocomplete) junto a un
+   app-quick-create-button, para los campos que dependen de otro recurso */
+.field-with-action {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.field-with-action > input,
+.field-with-action > select,
+.field-with-action > .autocomplete-field,
+.field-with-action > .client-search {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
 .form-submit {
   width: 100%;
   background: #e5383b40;
@@ -385,6 +401,8 @@ router-outlet + * {
 }
 
 .btn-new {
+  display: inline-flex;
+  align-items: center;
   padding: 10px 22px;
   background: #e5383b40;
   border: 1px solid #e5383baa;
@@ -394,6 +412,7 @@ router-outlet + * {
   font-size: 13px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  text-decoration: none;
   cursor: pointer;
   white-space: nowrap;
   transition:

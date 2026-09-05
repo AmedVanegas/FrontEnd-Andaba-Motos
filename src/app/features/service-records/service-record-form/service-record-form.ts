@@ -16,14 +16,19 @@ import { HttpUsers } from '../../../core/services/http-users';
 import { HttpProducts } from '../../../core/services/http-products';
 import { AlertService } from '../../../core/services/alert';
 import { BackButton } from '../../../shared/components/back-button/back-button';
+import { QuickCreateButton } from '../../../shared/components/quick-create-button/quick-create-button';
+import { faCalendarCheck, faBoxesStacked, faUsers } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-service-record-form',
-  imports: [ReactiveFormsModule, AsyncPipe, CurrencyPipe, BackButton],
+  imports: [ReactiveFormsModule, AsyncPipe, CurrencyPipe, BackButton, QuickCreateButton],
   templateUrl: './service-record-form.html',
   styleUrl: './service-record-form.css',
 })
 export default class ServiceRecordForm implements OnInit {
+  faCalendarCheck = faCalendarCheck;
+  faBoxesStacked = faBoxesStacked;
+  faUsers = faUsers;
   private httpRecord = inject(HttpServiceRecord);
   private httpAppointment = inject(HttpAppointments);
   private httpUsers = inject(HttpUsers);
@@ -137,19 +142,19 @@ export default class ServiceRecordForm implements OnInit {
     }, 150);
   }
 
-  loadAppointments() {
-    this.httpAppointment.getAppointments().subscribe({
-      next: (res) => {
-        const items = Array.isArray(res?.data) ? res.data : [];
-        this.appointmentList$.next(items);
-        this.cdr.markForCheck();
-      },
-      error: (error) => {
-        console.error(error);
-        this.appointmentList$.next([]);
-      },
-    });
-  }
+loadAppointments() {
+  this.httpAppointment.getAppointments().subscribe({
+    next: (res) => {
+      const items = Array.isArray(res) ? res : [];
+      this.appointmentList$.next(items);
+      this.cdr.markForCheck();
+    },
+    error: (error) => {
+      console.error(error);
+      this.appointmentList$.next([]);
+    },
+  });
+}
 
   loadProducts() {
     this.httpProducts.getProducts().subscribe({

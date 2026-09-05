@@ -43,12 +43,19 @@
 
         <div>
           <label for="category">Categoría</label>
-          <select id="category" formControlName="category">
-            <option value="" disabled selected>Seleccione categoría</option>
-            @for (cat of categoryList$ | async; track $index) {
-              <option [value]="cat._id">{{ cat.name }}</option>
-            }
-          </select>
+          <div class="field-with-action">
+            <select id="category" formControlName="category">
+              <option value="" disabled selected>Seleccione categoría</option>
+              @for (cat of categoryList$ | async; track $index) {
+                <option [value]="cat._id">{{ cat.name }}</option>
+              }
+            </select>
+            <app-quick-create-button
+              route="/dashboard/categories/new"
+              [icon]="faTags"
+              label="Registrar categoría nueva"
+            />
+          </div>
           @if (category?.invalid && (category?.dirty || category?.touched)) {
             @if (category?.errors?.['required']) {
               <small class="form-error">Este campo es obligatorio</small>

@@ -13,16 +13,21 @@ import { HttpMotorcycles } from '../../../core/services/http-motorcycles';
 import { AlertService } from '../../../core/services/alert';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BackButton } from '../../../shared/components/back-button/back-button';
+
 import { HttpMotosApi } from '../../../core/services/http-motos-api';
 import { AsyncPipe } from '@angular/common';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faUsers } from '@fortawesome/free-solid-svg-icons';
+import { QuickCreateButton } from '../../../shared/components/quick-create-button/quick-create-button';
 
 @Component({
   selector: 'app-motorcycle-form',
-  imports: [ReactiveFormsModule, BackButton],
+  imports: [ReactiveFormsModule, BackButton, QuickCreateButton, FontAwesomeModule],
   templateUrl: './motorcycle-form.html',
   styleUrl: './motorcycle-form.css',
 })
 export default class MotorcycleForm implements OnInit {
+  faUsers = faUsers;
   private httpUsers = inject(HttpUsers);
   private httpMotorcycles = inject(HttpMotorcycles);
   private httpMotos = inject(HttpMotosApi);

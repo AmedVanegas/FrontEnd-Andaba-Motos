@@ -14,6 +14,8 @@ import {
 } from '@angular/core';
 import { CartService } from '../../../core/services/http-cart';
 import { AlertService } from '../../../core/services/alert';
+import { HttpAuth } from '../../../core/services/http-auth';
+import { Router } from '@angular/router';
 import { ImageUrlPipe } from '../../../core/pipes/image-url.pipe';
 
 @Component({
@@ -26,6 +28,8 @@ export class ProductBrochureDetail implements AfterViewInit, OnDestroy {
   private cdr = inject(ChangeDetectorRef);
   cartService = inject(CartService)
   alert = inject(AlertService)
+  private httpAuth = inject(HttpAuth);
+  private router = inject(Router);
   @Input() product: any;
 
   @Input() originRect: DOMRect | null = null;
@@ -40,6 +44,11 @@ export class ProductBrochureDetail implements AfterViewInit, OnDestroy {
   private isClosing = false;
 
     addToCart() {
+    if (!this.httpAuth.isLogged()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
     this.cartService.addItem(this.product._id, 1).subscribe({
       error: (err) => {
         console.error(err.error?.msg);

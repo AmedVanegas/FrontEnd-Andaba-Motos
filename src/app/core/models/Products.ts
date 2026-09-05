@@ -15,5 +15,5 @@ export interface Product {
 
 export interface ResponseProducts {
   msg: string;
-  data: [Product];
+  data: Product[];
 }
