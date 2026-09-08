@@ -21,3 +21,14 @@
     color: var(--green);
     font-weight: 600;
 }
+
+.orders-row .card-cell:first-child {
+    white-space: normal;
+    line-height: 1.4;
+    font-size: 13px;
+}
+
+
+.users-wrapper > .header {
+    margin-top: 3.5rem !important;
+}

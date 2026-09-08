@@ -395,6 +395,42 @@
   cursor: not-allowed;
 }
 
+.purchase-row {
+  align-items: flex-start;
+}
+
+.purchase-row__main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.purchase-row__items {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.purchase-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--ink);
+}
+
+.purchase-item__img {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border-radius: 6px;
+  object-fit: cover;
+  background: var(--glass-fill-strong);
+  border: 1px solid var(--glass-border);
+}
+
 
 @media (max-width: 640px) {
   .account-page {

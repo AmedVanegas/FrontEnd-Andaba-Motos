@@ -43,6 +43,19 @@ export default class HistoryDetail implements OnInit {
         return (items ?? []).reduce((sum, item) => sum + (item?.[field] || 0), 0);
     }
 
+    // Arma "2x Casco, 1x Aceite" a partir de order.products.
+    // Soporta tanto { product: { name }, quantity } (populado) como { name, quantity } plano.
+    getProductNames(items: any[] | undefined): string {
+        if (!items?.length) return 'Sin productos';
+        return items
+            .map((item) => {
+                const name = item?.product?.name || item?.name || 'Producto sin nombre';
+                const qty = item?.quantity ?? 1;
+                return `${qty}x ${name}`;
+            })
+            .join(', ');
+    }
+
     private loadHistory(): void {
         this.httpHistory.getHistoryByUserId(this.clientId).subscribe({
             next: (res: any) => {

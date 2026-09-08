@@ -1,5 +1,6 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import {
   FormControl,
   FormGroup,
@@ -19,13 +20,14 @@ import { HttpAuth } from '../../core/services/http-auth';
 import { HttpUsers } from '../../core/services/http-users';
 import { HttpHistory } from '../../core/services/http-history';
 import { AlertService } from '../../core/services/alert';
+import { ImageUrlPipe } from '../../core/pipes/image-url.pipe';
 
 type AccountTab = 'perfil' | 'direccion' | 'seguridad' | 'historial';
 
 @Component({
   selector: 'app-my-account',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ImageUrlPipe],
   // CommonModule ya trae AsyncPipe/CurrencyPipe/DatePipe usados en la pestaña de historial
   templateUrl: './my-account.html',
   styleUrl: './my-account.css',
@@ -35,6 +37,7 @@ export default class MyAccount implements OnInit {
   private httpUsers = inject(HttpUsers);
   private httpHistory = inject(HttpHistory);
   private alert = inject(AlertService);
+  private router = inject(Router);
 
   loading = signal(true);
   saving = signal(false);
@@ -54,6 +57,19 @@ export default class MyAccount implements OnInit {
 
   getTotal(items: any[] | undefined, field: string): number {
     return (items ?? []).reduce((sum, item) => sum + (item?.[field] || 0), 0);
+  }
+
+  // Arma "2x Casco, 1x Aceite" a partir de order.products.
+  // Soporta tanto { product: { name }, quantity } (populado) como { name, quantity } plano.
+  getProductNames(items: any[] | undefined): string {
+    if (!items?.length) return 'Sin productos';
+    return items
+      .map((item) => {
+        const name = item?.product?.name || item?.name || 'Producto sin nombre';
+        const qty = item?.quantity ?? 1;
+        return `${qty}x ${name}`;
+      })
+      .join(', ');
   }
 
   get tabIndex(): number {
@@ -262,8 +278,7 @@ export default class MyAccount implements OnInit {
   }
 
   requestPasswordReset(): void {
-    
-    console.log('[my-account] pidió cambiar la contraseña');
+    this.router.navigateByUrl('/forgot-password');
   }
 
   discardChanges() {

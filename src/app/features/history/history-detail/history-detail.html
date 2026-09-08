@@ -73,7 +73,7 @@
 
             @for (order of history.products; track order._id) {
             <div class="user-card orders-row">
-                <div class="card-cell">{{ order.products?.length || 0 }} producto(s)</div>
+                <div class="card-cell">{{ getProductNames(order.products) }}</div>
                 <div class="card-cell history-price">
                     {{ order.total | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}
                 </div>

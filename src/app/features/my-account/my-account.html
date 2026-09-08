@@ -152,7 +152,7 @@
               <label>Contraseña</label>
               <button type="button" class="btn-ghost" (click)="requestPasswordReset()">Cambiar contraseña</button>
             </div>
-            <p class="field-hint">Te enviaremos un enlace a tu correo para restablecerla.</p>
+            <p class="field-hint">Te enviaremos un código de verificación a tu correo para restablecerla.</p>
           </div>
         }
 
@@ -194,8 +194,22 @@
               <p class="account-section-label">Compras</p>
               <div class="account-panel">
                 @for (order of history.products; track order._id) {
-                  <div class="field-row field-row--static">
-                    <label>{{ order.products?.length || 0 }} producto(s) · {{ order.createdAt | date: 'd MMM y' }}</label>
+                  <div class="field-row field-row--static purchase-row">
+                    <div class="purchase-row__main">
+                      <div class="purchase-row__items">
+                        @for (item of order.products; track item.product?._id) {
+                          <div class="purchase-item">
+                            <img
+                              class="purchase-item__img"
+                              [src]="item.product?.productImages?.[0] | imageUrl"
+                              [alt]="item.product?.name || 'Producto'"
+                            />
+                            <span>{{ item.quantity }}x {{ item.product?.name || 'Producto' }}</span>
+                          </div>
+                        }
+                      </div>
+                      <span class="field-hint" style="margin: 6px 0 0;">{{ order.createdAt | date: 'd MMM y' }}</span>
+                    </div>
                     <span>{{ order.total | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</span>
                   </div>
                 }
