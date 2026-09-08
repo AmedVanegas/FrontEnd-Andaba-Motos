@@ -12,6 +12,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faLocationDot, faPhone, faClock, faMotorcycle } from '@fortawesome/free-solid-svg-icons';
 import { QuickCreateButton } from '../../shared/components/quick-create-button/quick-create-button';
 
+
 @Component({
   selector: 'app-contact',
   imports: [ReactiveFormsModule, AsyncPipe, CurrencyPipe, RouterLink, FontAwesomeModule, QuickCreateButton],

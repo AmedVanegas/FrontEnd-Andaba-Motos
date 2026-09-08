@@ -15,8 +15,9 @@ import { HttpProducts } from '../../../core/services/http-products';
 import { HttpUsers } from '../../../core/services/http-users';
 import { AlertService } from '../../../core/services/alert';
 import { BackButton } from '../../../shared/components/back-button/back-button';
-import { QuickCreateButton } from '../../../shared/components/quick-create-button/quick-create-button';
+
 import { faUsers, faBoxesStacked } from '@fortawesome/free-solid-svg-icons';
+import { QuickCreateButton } from '../../../shared/components/quick-create-button/quick-create-button';
 
 @Component({
   selector: 'app-order-form',

@@ -9,8 +9,8 @@ import { RouterLink } from '@angular/router';
 })
 export default class AboutUs {
   stats = [
-    { value: '8+', label: 'Años de experiencia' },
-    { value: '1.200+', label: 'Motos atendidas' },
+    { value: '20+', label: 'Años de experiencia' },
+    { value: '20.000+', label: 'Motos atendidas' },
     { value: '25+', label: 'Servicios especializados' },
     { value: '98%', label: 'Clientes satisfechos' },
   ];

@@ -117,7 +117,7 @@ export const routes: Routes = [
       {
         path: 'appointments/edit/:id',
         loadComponent: () =>
-          import('./features/appointment/appointment-edit-form/appointment-edit-form'),
+          import('./features/appointment/appointment-form/appointment-form'),
       },
       {
         path: 'services/new',

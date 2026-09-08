@@ -6,6 +6,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DestroyRef } from '@angular/core';
 import { HttpServiceRecord } from '../../../core/services/http-service-record';
 import { HttpOrders } from '../../../core/services/http-orders';
+import { HttpMotorcycles } from '../../../core/services/http-motorcycles';
+import { HttpServices } from '../../../core/services/http-services';
 import { BackButton } from '../../../shared/components/back-button/back-button';
 import { AlertService } from '../../../core/services/alert';
 import { ServiceRecordItem } from '../../../core/models/ServiceRecord';
@@ -20,6 +22,8 @@ import { OrderRecord } from '../../../core/models/Order';
 export default class HistoryDetail implements OnInit {
     private httpServiceRecord = inject(HttpServiceRecord);
     private httpOrders = inject(HttpOrders);
+    private httpMotorcycles = inject(HttpMotorcycles);
+    private httpServices = inject(HttpServices);
     private route = inject(ActivatedRoute);
     private location = inject(Location);
     private alert = inject(AlertService);
@@ -30,8 +34,16 @@ export default class HistoryDetail implements OnInit {
     records = signal<ServiceRecordItem[]>([]);
     orders = signal<OrderRecord[]>([]);
 
+    // Mapas por _id para resolver motorcycle/service cuando el backend
+    // devuelve appointment.motorcycle / appointment.service como IDs
+    // sueltos en vez de objetos poblados (bug actual del populate anidado).
+    // El fix correcto está en el backend; esto es un respaldo mientras tanto.
+    private motorcyclesById = signal<Record<string, any>>({});
+    private servicesById = signal<Record<string, any>>({});
+
     ngOnInit(): void {
         this.clientId = this.route.snapshot.paramMap.get('userId')!;
+        this.loadLookups();
         this.loadRecords();
         this.loadOrders();
     }
@@ -46,6 +58,28 @@ export default class HistoryDetail implements OnInit {
 
     getTotalOrders(): number {
         return this.orders().reduce((sum, o) => sum + (o.total || 0), 0);
+    }
+
+    /**
+     * Devuelve el objeto de la moto de un registro, ya sea que venga
+     * poblada dentro de appointment o solo como ID (en cuyo caso se
+     * busca en el mapa cargado con la lista completa de motos).
+     */
+    getMotorcycle(record: ServiceRecordItem): any {
+        const motorcycle = record.appointment?.motorcycle as any;
+        if (motorcycle && typeof motorcycle === 'object') return motorcycle;
+        if (typeof motorcycle === 'string') return this.motorcyclesById()[motorcycle] ?? null;
+        return null;
+    }
+
+    /**
+     * Igual que getMotorcycle pero para el nombre del servicio.
+     */
+    getServiceName(record: ServiceRecordItem): string {
+        const service = record.appointment?.service as any;
+        if (service && typeof service === 'object') return service.name ?? 'N/A';
+        if (typeof service === 'string') return this.servicesById()[service]?.name ?? 'N/A';
+        return 'N/A';
     }
 
     async onDeleteRecord(id: string) {
@@ -75,6 +109,32 @@ export default class HistoryDetail implements OnInit {
                     this.loadOrders();
                 },
                 error: (error) => this.alert.error('Error al eliminar', error.error?.msg),
+            });
+    }
+
+    private loadLookups(): void {
+        this.httpMotorcycles.getMotorcycles()
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({
+                next: (data: any) => {
+                    const list: any[] = data?.data ?? data ?? [];
+                    const map: Record<string, any> = {};
+                    list.forEach((m) => (map[m._id] = m));
+                    this.motorcyclesById.set(map);
+                },
+                error: (err) => console.error(err),
+            });
+
+        this.httpServices.getServices()
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({
+                next: (data: any) => {
+                    const list: any[] = data?.data ?? data ?? [];
+                    const map: Record<string, any> = {};
+                    list.forEach((s) => (map[s._id] = s));
+                    this.servicesById.set(map);
+                },
+                error: (err) => console.error(err),
             });
     }
 

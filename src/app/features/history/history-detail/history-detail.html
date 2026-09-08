@@ -44,9 +44,9 @@
             @for (record of records(); track record._id) {
             <div class="user-card history-row">
                 <div class="card-cell">
-                    {{ record.appointment?.motorcycle?.brand }} — {{ record.appointment?.motorcycle?.licensePlate }}
+                    {{ getMotorcycle(record)?.brand }} — {{ getMotorcycle(record)?.licensePlate }}
                 </div>
-                <div class="card-cell">{{ record.appointment?.service?.name || 'N/A' }}</div>
+                <div class="card-cell">{{ getServiceName(record) }}</div>
                 <div class="card-cell history-price">
                     {{ record.finalCost | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}
                 </div>

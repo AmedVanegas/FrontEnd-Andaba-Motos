@@ -16,8 +16,9 @@ import { HttpUsers } from '../../../core/services/http-users';
 import { HttpProducts } from '../../../core/services/http-products';
 import { AlertService } from '../../../core/services/alert';
 import { BackButton } from '../../../shared/components/back-button/back-button';
-import { QuickCreateButton } from '../../../shared/components/quick-create-button/quick-create-button';
+
 import { faCalendarCheck, faBoxesStacked, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { QuickCreateButton } from '../../../shared/components/quick-create-button/quick-create-button';
 
 @Component({
   selector: 'app-service-record-form',

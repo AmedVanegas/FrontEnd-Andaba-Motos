@@ -4,11 +4,11 @@
   <form class="form-page" [formGroup]="formData" (ngSubmit)="onSend()">
 
     <div class="form-header">
-      <h1>Agendar cita</h1>
-      <p>Completa los datos para registrar la cita</p>
+      <h1>{{ formTitle }}</h1>
+      <p>Completa los datos para {{ isEditMode ? 'actualizar' : 'registrar' }} la cita</p>
     </div>
 
-    @if (submitSuccess()) {
+    @if (submitSuccess$ | async) {
     <div class="form-section">
       <div class="form-section-body">
         <p class="form-success">¡La cita quedó registrada correctamente!</p>
@@ -26,22 +26,25 @@
           <label for="client">Cliente</label>
           <div class="field-with-action">
             <div class="autocomplete-field">
-              <input id="client" type="text" placeholder="Escribe el nombre del cliente..." [value]="clientSearch()"
-                (input)="onClientInputChange($any($event.target).value)" (focus)="openDropdown.set('client')"
-                (blur)="closeDropdowns()" autocomplete="off" />
-              @if (openDropdown() === 'client' && filteredClients().length > 0) {
-              <ul class="autocomplete-list">
-                @for (user of filteredClients(); track user._id) {
-                <li (mousedown)="selectClient(user)">
-                  {{ user.username }}
-                </li>
+              <input id="client" type="text" placeholder="Escribe el nombre del cliente..."
+                [value]="clientSearch$ | async" (input)="onClientInputChange($any($event.target).value)"
+                (focus)="openDropdown$.next('client')" (blur)="closeDropdowns()" autocomplete="off" />
+              @if ((openDropdown$ | async) === 'client') {
+                @if ((filteredClients$ | async); as filteredClients) {
+                  @if (filteredClients.length > 0) {
+                  <ul class="autocomplete-list">
+                    @for (user of filteredClients; track user._id) {
+                    <li (mousedown)="selectClient(user)">
+                      {{ user.username }}
+                    </li>
+                    }
+                  </ul>
+                  } @else {
+                  <ul class="autocomplete-list">
+                    <li class="autocomplete-empty">Sin coincidencias</li>
+                  </ul>
+                  }
                 }
-              </ul>
-              }
-              @if (openDropdown() === 'client' && filteredClients().length === 0) {
-              <ul class="autocomplete-list">
-                <li class="autocomplete-empty">Sin coincidencias</li>
-              </ul>
               }
             </div>
             <app-quick-create-button route="/dashboard/users/new" [icon]="faUsers" label="Registrar cliente nuevo" />
@@ -57,25 +60,29 @@
           <div class="field-with-action">
             <div class="autocomplete-field">
               <input id="motorcycle" type="text" placeholder="Escribe la marca, modelo o placa..."
-                [value]="motorcycleSearch()" [disabled]="!formData.get('client')?.value && !motorcycleSearch()"
-                (input)="onMotorcycleInputChange($any($event.target).value)" (focus)="openDropdown.set('motorcycle')"
-                (blur)="closeDropdowns()" autocomplete="off" />
-              @if (openDropdown() === 'motorcycle' && filteredMotorcycles().length > 0) {
-              <ul class="autocomplete-list">
-                @for (moto of filteredMotorcycles(); track moto._id) {
-                <li (mousedown)="selectMotorcycle(moto)">
-                  {{ moto.brand }} {{ moto.modelName }} — {{ moto.licensePlate }}
-                </li>
+                [value]="motorcycleSearch$ | async"
+                [disabled]="!formData.get('client')?.value && !(motorcycleSearch$ | async)"
+                (input)="onMotorcycleInputChange($any($event.target).value)"
+                (focus)="openDropdown$.next('motorcycle')" (blur)="closeDropdowns()" autocomplete="off" />
+              @if ((openDropdown$ | async) === 'motorcycle') {
+                @if ((filteredMotorcycles$ | async); as filteredMotorcycles) {
+                  @if (filteredMotorcycles.length > 0) {
+                  <ul class="autocomplete-list">
+                    @for (moto of filteredMotorcycles; track moto._id) {
+                    <li (mousedown)="selectMotorcycle(moto)">
+                      {{ moto.brand }} {{ moto.modelName }} — {{ moto.licensePlate }}
+                    </li>
+                    }
+                  </ul>
+                  } @else {
+                  <ul class="autocomplete-list">
+                    <li class="autocomplete-empty">
+                      {{ formData.get('client')?.value ? 'Este cliente no tiene motos registradas' : 'Selecciona primero un
+                      cliente' }}
+                    </li>
+                  </ul>
+                  }
                 }
-              </ul>
-              }
-              @if (openDropdown() === 'motorcycle' && filteredMotorcycles().length === 0) {
-              <ul class="autocomplete-list">
-                <li class="autocomplete-empty">
-                  {{ formData.get('client')?.value ? 'Este cliente no tiene motos registradas' : 'Selecciona primero un
-                  cliente' }}
-                </li>
-              </ul>
               }
             </div>
             <app-quick-create-button route="/dashboard/motorcycles/new" [icon]="faMotorcycle"
@@ -89,22 +96,25 @@
         <!-- Autocomplete: Servicio -->
         <div class="autocomplete-field">
           <label for="service">Servicio</label>
-          <input id="service" type="text" placeholder="Escribe el nombre del servicio..." [value]="serviceSearch()"
-            (input)="onServiceInputChange($any($event.target).value)" (focus)="openDropdown.set('service')"
-            (blur)="closeDropdowns()" autocomplete="off" />
-          @if (openDropdown() === 'service' && filteredServices().length > 0) {
-          <ul class="autocomplete-list">
-            @for (service of filteredServices(); track service._id) {
-            <li (mousedown)="selectService(service)">
-              {{ service.name }} — COP {{ service.price }}
-            </li>
+          <input id="service" type="text" placeholder="Escribe el nombre del servicio..."
+            [value]="serviceSearch$ | async" (input)="onServiceInputChange($any($event.target).value)"
+            (focus)="openDropdown$.next('service')" (blur)="closeDropdowns()" autocomplete="off" />
+          @if ((openDropdown$ | async) === 'service') {
+            @if ((filteredServices$ | async); as filteredServices) {
+              @if (filteredServices.length > 0) {
+              <ul class="autocomplete-list">
+                @for (service of filteredServices; track service._id) {
+                <li (mousedown)="selectService(service)">
+                  {{ service.name }} — COP {{ service.price }}
+                </li>
+                }
+              </ul>
+              } @else {
+              <ul class="autocomplete-list">
+                <li class="autocomplete-empty">Sin coincidencias</li>
+              </ul>
+              }
             }
-          </ul>
-          }
-          @if (openDropdown() === 'service' && filteredServices().length === 0) {
-          <ul class="autocomplete-list">
-            <li class="autocomplete-empty">Sin coincidencias</li>
-          </ul>
           }
           @if (formData.get('service')?.invalid && formData.get('service')?.touched) {
           <span class="form-error">El servicio es obligatorio</span>
@@ -122,8 +132,8 @@
       </div>
     </div>
 
-    <button type="submit" class="form-submit" [disabled]="isSubmitting()">
-      {{ isSubmitting() ? 'Registrando...' : 'Agendar cita' }}
+    <button type="submit" class="form-submit" [disabled]="isSubmitting$ | async">
+      {{ (isSubmitting$ | async) ? (isEditMode ? 'Guardando...' : 'Registrando...') : formButton }}
     </button>
 
     }
