@@ -186,7 +186,7 @@
   z-index: 0;
   top: 4px;
   left: 4px;
-  width: calc((100% - 8px) / 3);
+  width: calc((100% - 8px) / 4);
   height: calc(100% - 8px);
   border-radius: var(--radius-sm);
   background: var(--glass-fill-strong);

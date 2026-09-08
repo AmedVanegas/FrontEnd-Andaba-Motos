@@ -3,30 +3,31 @@
 
         <app-back-button fallback="/dashboard/history" />
 
+        @if (history$ | async; as history) {
         <div class="header">
-            <h1>{{ clientName() || 'Historial del cliente' }}</h1>
+            <h1>{{ history.user?.username || 'Historial del cliente' }}</h1>
             <p>Servicios realizados y compras de productos</p>
         </div>
 
         <div class="stats-grid">
             <div class="stat-card">
                 <p class="stat-label">Total Servicios</p>
-                <p class="stat-value">{{ records().length }}</p>
+                <p class="stat-value">{{ history.services?.length || 0 }}</p>
             </div>
             <div class="stat-card">
                 <p class="stat-label">Gasto en Servicios</p>
                 <p class="stat-value active">
-                    {{ getTotalServices() | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}
+                    {{ getTotal(history.services, 'finalCost') | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}
                 </p>
             </div>
             <div class="stat-card">
                 <p class="stat-label">Total Compras</p>
-                <p class="stat-value">{{ orders().length }}</p>
+                <p class="stat-value">{{ history.products?.length || 0 }}</p>
             </div>
             <div class="stat-card">
                 <p class="stat-label">Gasto en Productos</p>
                 <p class="stat-value active">
-                    {{ getTotalOrders() | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}
+                    {{ getTotal(history.products, 'total') | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}
                 </p>
             </div>
         </div>
@@ -41,12 +42,12 @@
                 <div class="header-cell">ACCIONES</div>
             </div>
 
-            @for (record of records(); track record._id) {
+            @for (record of history.services; track record._id) {
             <div class="user-card history-row">
                 <div class="card-cell">
-                    {{ getMotorcycle(record)?.brand }} — {{ getMotorcycle(record)?.licensePlate }}
+                    {{ record.appointment?.motorcycle?.brand }} — {{ record.appointment?.motorcycle?.licensePlate }}
                 </div>
-                <div class="card-cell">{{ getServiceName(record) }}</div>
+                <div class="card-cell">{{ record.appointment?.service?.name || 'N/A' }}</div>
                 <div class="card-cell history-price">
                     {{ record.finalCost | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}
                 </div>
@@ -70,9 +71,9 @@
                 <div class="header-cell">ACCIONES</div>
             </div>
 
-            @for (order of orders(); track order._id) {
+            @for (order of history.products; track order._id) {
             <div class="user-card orders-row">
-                <div class="card-cell">{{ order.products.length }} producto(s)</div>
+                <div class="card-cell">{{ order.products?.length || 0 }} producto(s)</div>
                 <div class="card-cell history-price">
                     {{ order.total | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}
                 </div>
@@ -88,6 +89,12 @@
             <p class="form-hint" style="padding: 20px;">Sin compras registradas.</p>
             }
         </div>
+        } @else if (notFound$ | async) {
+        <div class="header">
+            <h1>Sin historial</h1>
+            <p>Este cliente todavía no tiene servicios ni compras registradas.</p>
+        </div>
+        }
 
     </div>
 </div>

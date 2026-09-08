@@ -123,6 +123,7 @@ export default class Checkout implements OnInit {
       next: () => {
         this.loading = false;
         this.alert.success?.('Pedido confirmado', 'Tu compra se procesó correctamente'); 
+        this.router.navigateByUrl('/home')
       },
       error: (err) => {
         this.loading = false;

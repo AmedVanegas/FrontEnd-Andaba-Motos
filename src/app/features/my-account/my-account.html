@@ -156,6 +156,56 @@
           </div>
         }
 
+        @if (activeTab() === 'historial') {
+          @if (history$ | async; as history) {
+            <p class="account-section-label">Resumen</p>
+            <div class="account-panel">
+              <div class="field-row field-row--static">
+                <label>Servicios realizados</label>
+                <span>{{ history.services?.length || 0 }}</span>
+              </div>
+              <div class="field-row field-row--static">
+                <label>Gasto en servicios</label>
+                <span>{{ getTotal(history.services, 'finalCost') | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</span>
+              </div>
+              <div class="field-row field-row--static">
+                <label>Compras realizadas</label>
+                <span>{{ history.products?.length || 0 }}</span>
+              </div>
+              <div class="field-row field-row--static">
+                <label>Gasto en productos</label>
+                <span>{{ getTotal(history.products, 'total') | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</span>
+              </div>
+            </div>
+
+            @if (history.services?.length) {
+              <p class="account-section-label">Servicios</p>
+              <div class="account-panel">
+                @for (record of history.services; track record._id) {
+                  <div class="field-row field-row--static">
+                    <label>{{ record.appointment?.service?.name || 'Servicio' }} · {{ record.createdAt | date: 'd MMM y' }}</label>
+                    <span>{{ record.finalCost | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</span>
+                  </div>
+                }
+              </div>
+            }
+
+            @if (history.products?.length) {
+              <p class="account-section-label">Compras</p>
+              <div class="account-panel">
+                @for (order of history.products; track order._id) {
+                  <div class="field-row field-row--static">
+                    <label>{{ order.products?.length || 0 }} producto(s) · {{ order.createdAt | date: 'd MMM y' }}</label>
+                    <span>{{ order.total | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</span>
+                  </div>
+                }
+              </div>
+            }
+          } @else {
+            <p class="field-hint">Todavía no tienes servicios ni compras registradas.</p>
+          }
+        }
+
         <div class="save-bar" [class.visible]="form.dirty">
           <span class="save-bar__text">Tienes cambios sin guardar</span>
           <div class="save-bar__actions">

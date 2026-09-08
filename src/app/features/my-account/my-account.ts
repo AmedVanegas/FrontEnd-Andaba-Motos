@@ -17,30 +17,44 @@ import {
 } from '@countrystatecity/countries-browser';
 import { HttpAuth } from '../../core/services/http-auth';
 import { HttpUsers } from '../../core/services/http-users';
+import { HttpHistory } from '../../core/services/http-history';
 import { AlertService } from '../../core/services/alert';
+
+type AccountTab = 'perfil' | 'direccion' | 'seguridad' | 'historial';
 
 @Component({
   selector: 'app-my-account',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
+  // CommonModule ya trae AsyncPipe/CurrencyPipe/DatePipe usados en la pestaña de historial
   templateUrl: './my-account.html',
   styleUrl: './my-account.css',
 })
 export default class MyAccount implements OnInit {
   private httpAuth = inject(HttpAuth);
   private httpUsers = inject(HttpUsers);
+  private httpHistory = inject(HttpHistory);
   private alert = inject(AlertService);
 
   loading = signal(true);
   saving = signal(false);
   feedback = signal<{ type: 'success' | 'error'; message: string } | null>(null);
-  activeTab = signal<'perfil' | 'direccion' | 'seguridad'>('perfil');
+  activeTab = signal<AccountTab>('perfil');
 
-  tabs = [
-    { id: 'perfil' as const, label: 'Perfil' },
-    { id: 'direccion' as const, label: 'Dirección' },
-    { id: 'seguridad' as const, label: 'Seguridad' },
+  tabs: { id: AccountTab; label: string }[] = [
+    { id: 'perfil', label: 'Perfil' },
+    { id: 'direccion', label: 'Dirección' },
+    { id: 'seguridad', label: 'Seguridad' },
+    { id: 'historial', label: 'Historial' },
   ];
+
+  // Historial propio del usuario logeado (mismo endpoint que usa el admin
+  // para ver el historial de cualquier cliente, aquí con su propio _id)
+  history$ = new BehaviorSubject<any>(null);
+
+  getTotal(items: any[] | undefined, field: string): number {
+    return (items ?? []).reduce((sum, item) => sum + (item?.[field] || 0), 0);
+  }
 
   get tabIndex(): number {
     return this.tabs.findIndex((t) => t.id === this.activeTab());
@@ -101,9 +115,20 @@ export default class MyAccount implements OnInit {
 
     this.userId.set(user._id);
     this.fetchUser(user._id);
+    this.loadHistory(user._id);
   }
 
-  selectTab(id: 'perfil' | 'direccion' | 'seguridad') {
+  private loadHistory(userId: string): void {
+    this.httpHistory.getHistoryByUserId(userId).subscribe({
+      next: (res: any) => this.history$.next(res?.history ?? null),
+      error: (err) => {
+        if (err?.status !== 404) console.error('[my-account] error al pedir el historial:', err);
+        this.history$.next(null);
+      },
+    });
+  }
+
+  selectTab(id: AccountTab) {
     this.activeTab.set(id);
   }
 

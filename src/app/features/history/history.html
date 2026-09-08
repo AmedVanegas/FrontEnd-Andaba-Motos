@@ -1,23 +1,23 @@
 <div class="users-container">
     <div class="users-wrapper">
 
-        <app-back-button fallback="/dashboard" />
 
         <div class="header">
             <h1>HISTORIAL</h1>
             <p>Consulta el historial de servicios y compras por cliente</p>
         </div>
 
+        @if (filteredClients$ | async; as clients) {
         <div class="toolbar">
             <div class="search-box">
                 <input type="text" placeholder="Buscar por nombre..."
                     (input)="onSearchChange($any($event.target).value)" />
             </div>
-            <div class="history-count">{{ filteredClients().length }} clientes</div>
+            <div class="history-count">{{ clients.length }} clientes</div>
         </div>
 
         <div class="history-cards-grid">
-            @for (client of filteredClients(); track client.clientId) {
+            @for (client of clients; track client.clientId) {
             <article class="history-card">
                 <div class="history-card__top">
                     <div class="history-card__avatar">
@@ -51,6 +51,7 @@
             <p class="form-hint">Todavía no hay historial registrado.</p>
             }
         </div>
+        }
 
     </div>
 </div>
