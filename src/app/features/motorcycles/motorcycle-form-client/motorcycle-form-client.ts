@@ -6,6 +6,7 @@ import { HttpMotorcycles } from '../../../core/services/http-motorcycles';
 import { HttpMotosApi } from '../../../core/services/http-motos-api';
 import { HttpAuth } from '../../../core/services/http-auth';
 import { AlertService } from '../../../core/services/alert';
+import { licensePlateValidator } from '../../../shared/validators/license-plate.validator';
 
 
 @Component({
@@ -33,7 +34,11 @@ export default class MotorcycleFormClient implements OnInit {
   private returnServiceId: string | null = null;
 
   formData = new FormGroup({
-    licensePlate: new FormControl('', [Validators.required, Validators.maxLength(6)]),
+    licensePlate: new FormControl('', [
+      Validators.required,
+      Validators.maxLength(6),
+      licensePlateValidator(),
+    ]),
     brand: new FormControl('', [Validators.required]),
     modelName: new FormControl('', [Validators.required]),
     color: new FormControl('', [Validators.required]),
@@ -50,6 +55,17 @@ export default class MotorcycleFormClient implements OnInit {
     }
 
     this.loadMotos();
+
+    this.formData.get('licensePlate')?.valueChanges
+      .pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (typeof value === 'string') {
+          const upper = value.toUpperCase();
+          if (upper !== value) {
+            this.formData.get('licensePlate')?.setValue(upper, { emitEvent: false });
+          }
+        }
+      });
 
     this.brandSearchControl.valueChanges
       .pipe(

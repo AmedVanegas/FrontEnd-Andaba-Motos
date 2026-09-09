@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, DestroyRef } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Location, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -32,7 +32,6 @@ export default class AppointmentForm implements OnInit {
   private alert = inject(AlertService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private location = inject(Location);
   private destroyRef = inject(DestroyRef);
 
   // ===== Modo del formulario =====
@@ -82,7 +81,6 @@ export default class AppointmentForm implements OnInit {
   );
 
   isSubmitting$ = new BehaviorSubject<boolean>(false);
-  submitSuccess$ = new BehaviorSubject<boolean>(false);
 
   formData = new FormGroup({
     client: new FormControl('', [Validators.required]),
@@ -106,10 +104,6 @@ export default class AppointmentForm implements OnInit {
     } else {
       this.preselectServiceFromQueryParam();
     }
-  }
-
-  goBack(): void {
-    this.location.back();
   }
 
   private loadUsers(): void {
@@ -302,10 +296,10 @@ export default class AppointmentForm implements OnInit {
 
         if (this.isEditMode) {
           this.alert.success('Actualizada', 'La cita se actualizó correctamente');
-          this.router.navigate(['/dashboard/appointments']);
         } else {
-          this.submitSuccess$.next(true);
+          this.alert.success('Agendada!', 'La cita quedó registrada correctamente');
         }
+        this.router.navigate(['/dashboard/appointments']);
       },
       error: (error: any) => {
         this.isSubmitting$.next(false);

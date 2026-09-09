@@ -22,6 +22,15 @@ export interface ShoppingCart {
   price: number;
 }
 
+export interface AdminCart extends ShoppingCart {
+  user: {
+    _id: string;
+    username: string;
+    email: string;
+  };
+  updatedAt?: string;
+}
+
 const EMPTY_CART: ShoppingCart = { products: [], price: 0 };
 
 @Injectable({ providedIn: 'root' })
@@ -77,6 +86,36 @@ export class CartService {
     return this.http
       .post(`${this.apiUrl}/checkout`, { direccionEnvio, metodoPago })
       .pipe(tap(() => this.cartSubject.next(EMPTY_CART)));
+  }
+
+  // ── Administración (staff): ver y gestionar los carritos de todos los clientes ──
+  // Coincide con shoppingcar.routes.js: GET /all y GET /user/:userID ya existen.
+  // PATCH/DELETE /user/:userID/items/:productId y DELETE /user/:userID todavía
+  // hay que agregarlos al router y al controller (mismo prefijo /user/:userID,
+  // protegidos con authorizationUser(STAFF) igual que getCartByUserId).
+  getAllCarts() {
+    return this.http.get<{ data: AdminCart[] }>(`${this.apiUrl}/all`);
+  }
+
+  getCartByUserId(userId: string) {
+    return this.http.get<{ data: AdminCart }>(`${this.apiUrl}/user/${userId}`);
+  }
+
+  adminUpdateItemQuantity(userId: string, productId: string, quantity: number) {
+    return this.http.patch<{ data: AdminCart }>(
+      `${this.apiUrl}/user/${userId}/items/${productId}`,
+      { quantity },
+    );
+  }
+
+  adminRemoveItem(userId: string, productId: string) {
+    return this.http.delete<{ data: AdminCart }>(
+      `${this.apiUrl}/user/${userId}/items/${productId}`,
+    );
+  }
+
+  adminDeleteCart(userId: string) {
+    return this.http.delete(`${this.apiUrl}/user/${userId}`);
   }
 
   open() { this.openSubject.next(true); }

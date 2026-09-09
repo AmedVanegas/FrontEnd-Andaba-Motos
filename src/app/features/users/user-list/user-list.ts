@@ -73,8 +73,10 @@ export default class UserList {
         this.loadUsers();
       },
       error: (error) => {
-        this.alert.error('No se pudo eliminar el usuario', error.error?.msg);
         console.error(error);
+        
+        this.alert.error('No se pudo eliminar el usuario', error.error?.msg);
+        
       },
       complete: () => console.log('eliminado'),
     });

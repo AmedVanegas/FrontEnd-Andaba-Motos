@@ -15,6 +15,7 @@ import {
   faCalendarCheck,
   faClockRotateLeft,
   faGear,
+  faCartShopping,
 } from '@fortawesome/free-solid-svg-icons';
 
 interface DashboardSection {
@@ -70,6 +71,12 @@ export default class Dashboard {
       description: 'Motos registradas y su cliente asociado.',
       route: this.mainRoute +'/motorcycles',
       icon: faMotorcycle,
+    },
+    {
+      label: 'Carritos',
+      description: 'Carritos de compra activos de todos los clientes.',
+      route: this.mainRoute +'/carts',
+      icon: faCartShopping,
     },
     {
       label: 'Órdenes',

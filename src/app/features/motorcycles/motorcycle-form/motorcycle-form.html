@@ -24,6 +24,9 @@
             @if (licensePlate?.errors?.['maxlength']) {
               <small class="form-error">La placa no puede tener más de 6 caracteres</small>
             }
+            @if (licensePlate?.errors?.['invalidPlate']) {
+              <small class="form-error">La placa no es válida. Formato: 3 letras y 3 números (ABC123). El último número puede ser una letra (ABC12A)</small>
+            }
           }
         </div>
 

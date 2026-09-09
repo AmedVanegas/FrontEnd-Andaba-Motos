@@ -8,7 +8,16 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
-import { BehaviorSubject, debounceTime, distinctUntilChanged, EMPTY, filter, switchMap } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  debounceTime,
+  distinctUntilChanged,
+  EMPTY,
+  filter,
+  map,
+  switchMap,
+} from 'rxjs';
 
 import { HttpServiceRecord } from '../../../core/services/http-service-record';
 import { HttpAppointments } from '../../../core/services/http-appointments';
@@ -47,6 +56,33 @@ export default class ServiceRecordForm implements OnInit {
   searchingMechanic = false;
   showMechanicResults = false;
 
+  // ===== Buscador de cliente (mismo patrón que appointment-form: trae TODOS
+  // los usuarios una sola vez con getUsers() y filtra en el front, sin pegarle
+  // al backend en cada tecla) =====
+  private allUsers$ = new BehaviorSubject<any[]>([]);
+  clientSearch$ = new BehaviorSubject<string>('');
+  clientDropdownOpen$ = new BehaviorSubject<boolean>(false);
+  selectedClientId$ = new BehaviorSubject<string | null>(null);
+
+  filteredClients$ = combineLatest([this.allUsers$, this.clientSearch$]).pipe(
+    map(([users, term]) => {
+      const t = term.toLowerCase().trim();
+      if (!t) return users;
+      return users.filter((u) => u.username?.toLowerCase().includes(t));
+    }),
+  );
+
+  // Citas del cliente seleccionado (solo esas se muestran en el <select> de Cita)
+  filteredAppointmentsByClient$ = combineLatest([
+    this.appointmentList$,
+    this.selectedClientId$,
+  ]).pipe(
+    map(([appointments, clientId]) => {
+      if (!clientId) return [];
+      return appointments.filter((a) => a.client?._id === clientId);
+    }),
+  );
+
   isEditMode = false;
   formTitle = 'Registrar servicio';
   formButton = 'Crear registro';
@@ -82,6 +118,7 @@ export default class ServiceRecordForm implements OnInit {
   ngOnInit() {
     this.loadAppointments();
     this.loadProducts();
+    this.loadUsers();
 
     this.recordId = this.activatedRoute.snapshot.paramMap.get('id');
     if (this.recordId) {
@@ -141,6 +178,34 @@ export default class ServiceRecordForm implements OnInit {
     setTimeout(() => {
       this.showMechanicResults = false;
     }, 150);
+  }
+
+  private loadUsers(): void {
+    this.httpUsers.getUsers().subscribe({
+      next: (data) => this.allUsers$.next(data),
+      error: (err) => console.error(err),
+    });
+  }
+
+  // ===== Cliente =====
+  onClientInputChange(value: string): void {
+    this.clientSearch$.next(value);
+    this.clientDropdownOpen$.next(true);
+    // Si el usuario sigue escribiendo, invalidamos la selección/cita previas
+    this.selectedClientId$.next(null);
+    this.formData.get('appointment')?.setValue('');
+  }
+
+  selectClient(user: any): void {
+    this.selectedClientId$.next(user._id);
+    this.clientSearch$.next(user.username);
+    this.clientDropdownOpen$.next(false);
+    this.formData.get('appointment')?.setValue('');
+  }
+
+  closeClientDropdown(): void {
+    // Pequeño delay para que el (mousedown) de una opción se registre antes de cerrar
+    setTimeout(() => this.clientDropdownOpen$.next(false), 150);
   }
 
 loadAppointments() {

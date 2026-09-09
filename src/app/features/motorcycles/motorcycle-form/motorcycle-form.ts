@@ -19,6 +19,7 @@ import { AsyncPipe } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { QuickCreateButton } from '../../../shared/components/quick-create-button/quick-create-button';
+import { licensePlateValidator } from '../../../shared/validators/license-plate.validator';
 
 @Component({
   selector: 'app-motorcycle-form',
@@ -56,7 +57,11 @@ export default class MotorcycleForm implements OnInit {
 
   constructor() {
     this.formData = new FormGroup({
-      licensePlate: new FormControl('', [Validators.required, Validators.maxLength(6)]),
+      licensePlate: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(6),
+        licensePlateValidator(),
+      ]),
       brand: new FormControl('', [Validators.required]),
       modelName: new FormControl('', [Validators.required]),
       color: new FormControl('', [Validators.required]),
@@ -124,6 +129,17 @@ export default class MotorcycleForm implements OnInit {
       this.formTitle = 'Editar motocicleta';
       this.formButton = 'Editar';
     }
+
+    this.formData.get('licensePlate')?.valueChanges
+      .pipe(distinctUntilChanged())
+      .subscribe((value) => {
+        if (typeof value === 'string') {
+          const upper = value.toUpperCase();
+          if (upper !== value) {
+            this.formData.get('licensePlate')?.setValue(upper, { emitEvent: false });
+          }
+        }
+      });
 
     this.clientSearchControl.valueChanges
       .pipe(

@@ -33,6 +33,9 @@
               @if (licensePlate?.errors?.['maxlength']) {
                 <small class="field-error">Máximo 6 caracteres</small>
               }
+              @if (licensePlate?.errors?.['invalidPlate']) {
+                <small class="field-error">Placa no válida. Formato: 3 letras y 3 números (ABC123). El último número puede ser una letra (ABC12A)</small>
+              }
             }
           </div>
 

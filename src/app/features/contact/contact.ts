@@ -9,7 +9,7 @@ import { HttpAppointments } from '../../core/services/http-appointments';
 import { HttpServices } from '../../core/services/http-services';
 import { ServiceItem } from '../../core/models/Service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faLocationDot, faPhone, faClock, faMotorcycle } from '@fortawesome/free-solid-svg-icons';
+import { faLocationDot, faPhone, faClock, faMotorcycle, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import { QuickCreateButton } from '../../shared/components/quick-create-button/quick-create-button';
 
 
@@ -32,6 +32,7 @@ export default class Contact implements OnInit {
   faPhone = faPhone;
   faClock = faClock;
   faMotorcycle = faMotorcycle;
+  faCircleCheck = faCircleCheck;
 
   currentUser$ = this.httpAuth.user$;
 
@@ -42,6 +43,9 @@ export default class Contact implements OnInit {
 
   motorcycles = signal<any[]>([]);
   isSubmitting = signal(false);
+  // Controla si se muestra la pantalla de "ya agendaste tu cita" en vez del form.
+  // Solo se resetea si el usuario navega a otra página (no hay lógica que la
+  // vuelva a poner en false dentro de este componente).
   submitSuccess = signal(false);
 
   appointmentForm = new FormGroup({

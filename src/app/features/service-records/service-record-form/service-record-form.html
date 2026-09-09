@@ -16,15 +16,53 @@
       <div class="form-section">
         <div class="form-section-title">Cita</div>
         <div class="form-section-body">
+
+          <!-- Autocomplete: Cliente (primero se busca el cliente) -->
+          <div class="form-field-full">
+            <label for="client">Cliente</label>
+            <div class="field-with-action">
+              <div class="autocomplete-field">
+                <input id="client" type="text" placeholder="Escribe el nombre del cliente..."
+                  [value]="clientSearch$ | async" (input)="onClientInputChange($any($event.target).value)"
+                  (focus)="clientDropdownOpen$.next(true)" (blur)="closeClientDropdown()" autocomplete="off" />
+                @if (clientDropdownOpen$ | async) {
+                  @if ((filteredClients$ | async); as filteredClients) {
+                    @if (filteredClients.length > 0) {
+                    <ul class="autocomplete-list">
+                      @for (user of filteredClients; track user._id) {
+                      <li (mousedown)="selectClient(user)">
+                        {{ user.username }}
+                      </li>
+                      }
+                    </ul>
+                    } @else {
+                    <ul class="autocomplete-list">
+                      <li class="autocomplete-empty">Sin coincidencias</li>
+                    </ul>
+                    }
+                  }
+                }
+              </div>
+              <app-quick-create-button route="/dashboard/users/new" [icon]="faUsers" label="Registrar cliente nuevo" />
+            </div>
+          </div>
+
+          <!-- Citas del cliente seleccionado -->
           <div class="form-field-full">
             <label for="appointment">Cita</label>
             <div class="field-with-action">
-              <select id="appointment" formControlName="appointment">
-                <option value="" disabled>Seleccione una cita</option>
-                @for (appt of appointmentList$ | async; track appt._id) {
+              <select id="appointment" formControlName="appointment" [disabled]="!(selectedClientId$ | async)">
+                <option value="" disabled>
+                  {{ (selectedClientId$ | async) ? 'Seleccione una cita' : 'Primero busca y selecciona un cliente' }}
+                </option>
+                @for (appt of filteredAppointmentsByClient$ | async; track appt._id) {
                   <option [value]="appt._id">
-                    {{ appt.client?.username }} - {{ appt.motorcycle?.licensePlate }} - {{ appt.status }}
+                    {{ appt.motorcycle?.licensePlate }} - {{ appt.status }}
                   </option>
+                } @empty {
+                  @if (selectedClientId$ | async) {
+                    <option value="" disabled>Este cliente no tiene citas registradas</option>
+                  }
                 }
               </select>
               <app-quick-create-button route="/appointment" [icon]="faCalendarCheck" label="Registrar cita nueva" />

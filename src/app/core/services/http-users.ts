@@ -33,7 +33,9 @@ export class HttpUsers {
 
   deleteUserbyId (userId:string){
 
-    return this.http.delete(`${this.BASE_URL}/users/${userId}`)
+    return this.http.delete<any>(`${this.BASE_URL}/users/${userId}`).pipe(tap((res)=>{
+      console.log(res)
+    }))
 
   }
 

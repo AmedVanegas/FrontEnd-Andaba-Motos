@@ -37,16 +37,23 @@
         </div>
 
         @if (currentUser$ | async; as user) {
-        <!-- Usuario autenticado: mini-form para agendar la cita -->
+        <!-- Usuario autenticado -->
         @if (submitSuccess()) {
         <div class="form-page contact-form">
-            <div class="form-section">
+            <div class="form-section success-prompt">
                 <div class="form-section-body">
-                    <p class="form-success">¡Tu cita quedó registrada! Te esperamos en el horario elegido.</p>
+                    <div class="success-prompt__icon">
+                        <fa-icon [icon]="faCircleCheck" />
+                    </div>
+                    <h3 class="success-prompt__title">¡Ya agendaste tu cita!</h3>
+                    <p class="success-prompt__text">
+                        Te esperamos en el horario elegido. Puedes revisarla cuando quieras desde tu cuenta.
+                    </p>
                 </div>
             </div>
         </div>
         } @else {
+        <!-- mini-form para agendar la cita -->
         <form class="form-page contact-form" [formGroup]="appointmentForm" (ngSubmit)="onSubmit()">
             <div class="form-section">
                 <div class="form-section-title">Agenda tu cita</div>

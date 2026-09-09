@@ -16,7 +16,7 @@
   width: 900px;
   height: 500px;
   border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(229, 56, 59, 0.1) 0%, rgba(242, 169, 0, 0.05) 45%, transparent 75%);
+  background: radial-gradient(ellipse, rgba(229, 56, 59, 0.16) 0%, rgba(229, 56, 59, 0.05) 45%, transparent 75%);
   filter: blur(20px);
   pointer-events: none;
 }

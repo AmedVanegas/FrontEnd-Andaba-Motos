@@ -84,6 +84,10 @@ export const routes: Routes = [
         loadComponent: () => import('./features/reports/sales-report/sales-report'),
       },
       {
+        path: 'carts',
+        loadComponent: () => import('./features/cart/cart-list/cart-list'),
+      },
+      {
         path: 'service-records',
         loadComponent: () =>
           import('./features/service-records/service-record-list/service-record-list'),

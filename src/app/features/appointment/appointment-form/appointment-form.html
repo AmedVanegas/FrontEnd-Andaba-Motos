@@ -8,15 +8,6 @@
       <p>Completa los datos para {{ isEditMode ? 'actualizar' : 'registrar' }} la cita</p>
     </div>
 
-    @if (submitSuccess$ | async) {
-    <div class="form-section">
-      <div class="form-section-body">
-        <p class="form-success">¡La cita quedó registrada correctamente!</p>
-        <button type="button" class="form-submit" (click)="goBack()">Volver</button>
-      </div>
-    </div>
-    } @else {
-
     <div class="form-section">
       <div class="form-section-title">Datos de la cita</div>
       <div class="form-section-body">
@@ -135,8 +126,6 @@
     <button type="submit" class="form-submit" [disabled]="isSubmitting$ | async">
       {{ (isSubmitting$ | async) ? (isEditMode ? 'Guardando...' : 'Registrando...') : formButton }}
     </button>
-
-    }
 
   </form>
 </div>
