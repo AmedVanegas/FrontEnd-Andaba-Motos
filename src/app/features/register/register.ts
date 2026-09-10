@@ -8,7 +8,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 import {
@@ -74,6 +74,7 @@ export default class Register implements OnInit {
   formData: FormGroup;
   httpAuth = inject(HttpAuth)
   alert = inject(AlertService)
+  router = inject(Router)
 
   readonly steps = [1, 2, 3];
   readonly totalSteps = 3;
@@ -215,6 +216,7 @@ export default class Register implements OnInit {
     this.httpAuth.register(formValue).subscribe({
       next:(data)=>{
         this.alert.success('Registrado','Ha sido registrado correctamente')
+        this.router.navigateByUrl('/home')
       },
       error:(err)=>{
         this.alert.error('Error al registar', err?.error?.msg)
