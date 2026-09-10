@@ -168,6 +168,28 @@ router-outlet + * {
   margin-bottom: 8px;
 }
 
+/*
+ * EL BUG REAL: Safari/WebKit en iOS ignora el width normal en
+ * input[type=date|time|datetime-local|month|week] y en su lugar usa
+ * su propio "ancho lógico" interno para dibujar el control, que puede
+ * ser mayor al de su contenedor. Por eso se salía del form aunque el
+ * grid/flex ya estuvieran bien y sin necesidad de tocarlo. La única
+ * propiedad que WebKit respeta para esto es -webkit-min-logical-width.
+ * El !important es necesario porque si no, en algunas versiones de
+ * iOS Safari el control se sigue dibujando con su ancho interno.
+ */
+input[type='date'],
+input[type='time'],
+input[type='datetime-local'],
+input[type='month'],
+input[type='week'] {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+  -webkit-min-logical-width: 0 !important;
+}
+
 .form-section-body input,
 .form-section-body select,
 .form-section-body textarea {
