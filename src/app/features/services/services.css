@@ -3,7 +3,7 @@
   background: #0a0a0a;
   min-height: 100vh;
   padding: 2.5rem 2rem 4rem;
-  overflow-x: hidden;
+  overflow: hidden;
   isolation: isolate;
 }
 
