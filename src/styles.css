@@ -137,12 +137,25 @@ router-outlet + * {
 .form-section-body {
   padding: 20px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 18px;
 }
 
 .form-field-full {
   grid-column: 1 / -1;
+}
+
+/*
+ * Los items de grid tienen min-width:auto por defecto: no se encogen
+ * más allá del contenido mínimo de lo que tengan adentro. Los inputs
+ * nativos de fecha/hora (date, time, datetime-local) tienen un ancho
+ * mínimo bastante grande, así que sin esto el grid se ensancha para
+ * darles espacio y termina saliéndose de .form-page. Esto es lo que
+ * pasaba en appointment-form, contact y users (todos usan esta clase);
+ * register no la usa, por eso nunca mostró el problema.
+ */
+.form-section-body > * {
+  min-width: 0;
 }
 
 .form-section-body label {

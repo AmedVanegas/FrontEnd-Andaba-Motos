@@ -1,4 +1,3 @@
-
 :host{
   display: block;
 }
@@ -29,4 +28,16 @@ select {
 
 select option {
   color: initial;
+}
+
+/*
+ * Mismo fix que ya se aplicó en appointment-form (datetime-local) y en
+ * register (date): en iOS Safari, si un input tiene font-size menor a
+ * 16px, el navegador hace auto-zoom al enfocarlo, lo que descuadra el
+ * layout del formulario. El selector va calificado con .form-section-body
+ * para tener más especificidad que la regla global y no depender del
+ * orden en que se agrupen los estilos en el build.
+ */
+.form-section-body input[type='date'] {
+  font-size: 16px;
 }

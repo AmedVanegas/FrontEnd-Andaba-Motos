@@ -9,6 +9,7 @@
 
 .contact-info {
     flex: 0.9;
+    min-width: 0;
 }
 
 .services-eyebrow {
@@ -102,6 +103,7 @@
 .contact-form {
     flex: 1.1;
     max-width: none;
+    min-width: 0;
 }
 
 .success-prompt {
