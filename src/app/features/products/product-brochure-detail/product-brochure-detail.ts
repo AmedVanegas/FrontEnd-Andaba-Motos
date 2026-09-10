@@ -43,13 +43,25 @@ export class ProductBrochureDetail implements AfterViewInit, OnDestroy {
   showContent = false;
   private isClosing = false;
 
-    addToCart() {
+  justAdded = false;
+  private addedTimeout?: ReturnType<typeof setTimeout>;
+
+  addToCart() {
     if (!this.httpAuth.isLogged()) {
       this.router.navigate(['/login']);
       return;
     }
 
     this.cartService.addItem(this.product._id, 1).subscribe({
+      next: () => {
+        this.justAdded = true;
+        this.cdr.detectChanges();
+        clearTimeout(this.addedTimeout);
+        this.addedTimeout = setTimeout(() => {
+          this.justAdded = false;
+          this.cdr.detectChanges();
+        }, 400);
+      },
       error: (err) => {
         console.error(err.error?.msg);
         this.alert.error('No se pudo añadir al carrito', err.error?.msg)
@@ -79,14 +91,12 @@ export class ProductBrochureDetail implements AfterViewInit, OnDestroy {
       return;
     }
 
-  
     this.isOpen = true;
     this.isAnimating = true;
-    this.cdr.detectChanges(); 
+    this.cdr.detectChanges();
 
     const finalRect = panel.getBoundingClientRect();
 
-    
     panel.style.transition = 'none';
     panel.style.position = 'fixed';
     panel.style.margin = '0';
@@ -96,9 +106,7 @@ export class ProductBrochureDetail implements AfterViewInit, OnDestroy {
     panel.style.height = `${this.originRect.height}px`;
     panel.style.borderRadius = '14px';
 
-
     void panel.offsetWidth;
-
 
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
@@ -157,14 +165,13 @@ export class ProductBrochureDetail implements AfterViewInit, OnDestroy {
 
       void panel.offsetWidth;
 
-
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           this.isOpen = false;
           this.showContent = false;
-          this.cdr.detectChanges(); 
+          this.cdr.detectChanges();
 
-          panel.classList.add('is-animating'); 
+          panel.classList.add('is-animating');
 
           const bezier = 'cubic-bezier(0.16, 1, 0.3, 1)';
           const duration = '0.4s';
@@ -223,5 +230,6 @@ export class ProductBrochureDetail implements AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     document.body.style.overflow = '';
+    clearTimeout(this.addedTimeout);
   }
 }

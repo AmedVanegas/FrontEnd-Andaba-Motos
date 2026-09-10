@@ -1,5 +1,5 @@
 import { CurrencyPipe, UpperCasePipe } from '@angular/common';
-import { Component, ElementRef, EventEmitter, inject, Input, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, inject, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartService } from '../../../core/services/http-cart';
 import { AlertService } from '../../../core/services/alert';
@@ -17,17 +17,21 @@ export class ProductBrochureCard {
   alert = inject(AlertService)
   private httpAuth = inject(HttpAuth);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
   @Input() product: any;
 
   @Output() open = new EventEmitter<{ product: any; rect: DOMRect }>();
+
+  justAdded = false;
+  private addedTimeout?: ReturnType<typeof setTimeout>;
 
   constructor(private elRef: ElementRef<HTMLElement>) { }
 
   onCardClick() {
     const rect = this.elRef.nativeElement.getBoundingClientRect();
     this.open.emit({ product: this.product, rect });
-
   }
+
   addToCart(event: Event) {
     event.stopPropagation();
 
@@ -37,10 +41,23 @@ export class ProductBrochureCard {
     }
 
     this.cartService.addItem(this.product._id, 1).subscribe({
+      next: () => {
+        this.justAdded = true;
+        this.cdr.detectChanges();
+        clearTimeout(this.addedTimeout);
+        this.addedTimeout = setTimeout(() => {
+          this.justAdded = false;
+          this.cdr.detectChanges();
+        }, 400);
+      },
       error: (err) => {
         console.error(err.error?.msg);
         this.alert.error('No se pudo añadir al carrito', err.error?.msg)
       },
     });
+  }
+
+  ngOnDestroy() {
+    clearTimeout(this.addedTimeout);
   }
 }

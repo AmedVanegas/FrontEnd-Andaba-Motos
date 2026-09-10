@@ -20,8 +20,14 @@
           product.price + product.price * product.roi | currency: 'COP ' : 'symbol' : '1.0'
         }}</span>
       </div>
-      <button class="btn-agregar" aria-label="Agregar al carrito" (click)="addToCart($event)">
+      <button
+        class="btn-agregar"
+        [class.added]="justAdded"
+        aria-label="Agregar al carrito"
+        (click)="addToCart($event)"
+      >
         <svg
+          class="icon-plus"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -29,6 +35,17 @@
           stroke-linecap="round"
         >
           <path d="M12 5v14M5 12h14" />
+        </svg>
+        <svg
+          class="icon-check"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M5 13l4 4L19 7" />
         </svg>
       </button>
     </div>

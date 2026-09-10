@@ -10,7 +10,7 @@
 }
 
 nav {
-  display: none;
+  display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 0;
@@ -26,10 +26,25 @@ nav {
   z-index: 100;
   max-height: calc(100vh - 64px - env(safe-area-inset-top, 0px));
   overflow-y: auto;
+  transform: translateX(100%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.25s ease,
+    visibility 0s linear 0.35s;
 }
 
 nav.open {
-  display: flex;
+  transform: translateX(0);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition:
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.25s ease,
+    visibility 0s linear 0s;
 }
 
 .header-nav {
@@ -109,8 +124,8 @@ nav.open {
 /* Guarda de seguridad: nunca mostrar este menú en desktop,
    aunque "open" quede en true por algún estado residual. */
 @media (min-width: 1025px) {
-  nav.open {
-    display: none;
+  nav {
+    display: none !important;
   }
 }
 @media(max-width: 1024px){
@@ -119,4 +134,3 @@ nav.open {
     }
     
 }
-

@@ -1,7 +1,6 @@
-
-@if (cartService.isOpen$ | async) {
-  <div class="cart-backdrop" (click)="close()"></div>
-  <aside class="cart-panel">
+@if (visible()) {
+  <div class="cart-backdrop" [class.closing]="closing()" (click)="close()"></div>
+  <aside class="cart-panel" [class.closing]="closing()" (animationend)="onPanelAnimationEnd()">
     <div class="cart-panel-header">
       <p class="cart-panel-title">Tu carrito</p>
       <button class="icon-glass" aria-label="Cerrar" (click)="close()">
